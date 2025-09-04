@@ -6,12 +6,12 @@
     - generic [ref=e3]:
       - button "Toggle sidebar menu" [ref=e4] [cursor=pointer]:
         - img [ref=e5] [cursor=pointer]
-      - link "San Antonio" [ref=e6] [cursor=pointer]:
+      - link "Port San Antonio" [ref=e6]:
         - /url: /
       - navigation [ref=e7]:
-        - link "Menu" [ref=e8] [cursor=pointer]:
+        - link "Menu" [ref=e8]:
           - /url: /menu
-        - link "Admin panel" [ref=e9] [cursor=pointer]:
+        - link "Admin panel" [ref=e9]:
           - /url: /admin
           - text: Admin
     - generic [ref=e10]:
@@ -23,12 +23,12 @@
     - generic [ref=e19]:
       - generic [ref=e20]:
         - generic [ref=e21]:
-          - link "San Antonio" [ref=e22] [cursor=pointer]:
+          - link "Port San Antonio" [ref=e22]:
             - /url: /
           - navigation [ref=e23]:
-            - link "Menu" [ref=e24] [cursor=pointer]:
+            - link "Menu" [ref=e24]:
               - /url: /menu
-            - link "Admin panel" [ref=e25] [cursor=pointer]:
+            - link "Admin panel" [ref=e25]:
               - /url: /admin
               - text: Admin
         - generic [ref=e26]:
@@ -42,11 +42,11 @@
       - generic [ref=e41]:
         - generic [ref=e42]:
           - heading "Welcome to" [level=1] [ref=e43]
-          - heading "San Antonio" [level=2] [ref=e44]
+          - heading "Port San Antonio" [level=2] [ref=e44]
           - paragraph [ref=e45]: Experience luxury dining at its finest
-        - button "Explore Our Menu" [ref=e46] [cursor=pointer]:
+        - button "Explore our menu" [ref=e46] [cursor=pointer]:
           - generic [ref=e47] [cursor=pointer]:
-            - text: Explore Our Menu
+            - text: Explore our menu
             - img [ref=e48] [cursor=pointer]
   - alert [ref=e51]
 ```

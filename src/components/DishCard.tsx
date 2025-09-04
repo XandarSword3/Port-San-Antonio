@@ -203,6 +203,12 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
             aria-haspopup="dialog"
             aria-controls={`dish-modal-${dish.id}`}
             data-testid="dish-details-button"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleDetailsClick();
+              }
+            }}
           >
             <Info className="w-4 h-4" />
           </button>

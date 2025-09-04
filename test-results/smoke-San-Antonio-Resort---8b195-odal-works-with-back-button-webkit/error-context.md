@@ -6,12 +6,12 @@
     - generic [ref=e3]:
       - button "Toggle sidebar menu" [ref=e4] [cursor=pointer]:
         - img [ref=e5] [cursor=pointer]
-      - link "Port San Antonio" [ref=e6] [cursor=pointer]:
+      - link "Port San Antonio" [ref=e6]:
         - /url: /
       - navigation [ref=e7]:
-        - link "Menu" [ref=e8] [cursor=pointer]:
+        - link "Menu" [ref=e8]:
           - /url: /menu
-        - link "Admin panel" [ref=e9] [cursor=pointer]:
+        - link "Admin panel" [ref=e9]:
           - /url: /admin
           - text: Admin
     - generic [ref=e10]:
@@ -142,10 +142,10 @@
               - generic [ref=e165]:
                 - heading "Spa Relax Package" [level=3] [ref=e166]
                 - generic [ref=e168]: Advertisement
-                - link "Learn More" [ref=e169] [cursor=pointer]:
+                - link "Learn More" [ref=e169]:
                   - /url: /spa
                   - text: Learn More
-                  - img [ref=e170] [cursor=pointer]
+                  - img [ref=e170]
           - generic [ref=e174]:
             - heading "Resort Services" [level=4] [ref=e175]
             - list [ref=e176]:
