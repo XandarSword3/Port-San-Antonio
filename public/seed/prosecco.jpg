@@ -1,0 +1,20 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="grad-prosecco & couvent" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.3" />
+      </linearGradient>
+    </defs>
+    <rect width="400" height="300" fill="url(#grad-prosecco & couvent)"/>
+    <circle cx="80" cy="60" r="20" fill="#f59e0b" opacity="0.2"/>
+    <circle cx="320" cy="240" r="30" fill="#f59e0b" opacity="0.1"/>
+    <text x="200" y="120" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#d97706" font-weight="bold">
+      Prosecco
+    </text>
+    <text x="200" y="180" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#d97706" opacity="0.8">
+      Prosecco & couvent
+    </text>
+    <text x="200" y="240" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#d97706" opacity="0.6">
+      Placeholder
+    </text>
+  </svg>
