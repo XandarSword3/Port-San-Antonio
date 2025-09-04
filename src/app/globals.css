@@ -87,12 +87,13 @@
   border: 1px solid #f3f4f6;
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  /* Equivalent to Tailwind's bg-white, border, border-gray-100, rounded-lg, shadow-sm */
-  background-color: #fff;
-  border-width: 1px;
-  border-color: #f3f4f6;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+
+.dark .card,
+.dark .modal-content {
+  background-color: var(--beach-dark-card);
+  border-color: rgba(var(--beach-dark-muted), 0.25);
 }
 
 @layer utilities {
