@@ -22,13 +22,15 @@ export default function MenuPage() {
   const [ads, setAds] = useState<any[]>([])
   const [filters, setFilters] = useState<FilterState>({
     search: '',
-    selectedCategory: null,
-    activeDietFilters: []
+    selectedCategory: 'starters',
+    activeDietFilters: [],
+    availabilityOnly: false,
+    priceBucket: null,
   })
   const [filterPanelOpen, setFilterPanelOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Load data from JSON file
+  // Load data from JSON file and restore session filters
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -63,6 +65,15 @@ export default function MenuPage() {
     }
 
     loadData()
+
+    // Restore filters from sessionStorage
+    const saved = sessionStorage.getItem('menuFilters')
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved)
+        setFilters(prev => ({ ...prev, ...parsed }))
+      } catch {}
+    }
 
     // Listen for admin updates
     const handleAdminUpdate = () => {
@@ -106,7 +117,7 @@ export default function MenuPage() {
 
   // Filter dishes based on current filters
   const filteredDishes = useMemo(() => {
-    return dishes.filter(dish => {
+    const matches: Dish[] = dishes.filter(dish => {
       // Search filter (defensive + matches name, shortDesc, fullDesc, ingredients, variants)
       const q = filters.search?.trim().toLowerCase();
       if (q) {
@@ -135,9 +146,53 @@ export default function MenuPage() {
         }
       }
 
+      // Availability
+      if (filters.availabilityOnly && !dish.available) {
+        return false
+      }
+
+      // Price buckets
+      if (filters.priceBucket) {
+        const priceValues = dish.variants && dish.variants.length > 0
+          ? dish.variants.map(v => v.price)
+          : (dish.price ? [dish.price] : [])
+
+        if (priceValues.length === 0) return false
+
+        const min = Math.min(...priceValues)
+        const max = Math.max(...priceValues)
+
+        switch (filters.priceBucket) {
+          case 'lte10':
+            if (!(min <= 10)) return false
+            break
+          case 'btw11_20':
+            if (!(max >= 11 && min <= 20)) return false
+            break
+          case 'gt20':
+            if (!(max > 20)) return false
+            break
+        }
+      }
+
       return true
     })
+    return matches
   }, [dishes, filters])
+
+  // Persist filters to sessionStorage
+  useEffect(() => {
+    try {
+      const toSave = {
+        search: filters.search,
+        selectedCategory: filters.selectedCategory,
+        activeDietFilters: filters.activeDietFilters,
+        availabilityOnly: filters.availabilityOnly,
+        priceBucket: filters.priceBucket,
+      }
+      sessionStorage.setItem('menuFilters', JSON.stringify(toSave))
+    } catch {}
+  }, [filters])
 
   // Group dishes by category
   const dishesByCategory = useMemo(() => {
@@ -171,6 +226,14 @@ export default function MenuPage() {
     }))
   }
 
+  const handleAvailabilityToggle = () => {
+    setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))
+  }
+
+  const handlePriceBucketChange = (bucket: 'lte10' | 'btw11_20' | 'gt20' | null) => {
+    setFilters(prev => ({ ...prev, priceBucket: bucket }))
+  }
+
   // Handle search input
   const handleSearchChange = (value: string) => {
     setFilters(prev => ({
@@ -183,8 +246,10 @@ export default function MenuPage() {
   const clearAllFilters = () => {
     setFilters({
       search: '',
-      selectedCategory: null,
-      activeDietFilters: []
+      selectedCategory: 'starters',
+      activeDietFilters: [],
+      availabilityOnly: false,
+      priceBucket: null,
     })
   }
 
@@ -248,6 +313,10 @@ export default function MenuPage() {
               onClearAll={clearAllFilters}
               hasActiveFilters={filters.activeDietFilters.length > 0 || !!filters.search || !!filters.selectedCategory}
               isOpen={filterPanelOpen}
+              availabilityOnly={!!filters.availabilityOnly}
+              onAvailabilityToggle={handleAvailabilityToggle}
+              priceBucket={filters.priceBucket || null}
+              onPriceBucketChange={handlePriceBucketChange}
             />
 
             {/* Dishes Grid */}

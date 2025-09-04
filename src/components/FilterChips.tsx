@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { DietFilter } from '@/types'
 import { cn } from '@/lib/utils'
 import { EASING, DURATION } from '@/lib/animation'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface FilterChipsProps {
   filters: DietFilter[]
@@ -12,6 +13,10 @@ interface FilterChipsProps {
   onClearAll: () => void
   hasActiveFilters: boolean
   isOpen?: boolean
+  availabilityOnly?: boolean
+  onAvailabilityToggle?: () => void
+  priceBucket?: 'lte10' | 'btw11_20' | 'gt20' | null
+  onPriceBucketChange?: (bucket: 'lte10' | 'btw11_20' | 'gt20' | null) => void
 }
 
 const dietTagColors: Record<string, string> = {
@@ -30,8 +35,13 @@ export default function FilterChips({
   onFilterToggle, 
   onClearAll,
   hasActiveFilters,
-  isOpen = false
+  isOpen = false,
+  availabilityOnly = false,
+  onAvailabilityToggle,
+  priceBucket = null,
+  onPriceBucketChange,
 }: FilterChipsProps) {
+  const { t } = useLanguage()
   const activeFilters = filters.filter(filter => filter.active)
   
   // If no active filters and panel is not open, don't show anything
@@ -47,18 +57,52 @@ export default function FilterChips({
       transition={{ duration: DURATION.fast, ease: EASING.soft }}
     >
       <div className="w-full flex justify-between items-center mb-3">
-        <span className="text-sm font-medium text-gray-700 dark:text-beach-dark-muted">Dietary Filters:</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-beach-dark-muted">{t('filters')}:</span>
         {hasActiveFilters && (
           <button 
             onClick={onClearAll}
             className="text-xs text-blue-600 dark:text-beach-dark-accent hover:underline"
           >
-            Clear all
+            {t('clearAll')}
           </button>
         )}
       </div>
       
       <div className="w-full flex flex-wrap gap-2">
+        {/* Availability toggle */}
+        <button
+          onClick={onAvailabilityToggle}
+          aria-pressed={availabilityOnly}
+          aria-label="Toggle available only"
+          className={cn(
+            "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 hover:scale-105",
+            availabilityOnly ? 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800/30' : 'bg-gray-50 text-gray-500 border-gray-200 dark:bg-beach-dark-bg dark:text-beach-dark-muted dark:border-gray-600'
+          )}
+        >
+          {t('available')}
+        </button>
+
+        {/* Price buckets */}
+        <div role="group" aria-label="Price">
+          {[
+            { id: 'lte10' as const, label: '<= $10' },
+            { id: 'btw11_20' as const, label: '$11–$20' },
+            { id: 'gt20' as const, label: '> $20' },
+          ].map((b) => (
+            <button
+              key={b.id}
+              onClick={() => onPriceBucketChange && onPriceBucketChange(priceBucket === b.id ? null : b.id)}
+              aria-pressed={priceBucket === b.id}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 hover:scale-105 mr-2",
+                priceBucket === b.id ? 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800/30' : 'bg-gray-50 text-gray-500 border-gray-200 dark:bg-beach-dark-bg dark:text-beach-dark-muted dark:border-gray-600'
+              )}
+            >
+              {b.label}
+            </button>
+          ))}
+        </div>
+
         {filters.map((filter) => (
           <button
             key={filter.id}

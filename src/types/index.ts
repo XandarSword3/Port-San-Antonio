@@ -60,4 +60,6 @@ export interface FilterState {
   search: string
   selectedCategory: string | null
   activeDietFilters: string[]
+  availabilityOnly?: boolean
+  priceBucket?: 'lte10' | 'btw11_20' | 'gt20' | null
 }
