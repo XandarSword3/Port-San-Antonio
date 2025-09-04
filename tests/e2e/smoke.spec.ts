@@ -38,9 +38,9 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const themeToggle = page.locator('[data-testid="theme-toggle"]')
     await expect(themeToggle).toBeVisible()
     
-    // Toggle theme and verify it changes - use force click to avoid interception
+    // Toggle theme and verify it changes
     const initialTheme = await page.evaluate(() => document.documentElement.classList.contains('dark'))
-    await themeToggle.click({ force: true })
+    await themeToggle.click()
     await page.waitForTimeout(500) // Wait for theme change to apply
     const newTheme = await page.evaluate(() => document.documentElement.classList.contains('dark'))
     expect(newTheme).not.toEqual(initialTheme)
@@ -49,19 +49,20 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const languageToggle = page.locator('[data-testid="language-toggle"]')
     await expect(languageToggle).toBeVisible()
     
-    // Toggle language and verify it changes - use force click to avoid interception
+    // Toggle language and verify it changes
     const initialLang = await page.evaluate(() => document.documentElement.lang)
-    await languageToggle.click({ force: true })
+    await languageToggle.click()
     await page.waitForTimeout(500) // Wait for language change to apply
     const newLang = await page.evaluate(() => document.documentElement.lang)
     expect(newLang).not.toEqual(initialLang)
     
     // Check hamburger menu exists
-    const hamburgerMenu = page.locator('[data-testid="hamburger-menu"]')
+    const hamburgerMenu = page.locator('[data-testid="hamburger"]')
     await expect(hamburgerMenu).toBeVisible()
     
-    // Open sidebar and verify it appears - use force click to avoid interception
-    await hamburgerMenu.click({ force: true })
+    // Open sidebar and verify it appears
+    await hamburgerMenu.click()
+    await page.waitForSelector('[data-testid="sidebar"]', { timeout: 5000 })
     await expect(page.locator('[data-testid="sidebar"]')).toBeVisible()
     
     // Close sidebar by clicking outside
@@ -192,10 +193,10 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     await expect(page.locator('input[type="password"]')).toBeVisible()
     
     // Try to login with admin123
-    await page.fill('input[type="password"]', 'admin123')
+    await page.fill('[data-testid="admin-password"]', 'admin123')
     // Wait for button to be enabled
-    await page.waitForSelector('button[type="submit"]:not([disabled])')
-    await page.click('button[type="submit"]')
+    await page.waitForSelector('[data-testid="admin-submit"]:not([disabled])', { timeout: 5000 })
+    await page.click('[data-testid="admin-submit"]')
     
     // Should show admin dashboard
     await expect(page.locator('text=Admin Panel')).toBeVisible()

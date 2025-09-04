@@ -23,8 +23,8 @@ export default function GlobalHeader() {
   }
 
   const toggleSidebar = () => {
+    console.log('hamburger: open', !sidebarOpen)
     setSidebarOpen(prev => !prev)
-    console.log('Sidebar toggled:', !sidebarOpen)
   }
 
   return (
@@ -36,7 +36,7 @@ export default function GlobalHeader() {
             onClick={toggleSidebar}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
             aria-label="Toggle sidebar menu"
-            data-testid="hamburger-menu"
+            data-testid="hamburger"
           >
             <Menu className="w-5 h-5" />
           </button>

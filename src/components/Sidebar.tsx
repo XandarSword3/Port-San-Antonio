@@ -62,6 +62,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Navigation sidebar"
+            data-testid="sidebar"
           >
             <div className="flex flex-col h-full p-6">
               {/* Header with close button */}

@@ -65,10 +65,14 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    console.log('admin: password change', e.target.value.length)
+                    setPassword(e.target.value)
+                  }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   placeholder="Enter admin password"
                   required
+                  data-testid="admin-password"
                 />
                 <button
                   type="button"
@@ -94,6 +98,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
               type="submit"
               disabled={isLoading || !password}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-colors hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+              data-testid="admin-submit"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>

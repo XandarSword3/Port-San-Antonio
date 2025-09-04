@@ -84,7 +84,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
   const getPriceDisplay = () => {
     if (dish.variants && dish.variants.length > 0) {
       return (
-        <div className="space-y-2">
+        <div className="space-y-2" data-testid="modal-price">
           <h4 className="font-semibold text-gray-900">{t('priceRange')}</h4>
           <div className="grid grid-cols-1 gap-2">
             {dish.variants.map((variant, index) => (
@@ -100,7 +100,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
       )
     }
     return dish.price ? (
-      <div className="text-3xl font-bold text-resort-500 dark:text-beach-dark-accent accent-element">
+      <div className="text-3xl font-bold text-resort-500 dark:text-beach-dark-accent accent-element" data-testid="modal-price">
         {formatPrice(dish.price, dish.currency)}
       </div>
     ) : null
@@ -142,6 +142,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                   onClick={onClose}
                   className="p-2 rounded-full bg-gray-100 dark:bg-beach-dark-card text-gray-600 dark:text-beach-dark-muted hover:bg-gray-200 dark:hover:bg-beach-dark-muted/30 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-beach-dark-accent focus:ring-offset-2"
                   aria-label="Close modal"
+                  data-testid="modal-close"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -150,6 +151,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
               <h2 
                 id={`${id}-title`}
                 className="text-2xl font-bold text-gray-900 dark:text-beach-dark-text pr-12"
+                data-testid="modal-name"
               >
                 {dish.name}
               </h2>

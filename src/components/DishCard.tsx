@@ -75,6 +75,7 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
   }, [handlePointerUp])
 
   const handleDetailsClick = () => {
+    console.log('modal: open', dish.id)
     setIsModalOpen(true)
   }
 

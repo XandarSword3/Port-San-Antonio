@@ -118,7 +118,7 @@ export default function DebugPage() {
         
         {/* System Information */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
-          <h2 className="text-lg font-semibold mb-4 dark:text-white">{t('systemInformation')}</h2>
+          <h2 className="text-lg font-semibold mb-4 dark:text-white" data-testid="debug-title">{t('systemInformation')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('theme')}</p>
