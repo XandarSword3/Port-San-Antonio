@@ -6,16 +6,16 @@
     - generic [ref=e3]:
       - button "Toggle sidebar menu" [ref=e4] [cursor=pointer]:
         - img [ref=e5] [cursor=pointer]
-      - link "Port San Antonio" [ref=e6]:
+      - link "سان أنطونيو" [ref=e6]:
         - /url: /
       - navigation [ref=e7]:
-        - link "Menu" [ref=e8]:
+        - link "القائمة" [ref=e8]:
           - /url: /menu
         - link "Admin panel" [ref=e9]:
           - /url: /admin
-          - text: Admin
+          - text: المسؤول
     - generic [ref=e10]:
-      - button "Switch to Arabic" [ref=e11] [cursor=pointer]:
+      - button "Switch to English" [ref=e11] [cursor=pointer]:
         - img [ref=e12] [cursor=pointer]
       - button "Switch to light mode" [ref=e15] [cursor=pointer]:
         - img [ref=e16] [cursor=pointer]
@@ -23,30 +23,30 @@
     - generic [ref=e23]:
       - generic [ref=e24]:
         - generic [ref=e25]:
-          - link "Port San Antonio" [ref=e26]:
+          - link "سان أنطونيو" [ref=e26]:
             - /url: /
           - navigation [ref=e27]:
-            - link "Menu" [ref=e28]:
+            - link "القائمة" [ref=e28]:
               - /url: /menu
             - link "Admin panel" [ref=e29]:
               - /url: /admin
-              - text: Admin
+              - text: المسؤول
         - generic [ref=e30]:
           - button [ref=e31] [cursor=pointer]:
             - img [ref=e32] [cursor=pointer]
-          - button "Switch to Arabic" [ref=e35] [cursor=pointer]:
+          - button "Switch to English" [ref=e35] [cursor=pointer]:
             - img [ref=e36] [cursor=pointer]
           - button "Switch to light mode" [ref=e39] [cursor=pointer]:
             - img [ref=e40] [cursor=pointer]
       - img "Port San Antonio Resort" [ref=e48]
       - generic [ref=e49]:
         - generic [ref=e50]:
-          - heading "Welcome to" [level=1] [ref=e51]
-          - heading "Port San Antonio" [level=2] [ref=e52]
-          - paragraph [ref=e53]: Experience luxury dining at its finest
-        - button "Explore our menu" [ref=e54] [cursor=pointer]:
+          - heading "مرحبا بكم في" [level=1] [ref=e51]
+          - heading "سان أنطونيو" [level=2] [ref=e52]
+          - paragraph [ref=e53]: استمتع بتجربة تناول الطعام الفاخرة
+        - button "استكشف قائمتنا" [ref=e54] [cursor=pointer]:
           - generic [ref=e55] [cursor=pointer]:
-            - text: Explore our menu
+            - text: استكشف قائمتنا
             - img [ref=e56] [cursor=pointer]
   - alert [ref=e59]
 ```

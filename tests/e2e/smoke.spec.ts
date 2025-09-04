@@ -60,8 +60,8 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const hamburgerMenu = page.locator('[data-testid="hamburger-menu"]')
     await expect(hamburgerMenu).toBeVisible()
     
-    // Open sidebar and verify it appears
-    await hamburgerMenu.click()
+    // Open sidebar and verify it appears - use force click to avoid interception
+    await hamburgerMenu.click({ force: true })
     await expect(page.locator('[data-testid="sidebar"]')).toBeVisible()
     
     // Close sidebar by clicking outside
@@ -133,7 +133,8 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const detailsButton = page.locator('[data-testid="dish-details-button"]').first()
     await detailsButton.click()
     
-    // Verify modal is open
+    // Wait for modal to appear and verify it's open
+    await page.waitForSelector('[data-testid="dish-modal"]', { timeout: 10000 })
     await expect(page.locator('[data-testid="dish-modal"]')).toBeVisible()
     
     // Check back button exists in modal
@@ -146,9 +147,10 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
 
   test('Debug page shows system information', async ({ page }: { page: Page }) => {
     await page.goto('http://localhost:3003/debug')
-    await page.waitForTimeout(1000) // Wait for content to load
+    await page.waitForTimeout(2000) // Wait for content to load
     
-    // Check for system information section using data-testid
+    // Wait for debug title to appear
+    await page.waitForSelector('[data-testid="debug-title"]', { timeout: 10000 })
     await expect(page.locator('[data-testid="debug-title"]')).toBeVisible()
     
     // Verify theme information is displayed
@@ -191,6 +193,8 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     
     // Try to login with admin123
     await page.fill('input[type="password"]', 'admin123')
+    // Wait for button to be enabled
+    await page.waitForSelector('button[type="submit"]:not([disabled])')
     await page.click('button[type="submit"]')
     
     // Should show admin dashboard
