@@ -1,0 +1,32 @@
+{
+  "categories": 12,
+  "dishes": 132,
+  "available": 130,
+  "unavailable": 2,
+  "withDietTags": 45,
+  "withAllergens": 38,
+  "dishesPerCategory": {
+    "starters": 6,
+    "salads": 6,
+    "pizza": 4,
+    "burgers": 6,
+    "sandwiches": 6,
+    "platters": 4,
+    "drinks": 20,
+    "beers": 2,
+    "arak": 1,
+    "prosecco": 2,
+    "wine": 2,
+    "cocktails": 3
+  },
+  "missingFields": {
+    "missingPrice": 0,
+    "missingName": 0,
+    "missingCategoryId": 0,
+    "missingAvailable": 0
+  },
+  "dataQuality": {
+    "completeness": "100%",
+    "coverage": "100%"
+  }
+}

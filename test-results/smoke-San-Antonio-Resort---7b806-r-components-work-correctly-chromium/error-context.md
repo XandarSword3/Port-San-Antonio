@@ -23,7 +23,7 @@
     - generic [ref=e23]:
       - generic [ref=e24]:
         - generic [ref=e25]:
-          - link "سان أنطونيو" [ref=e26] [cursor=pointer]:
+          - link "سان أنطونيو" [active] [ref=e26] [cursor=pointer]:
             - /url: /
           - navigation [ref=e27]:
             - link "القائمة" [ref=e28] [cursor=pointer]:
@@ -34,7 +34,7 @@
         - generic [ref=e30]:
           - button [ref=e31] [cursor=pointer]:
             - img [ref=e32] [cursor=pointer]
-          - button "Switch to English" [active] [ref=e35] [cursor=pointer]:
+          - button "Switch to English" [ref=e35] [cursor=pointer]:
             - img [ref=e36] [cursor=pointer]
           - button "Switch to light mode" [ref=e39] [cursor=pointer]:
             - img [ref=e40] [cursor=pointer]

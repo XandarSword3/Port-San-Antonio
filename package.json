@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "test": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:data": "vitest run tests/unit tests/integration",
+    "test:ui": "playwright test"
   },
   "dependencies": {
     "clsx": "^2.0.0",
@@ -27,8 +32,10 @@
     "autoprefixer": "^10.4.16",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
+    "jsdom": "^24.0.0",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.0"
   }
 }
