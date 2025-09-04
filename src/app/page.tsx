@@ -64,6 +64,7 @@ export default function HomePage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           aria-label={t('exploreMenu')}
+          data-testid="cta-explore-menu"
         >
           <span className="flex items-center gap-3">
             {t('exploreMenu')}

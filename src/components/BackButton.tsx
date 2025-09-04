@@ -31,6 +31,7 @@ export default function BackButton({ label, className = '' }: BackButtonProps) {
       onClick={handleBack}
       className={`flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-resort-500 dark:hover:text-resort-300 transition-colors ${className}`}
       aria-label={t('goBack')}
+      data-testid="back-button"
     >
       <ArrowLeft className="w-4 h-4" />
       {buttonLabel}
