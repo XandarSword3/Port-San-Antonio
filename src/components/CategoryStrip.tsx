@@ -19,7 +19,7 @@ export default function CategoryStrip({
   const sortedCategories = [...categories].sort((a, b) => a.order - b.order)
 
   return (
-    <div className="relative">
+    <div className="relative" data-testid="category-strip">
       <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
         {/* All Categories Option */}
         <motion.button
@@ -35,6 +35,7 @@ export default function CategoryStrip({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.fast, ease: EASING.soft, delay: 0.1 }}
+          data-testid="category-chip"
         >
           All Dishes
         </motion.button>
@@ -55,6 +56,7 @@ export default function CategoryStrip({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: DURATION.fast, ease: EASING.soft, delay: 0.1 + index * 0.06 }}
+            data-testid="category-chip"
           >
             {category.name}
           </motion.button>

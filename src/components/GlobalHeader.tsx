@@ -29,13 +29,14 @@ export default function GlobalHeader() {
 
   return (
     <>
-      <header className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-6 py-3 bg-white/80 dark:bg-beach-dark-bg/90 backdrop-blur-md z-50 border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-sm">
+      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-6 py-3 bg-white/80 dark:bg-beach-dark-bg/90 backdrop-blur-md z-50 border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-sm">
         <div className="flex items-center gap-4">
           {/* Hamburger Menu */}
           <button 
             onClick={toggleSidebar}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
             aria-label="Toggle sidebar menu"
+            data-testid="hamburger-menu"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -79,6 +80,7 @@ export default function GlobalHeader() {
             onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            data-testid="theme-toggle"
           >
             {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
           </button>

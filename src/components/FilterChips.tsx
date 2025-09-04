@@ -52,6 +52,7 @@ export default function FilterChips({
   return (
     <motion.div
       id="filter-panel"
+      data-testid="filter-panel"
       className="flex flex-wrap items-center gap-2 mt-4 p-4 bg-white dark:bg-beach-dark-card rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -64,6 +65,7 @@ export default function FilterChips({
           <button 
             onClick={onClearAll}
             className="text-xs text-blue-600 dark:text-beach-dark-accent hover:underline"
+            data-testid="clear-filters"
           >
             {t('clearAll')}
           </button>
@@ -118,6 +120,7 @@ export default function FilterChips({
           // Remove duplicate className - hover scale is already handled in the cn() function above
           style={{ transform: 'scale(0.95)' }}
         aria-pressed={filter.active}
+            data-testid="filter-chip"
           >
             {filter.label}
             <span className="ml-1 inline-flex items-center justify-center h-4 min-w-[1rem] px-1 rounded bg-black/10 text-[10px] text-gray-700 dark:bg-white/10 dark:text-beach-dark-text">

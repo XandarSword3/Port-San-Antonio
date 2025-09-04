@@ -332,6 +332,7 @@ export default function MenuPage() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 ${filterPanelOpen ? 'bg-blue-700 dark:bg-beach-dark-accent/90' : 'bg-blue-600 dark:bg-beach-dark-accent'} text-white hover:bg-blue-700 dark:hover:bg-beach-dark-accent/90`}
               aria-expanded={filterPanelOpen}
               aria-controls="filter-panel"
+              data-testid="filter-button"
             >
               <Filter className="w-4 h-4" />
               {t('filters')}

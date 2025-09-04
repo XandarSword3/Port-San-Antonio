@@ -132,6 +132,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ duration: 0.2, ease: 'ease-out' }}
+            data-testid="dish-modal"
           >
             {/* Header */}
             <div className="relative p-6 border-b border-gray-200 dark:border-beach-dark-muted/20">
