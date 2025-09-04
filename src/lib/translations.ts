@@ -1,6 +1,6 @@
 // Translation strings for the application
 
-export type SupportedLanguage = 'en' | 'ar';
+export type SupportedLanguage = 'en' | 'ar' | 'fr';
 
 export type TranslationKeys = {
   // Header and navigation
@@ -220,6 +220,77 @@ export const translations: Translations = {
     // Navigation
     back: 'رجوع',
     goBack: 'العودة',
+  },
+  fr: {
+    // Header and navigation
+    siteTitle: 'San Antonio',
+    menu: 'Menu',
+    admin: 'Admin',
+    home: 'Accueil',
+    contact: 'Contact',
+
+    // Homepage
+    welcomeTo: 'Bienvenue à',
+    experienceLuxury: 'Découvrez une expérience gastronomique d’exception',
+
+    // Sidebar
+    followUs: 'Suivez-nous',
+    siteBy: 'Site réalisé par',
+
+    // Menu page
+    menuTitle: 'Notre Carte',
+    searchPlaceholder: 'Rechercher des plats…',
+    backToHome: 'Retour à l’accueil',
+    backToMenu: 'Retour au menu',
+
+    // Filters
+    filters: 'Filtres',
+    clearAll: 'Tout effacer',
+    available: 'Disponible',
+    unavailable: 'Indisponible',
+    priceRange: 'Fourchette de prix',
+
+    // Dietary tags
+    vegetarian: 'Végétarien',
+    vegan: 'Vegan',
+    glutenFree: 'Sans gluten',
+    containsNuts: 'Contient des noix',
+    sugarFree: 'Sans sucre',
+
+    // Dish modal
+    details: 'Détails',
+    ingredients: 'Ingrédients',
+    allergens: 'Allergènes',
+    calories: 'calories',
+    pairings: 'Accords recommandés',
+    noDetailsAvailable: 'Aucun détail disponible',
+
+    // CTA
+    exploreMenu: 'Découvrir notre carte',
+    share: 'Partager',
+    close: 'Fermer',
+
+    // Debug
+    debugTitle: 'Informations de débogage',
+    debugOverlay: 'Overlay de débogage',
+    loadingDebugInfo: 'Chargement des informations…',
+    systemInformation: 'Informations système',
+    serverStatus: 'État du serveur',
+    dataStatus: 'État des données',
+    activeFilters: 'Filtres actifs',
+    recentLogs: 'Journaux récents',
+    quickActions: 'Actions rapides',
+    theme: 'Thème',
+    language: 'Langue',
+    browser: 'Navigateur',
+    screenSize: 'Taille de l’écran',
+    goToHomePage: 'Aller à la page d’accueil',
+    goToMenuPage: 'Aller au menu',
+    goToAdminPanel: 'Aller à l’admin',
+
+    // Navigation
+    back: 'Retour',
+    goBack: 'Revenir',
   },
 };
 

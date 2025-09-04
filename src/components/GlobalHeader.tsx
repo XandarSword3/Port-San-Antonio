@@ -15,9 +15,11 @@ export default function GlobalHeader() {
   const pathname = usePathname()
 
   const toggleLanguage = () => {
-    const newLang = language === 'en' ? 'ar' : 'en'
-    setLanguage(newLang)
-    console.log('Language toggled:', newLang)
+    const order: ('en'|'ar'|'fr')[] = ['en','ar','fr']
+    const idx = order.indexOf(language as any)
+    const next = order[(idx + 1) % order.length]
+    setLanguage(next as any)
+    console.log('Language toggled:', next)
   }
 
   const toggleSidebar = () => {

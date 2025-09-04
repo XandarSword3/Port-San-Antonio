@@ -7,6 +7,7 @@ import { Dish } from '@/types'
 import { formatPrice } from '@/lib/utils'
 import DishModal from './DishModal'
 import { EASING, DURATION } from '@/lib/animation'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface DishCardProps {
   dish: Dish
@@ -14,6 +15,7 @@ interface DishCardProps {
 }
 
 export default function DishCard({ dish, onLongPress }: DishCardProps) {
+  const { t, language } = useLanguage()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [longPressProgress, setLongPressProgress] = useState(0)
   const [isLongPressing, setIsLongPressing] = useState(false)
@@ -228,7 +230,7 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
                 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400' 
                 : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-400'
             }`}>
-              {dish.available ? 'Available' : 'Unavailable'}
+              {dish.available ? t('available') : t('unavailable')}
             </div>
           </div>
 
