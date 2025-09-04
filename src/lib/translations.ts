@@ -81,7 +81,7 @@ type Translations = {
 export const translations: Translations = {
   en: {
     // Header and navigation
-    siteTitle: 'San Antonio',
+    siteTitle: 'Port San Antonio',
     menu: 'Menu',
     admin: 'Admin',
     home: 'Home',
@@ -124,7 +124,7 @@ export const translations: Translations = {
     noDetailsAvailable: 'No details available',
     
     // CTA
-    exploreMenu: 'Explore Our Menu',
+    exploreMenu: 'Explore our menu',
     share: 'Share',
     close: 'Close',
     
