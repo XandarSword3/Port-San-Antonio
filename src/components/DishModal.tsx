@@ -6,6 +6,7 @@ import { Dish } from '@/types'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { formatPrice } from '@/lib/utils'
 import BackButton from './BackButton'
+import { useEffect, useRef } from 'react'
 
 interface DishModalProps {
   dish: Dish
@@ -16,6 +17,27 @@ interface DishModalProps {
 
 export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps) {
   const { t } = useLanguage()
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const previouslyFocused = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      previouslyFocused.current = document.activeElement as HTMLElement
+      const el = dialogRef.current
+      setTimeout(() => el?.querySelector<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')?.focus(), 0)
+      const handleFocus = (e: FocusEvent) => {
+        if (!el) return
+        if (isOpen && el !== e.target && el.contains(e.target as Node) === false) {
+          e.preventDefault()
+          el.focus()
+        }
+      }
+      document.addEventListener('focus', handleFocus, true)
+      return () => document.removeEventListener('focus', handleFocus, true)
+    } else {
+      previouslyFocused.current?.focus()
+    }
+  }, [isOpen])
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose()
@@ -105,6 +127,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
           {/* Modal Content */}
           <motion.div
             className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl modal-content"
+            ref={dialogRef}
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}

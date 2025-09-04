@@ -115,7 +115,7 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
         onPointerLeave={handlePointerLeave}
         style={{ touchAction: 'manipulation' }}
         data-testid="dish-card"
-        onClick={handleDetailsClick}
+        // Remove accidental open on tap; use explicit Details button
       >
         {/* Long-press Progress Indicator */}
         <AnimatePresence>
