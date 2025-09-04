@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - banner [ref=e2]:
     - generic [ref=e3]:
       - button "Toggle sidebar menu" [ref=e4] [cursor=pointer]:
@@ -44,7 +44,7 @@
           - heading "Welcome to" [level=1] [ref=e43]
           - heading "Port San Antonio" [level=2] [ref=e44]
           - paragraph [ref=e45]: Experience luxury dining at its finest
-        - button "Explore our menu" [ref=e46] [cursor=pointer]:
+        - button "Explore our menu" [active] [ref=e46] [cursor=pointer]:
           - generic [ref=e47] [cursor=pointer]:
             - text: Explore our menu
             - img [ref=e48] [cursor=pointer]

@@ -1,0 +1,147 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - button "Toggle sidebar menu" [ref=e4] [cursor=pointer]:
+        - img [ref=e5] [cursor=pointer]
+      - link "Port San Antonio" [ref=e9] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e10]:
+        - link "Menu" [ref=e11] [cursor=pointer]:
+          - /url: /menu
+        - link "Admin panel" [ref=e12] [cursor=pointer]:
+          - /url: /admin
+          - text: Admin
+    - generic [ref=e13]:
+      - button "Switch to Arabic" [ref=e14] [cursor=pointer]:
+        - img [ref=e15] [cursor=pointer]
+      - button "Switch to dark mode" [ref=e19] [cursor=pointer]:
+        - img [ref=e20] [cursor=pointer]
+  - main [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - button "Go back" [ref=e28] [cursor=pointer]:
+            - img [ref=e29] [cursor=pointer]
+            - text: Back
+          - heading "Our Menu" [level=1] [ref=e32]
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - textbox "Search dishes" [ref=e38]
+        - button "Filters" [expanded] [ref=e39] [cursor=pointer]:
+          - img [ref=e40] [cursor=pointer]
+          - text: Filters
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e46]:
+            - button "All Dishes" [ref=e47] [cursor=pointer]
+            - button "Starters" [ref=e48] [cursor=pointer]
+            - button "Salads" [ref=e49] [cursor=pointer]
+            - button "Pizza" [ref=e50] [cursor=pointer]
+            - button "Burgers" [ref=e51] [cursor=pointer]
+            - button "Sandwiches" [ref=e52] [cursor=pointer]
+            - button "Platters" [ref=e53] [cursor=pointer]
+            - button "Drinks" [ref=e54] [cursor=pointer]
+            - button "Beers" [ref=e55] [cursor=pointer]
+            - button "Arak" [ref=e56] [cursor=pointer]
+            - button "Prosecco & Couvent" [ref=e57] [cursor=pointer]
+            - button "Wine" [ref=e58] [cursor=pointer]
+            - button "Signature Cocktails" [ref=e59] [cursor=pointer]
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: "Filters:"
+              - button "Clear all" [active] [ref=e63] [cursor=pointer]
+            - generic [ref=e64]:
+              - button "Toggle available only" [ref=e65] [cursor=pointer]: Available
+              - group "Price" [ref=e66]:
+                - button "<= $10" [ref=e67] [cursor=pointer]
+                - button "$11–$20" [ref=e68] [cursor=pointer]
+                - button "> $20" [ref=e69] [cursor=pointer]
+              - button "Vegetarian 2" [pressed] [ref=e70] [cursor=pointer]:
+                - text: Vegetarian
+                - generic [ref=e71] [cursor=pointer]: "2"
+                - img [ref=e72] [cursor=pointer]
+              - button "Vegan 1" [ref=e75] [cursor=pointer]:
+                - text: Vegan
+                - generic [ref=e76] [cursor=pointer]: "1"
+              - button "Gluten free 0" [ref=e77] [cursor=pointer]:
+                - text: Gluten free
+                - generic [ref=e78] [cursor=pointer]: "0"
+              - button "Nuts free 0" [ref=e79] [cursor=pointer]:
+                - text: Nuts free
+                - generic [ref=e80] [cursor=pointer]: "0"
+              - button "Sugar free 0" [ref=e81] [cursor=pointer]:
+                - text: Sugar free
+                - generic [ref=e82] [cursor=pointer]: "0"
+              - button "Dairy free 0" [ref=e83] [cursor=pointer]:
+                - text: Dairy free
+                - generic [ref=e84] [cursor=pointer]: "0"
+              - button "Keto 0" [ref=e85] [cursor=pointer]:
+                - text: Keto
+                - generic [ref=e86] [cursor=pointer]: "0"
+              - button "Paleo 0" [ref=e87] [cursor=pointer]:
+                - text: Paleo
+                - generic [ref=e88] [cursor=pointer]: "0"
+          - generic [ref=e90]:
+            - heading "Starters" [level=2] [ref=e91]
+            - generic [ref=e92]:
+              - generic [ref=e94]:
+                - generic [ref=e95]:
+                  - img "Edamame — Steamed soybeans, sea salt. (Starters)" [ref=e96]
+                  - generic [ref=e97]:
+                    - generic [ref=e98]: vegetarian
+                    - generic [ref=e99]: vegan
+                  - button "View details for Edamame" [ref=e100] [cursor=pointer]:
+                    - img [ref=e101] [cursor=pointer]
+                - generic [ref=e105]:
+                  - generic [ref=e106]:
+                    - heading "Edamame" [level=3] [ref=e107]
+                    - paragraph [ref=e108]: Steamed soybeans, sea salt.
+                  - generic [ref=e109]:
+                    - generic [ref=e110]: $5.00
+                    - generic [ref=e111]: Available
+              - generic [ref=e113]:
+                - generic [ref=e114]:
+                  - img "Mozzarella Sticks (5pcs) — Crispy battered mozzarella. (Starters)" [ref=e115]
+                  - generic [ref=e117]: vegetarian
+                  - button "View details for Mozzarella Sticks (5pcs)" [ref=e118] [cursor=pointer]:
+                    - img [ref=e119] [cursor=pointer]
+                - generic [ref=e123]:
+                  - generic [ref=e124]:
+                    - heading "Mozzarella Sticks (5pcs)" [level=3] [ref=e125]
+                    - paragraph [ref=e126]: Crispy battered mozzarella.
+                  - generic [ref=e127]:
+                    - generic [ref=e128]: $6.00
+                    - generic [ref=e129]: Available
+                  - generic [ref=e130]:
+                    - generic [ref=e131]: dairy
+                    - generic [ref=e132]: gluten
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - button "Close advertisement" [ref=e136] [cursor=pointer]:
+              - img [ref=e137] [cursor=pointer]
+            - generic [ref=e140]:
+              - img "Spa Relax Package" [ref=e142]
+              - generic [ref=e143]:
+                - heading "Spa Relax Package" [level=3] [ref=e144]
+                - generic [ref=e146]: Advertisement
+                - link "Learn More" [ref=e147] [cursor=pointer]:
+                  - /url: /spa
+                  - text: Learn More
+                  - img [ref=e148] [cursor=pointer]
+          - generic [ref=e152]:
+            - heading "Resort Services" [level=4] [ref=e153]
+            - list [ref=e154]:
+              - listitem [ref=e155]: • Spa & Wellness
+              - listitem [ref=e156]: • Pool & Beach Access
+              - listitem [ref=e157]: • Wine Tasting
+              - listitem [ref=e158]: • Concierge Service
+  - alert [ref=e159]
+  - generic [ref=e162] [cursor=pointer]:
+    - img [ref=e163] [cursor=pointer]
+    - generic [ref=e167] [cursor=pointer]: 1 error
+    - button "Hide Errors" [ref=e168] [cursor=pointer]:
+      - img [ref=e169] [cursor=pointer]
+```
