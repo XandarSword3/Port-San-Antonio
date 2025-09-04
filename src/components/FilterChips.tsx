@@ -17,6 +17,7 @@ interface FilterChipsProps {
   onAvailabilityToggle?: () => void
   priceBucket?: 'lte10' | 'btw11_20' | 'gt20' | null
   onPriceBucketChange?: (bucket: 'lte10' | 'btw11_20' | 'gt20' | null) => void
+  dietCounts?: Record<string, number>
 }
 
 const dietTagColors: Record<string, string> = {
@@ -40,6 +41,7 @@ export default function FilterChips({
   onAvailabilityToggle,
   priceBucket = null,
   onPriceBucketChange,
+  dietCounts = {}
 }: FilterChipsProps) {
   const { t } = useLanguage()
   const activeFilters = filters.filter(filter => filter.active)
@@ -118,6 +120,9 @@ export default function FilterChips({
         aria-pressed={filter.active}
           >
             {filter.label}
+            <span className="ml-1 inline-flex items-center justify-center h-4 min-w-[1rem] px-1 rounded bg-black/10 text-[10px] text-gray-700 dark:bg-white/10 dark:text-beach-dark-text">
+              {dietCounts[filter.id] ?? 0}
+            </span>
             {filter.active && <X className="h-3 w-3 ml-1" />}
           </button>
         ))}

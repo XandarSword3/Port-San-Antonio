@@ -115,6 +115,51 @@ export default function MenuPage() {
     }))
   }, [dishes, filters.activeDietFilters])
 
+  // Counts per diet filter considering other active filters
+  const dietCounts = useMemo(() => {
+    const baseFilter = (dish: Dish) => {
+      // Apply all current filters except diet tag itself
+      // Search
+      const q = filters.search?.trim().toLowerCase();
+      if (q) {
+        const name = (dish.name ?? '').toString().toLowerCase();
+        const shortDesc = (dish.shortDesc ?? '').toString().toLowerCase();
+        const fullDesc = (dish.fullDesc ?? '').toString().toLowerCase();
+        const allergens = (dish.allergens ?? []).join(' ').toLowerCase();
+        const variants = (dish.variants ?? []).map(v => (v.label ?? '') + ' ' + (v.price ?? '')).join(' ').toLowerCase();
+        if (!name.includes(q) && !shortDesc.includes(q) && !fullDesc.includes(q) && !allergens.includes(q) && !variants.includes(q)) {
+          return false;
+        }
+      }
+      if (filters.selectedCategory && dish.categoryId !== filters.selectedCategory) return false
+      if (filters.availabilityOnly && !dish.available) return false
+      if (filters.priceBucket) {
+        const values = dish.variants && dish.variants.length ? dish.variants.map(v => v.price) : (dish.price ? [dish.price] : [])
+        if (values.length === 0) return false
+        const min = Math.min(...values)
+        const max = Math.max(...values)
+        switch (filters.priceBucket) {
+          case 'lte10': if (!(min <= 10)) return false; break
+          case 'btw11_20': if (!(max >= 11 && min <= 20)) return false; break
+          case 'gt20': if (!(max > 20)) return false; break
+        }
+      }
+      // For existing active diet tags, require them too
+      if (filters.activeDietFilters.length > 0) {
+        const hasAll = (filters.activeDietFilters || []).every(tag => dish.dietTags?.includes(tag))
+        if (!hasAll) return false
+      }
+      return true
+    }
+    const counts: Record<string, number> = {}
+    const tags = new Set<string>()
+    dishes.forEach(d => (d.dietTags || []).forEach(tag => tags.add(tag)))
+    Array.from(tags).forEach(tag => {
+      counts[tag] = dishes.filter(d => baseFilter(d) && d.dietTags?.includes(tag)).length
+    })
+    return counts
+  }, [dishes, filters])
+
   // Filter dishes based on current filters
   const filteredDishes = useMemo(() => {
     const matches: Dish[] = dishes.filter(dish => {
@@ -317,6 +362,7 @@ export default function MenuPage() {
               onAvailabilityToggle={handleAvailabilityToggle}
               priceBucket={filters.priceBucket || null}
               onPriceBucketChange={handlePriceBucketChange}
+              dietCounts={dietCounts}
             />
 
             {/* Dishes Grid */}
