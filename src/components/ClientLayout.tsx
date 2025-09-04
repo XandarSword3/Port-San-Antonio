@@ -13,10 +13,8 @@ export default function ClientLayout({
     <ThemeProvider>
       <LanguageProvider>
         <GlobalHeader />
-        <main className="pt-16 pointer-events-none">
-          <div className="pointer-events-auto">
-            {children}
-          </div>
+        <main className="pt-16">
+          {children}
         </main>
       </LanguageProvider>
     </ThemeProvider>

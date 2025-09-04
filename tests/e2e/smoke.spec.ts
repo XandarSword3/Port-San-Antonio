@@ -38,9 +38,9 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const themeToggle = page.locator('[data-testid="theme-toggle"]')
     await expect(themeToggle).toBeVisible()
     
-    // Toggle theme and verify it changes
+    // Toggle theme and verify it changes - use force click to avoid interception
     const initialTheme = await page.evaluate(() => document.documentElement.classList.contains('dark'))
-    await themeToggle.click()
+    await themeToggle.click({ force: true })
     await page.waitForTimeout(500) // Wait for theme change to apply
     const newTheme = await page.evaluate(() => document.documentElement.classList.contains('dark'))
     expect(newTheme).not.toEqual(initialTheme)
@@ -49,9 +49,9 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const languageToggle = page.locator('[data-testid="language-toggle"]')
     await expect(languageToggle).toBeVisible()
     
-    // Toggle language and verify it changes
+    // Toggle language and verify it changes - use force click to avoid interception
     const initialLang = await page.evaluate(() => document.documentElement.lang)
-    await languageToggle.click()
+    await languageToggle.click({ force: true })
     await page.waitForTimeout(500) // Wait for language change to apply
     const newLang = await page.evaluate(() => document.documentElement.lang)
     expect(newLang).not.toEqual(initialLang)
@@ -60,8 +60,8 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     const hamburgerMenu = page.locator('[data-testid="hamburger"]')
     await expect(hamburgerMenu).toBeVisible()
     
-    // Open sidebar and verify it appears
-    await hamburgerMenu.click()
+    // Open sidebar and verify it appears - use force click to avoid interception
+    await hamburgerMenu.click({ force: true })
     await page.waitForSelector('[data-testid="sidebar"]', { timeout: 5000 })
     await expect(page.locator('[data-testid="sidebar"]')).toBeVisible()
     

@@ -154,4 +154,9 @@
               - listitem [ref=e179]: • Wine Tasting
               - listitem [ref=e180]: • Concierge Service
   - alert [ref=e181]
+  - generic [ref=e184] [cursor=pointer]:
+    - img [ref=e185] [cursor=pointer]
+    - generic [ref=e187] [cursor=pointer]: 1 error
+    - button "Hide Errors" [ref=e188] [cursor=pointer]:
+      - img [ref=e189] [cursor=pointer]
 ```
