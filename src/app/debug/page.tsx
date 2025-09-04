@@ -113,7 +113,7 @@ export default function DebugPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center mb-4">
           <BackButton />
-          <h1 className="text-2xl font-bold ml-2 dark:text-white" data-testid="debug-title">{t('debugOverlay')}</h1>
+          <h1 className="text-2xl font-bold ml-2 dark:text-white">{t('debugOverlay')}</h1>
         </div>
         
         {/* System Information */}

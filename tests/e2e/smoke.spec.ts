@@ -130,8 +130,14 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     await page.goto('http://localhost:3003/menu')
     await page.waitForTimeout(2000) // Wait for content to load
     
-    // Open a dish modal by clicking the Details button
+    // Check if Details button exists
     const detailsButton = page.locator('[data-testid="dish-details-button"]').first()
+    await expect(detailsButton).toBeVisible()
+    
+    // Add console logging to capture any errors
+    page.on('console', msg => console.log('PAGE LOG:', msg.text()))
+    
+    // Open a dish modal by clicking the Details button
     await detailsButton.click()
     
     // Wait for modal to appear and verify it's open
