@@ -55,7 +55,7 @@ export default function MenuPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/api/menu')
+        const response = await fetch('/menu-data.json')
         if (response.ok) {
           const data = await response.json()
           

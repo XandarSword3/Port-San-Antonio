@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 
+export const dynamic = 'force-static'
+
 export async function GET(request: NextRequest) {
   // Only allow in development mode
   if (process.env.NODE_ENV !== 'development') {
