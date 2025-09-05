@@ -2,15 +2,13 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
-export type Currency = 'USD' | 'LBP' | 'JMD'
+export type Currency = 'USD' | 'LBP'
 
 interface CurrencyContextType {
   currency: Currency
   setCurrency: (currency: Currency) => void
   exchangeRate: number
   setExchangeRate: (rate: number) => void
-  jmdRate: number
-  setJmdRate: (rate: number) => void
   formatPrice: (price: number, originalCurrency?: string) => string
 }
 
@@ -23,12 +21,11 @@ interface CurrencyProviderProps {
 export function CurrencyProvider({ children }: CurrencyProviderProps) {
   const [currency, setCurrencyState] = useState<Currency>('LBP')
   const [exchangeRate, setExchangeRateState] = useState<number>(90000) // USD to LBP rate
-  const [jmdRate, setJmdRateState] = useState<number>(155) // USD to JMD rate (approx)
 
   useEffect(() => {
     // Load currency preference from localStorage
     const savedCurrency = localStorage.getItem('currency') as Currency | null
-    if (savedCurrency && (savedCurrency === 'USD' || savedCurrency === 'LBP' || savedCurrency === 'JMD')) {
+    if (savedCurrency && (savedCurrency === 'USD' || savedCurrency === 'LBP')) {
       setCurrencyState(savedCurrency)
     } else {
       // Default to LBP for Lebanese resort context
@@ -43,14 +40,6 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
         setExchangeRateState(rate)
       }
     }
-
-    const savedJmd = localStorage.getItem('jmdRate')
-    if (savedJmd) {
-      const rate = parseFloat(savedJmd)
-      if (!isNaN(rate) && rate > 0) {
-        setJmdRateState(rate)
-      }
-    }
   }, [])
 
   const setCurrency = (newCurrency: Currency) => {
@@ -63,11 +52,6 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
     localStorage.setItem('exchangeRate', rate.toString())
   }
 
-  const setJmdRate = (rate: number) => {
-    setJmdRateState(rate)
-    localStorage.setItem('jmdRate', rate.toString())
-  }
-
   const formatPrice = (price: number, originalCurrency: string = 'USD'): string => {
     if (currency === 'LBP' && originalCurrency === 'USD') {
       const lbpPrice = Math.round(price * exchangeRate)
@@ -77,16 +61,6 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
     if (currency === 'USD' && originalCurrency === 'LBP') {
       const usdPrice = (price / exchangeRate).toFixed(2)
       return `$${usdPrice} USD`
-    }
-
-    if (currency === 'JMD' && originalCurrency === 'USD') {
-      const jmd = Math.round(price * jmdRate)
-      return `${jmd.toLocaleString()} JMD`
-    }
-
-    if (currency === 'USD' && originalCurrency === 'JMD') {
-      const usd = (price / jmdRate).toFixed(2)
-      return `$${usd} USD`
     }
 
     // Same currency or USD display
@@ -103,8 +77,6 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
       setCurrency,
       exchangeRate,
       setExchangeRate,
-      jmdRate,
-      setJmdRate,
       formatPrice
     }}>
       {children}

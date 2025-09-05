@@ -34,7 +34,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
       categoryId: '',
       available: true,
       image: '',
-      dietaryTags: [],
+      dietTags: [],
       allergens: []
     })
     setIsAddingNew(true)
@@ -56,13 +56,14 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
           categoryId: formData.categoryId || '',
           available: formData.available ?? true,
           image: formData.image || '',
-          dietaryTags: formData.dietaryTags || [],
+          dietTags: formData.dietTags || [],
           allergens: formData.allergens || [],
           currency: 'USD',
-          imageVariants: {},
+          imageVariants: { src: formData.image || '' },
           rating: 0,
           reviewCount: 0,
-          ingredients: []
+          ingredients: [],
+          sponsored: false
         }
         updatedDishes = [...dishes, newDish]
       } else {
@@ -215,7 +216,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
                     type="text"
                     value={formData.name || ''}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                     placeholder="Enter dish name"
                   />
                 </div>
@@ -228,7 +229,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
                     type="text"
                     value={formData.shortDesc || ''}
                     onChange={(e) => setFormData({ ...formData, shortDesc: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                     placeholder="Brief description"
                   />
                 </div>
@@ -241,7 +242,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
                     value={formData.fullDesc || ''}
                     onChange={(e) => setFormData({ ...formData, fullDesc: e.target.value })}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                     placeholder="Detailed description"
                   />
                 </div>
@@ -256,7 +257,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
                       step="0.01"
                       value={formData.price || ''}
                       onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                       placeholder="0.00"
                     />
                   </div>
@@ -268,7 +269,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
                     <select
                       value={formData.categoryId || ''}
                       onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                     >
                       <option value="">Select Category</option>
                       {categories.map(category => (
@@ -288,7 +289,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
                     type="url"
                     value={formData.image || ''}
                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>

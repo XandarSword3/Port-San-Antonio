@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, ChevronRight, Utensils, Shell, Waves, Sun, Coffee, Wine, Fish, IceCream, TreePine, Mountain, Olive } from 'lucide-react'
+import { ChevronDown, ChevronRight, Utensils, Shell, Waves, Sun, Coffee, Wine, Fish, IceCream, TreePine, Mountain, Circle } from 'lucide-react'
 import { Category, Dish } from '@/types'
 import { translateCategory } from '@/lib/dishTranslations'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -30,7 +30,7 @@ export default function CategoryAccordion({
   // Get Lebanese-themed icon for each category
   const getCategoryIcon = (categoryId: string) => {
     const iconMap: { [key: string]: React.ComponentType<any> } = {
-      'starters': Olive,
+      'starters': Circle,
       'salads-pasta': Waves,
       'pizzas': Sun,
       'sandwiches-burgers': Utensils,

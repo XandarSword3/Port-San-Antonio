@@ -3,14 +3,16 @@
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Globe } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export default function Footer() {
   const { t, language } = useLanguage()
+  const { isDark } = useTheme()
 
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-gray-900 text-white wave-separator">
+    <footer className={`${isDark ? 'bg-black' : 'bg-gray-900'} text-white wave-separator`}>
       <div className="max-w-7xl mx-auto px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

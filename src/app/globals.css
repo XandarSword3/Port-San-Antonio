@@ -6,6 +6,7 @@
 /* Import Tropical Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap');
 
 @layer base {
   html {
@@ -13,19 +14,22 @@
     overflow-x: hidden;
   }
   
+  /* Arabic font support */
+  [lang="ar"] {
+    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+  }
+  
   /* RTL Support */
   [dir="rtl"] {
     direction: rtl;
   }
   
-  [dir="rtl"] .flex {
+  /* RTL flex direction fixes */
+  [dir="rtl"] .justify-between {
     flex-direction: row-reverse;
   }
   
-  [dir="rtl"] .flex-row {
-    flex-direction: row-reverse;
-  }
-  
+  /* RTL text alignment */
   [dir="rtl"] .text-left {
     text-align: right;
   }
@@ -34,6 +38,7 @@
     text-align: left;
   }
   
+  /* RTL margin fixes */
   [dir="rtl"] .ml-auto {
     margin-left: unset;
     margin-right: auto;
@@ -42,11 +47,6 @@
   [dir="rtl"] .mr-auto {
     margin-right: unset;
     margin-left: auto;
-  }
-  
-  [dir="rtl"] .pl-4 {
-    padding-left: unset;
-    padding-right: 1rem;
   }
   
   [dir="rtl"] .pr-4 {

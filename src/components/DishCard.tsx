@@ -56,10 +56,10 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
     setLongPressProgress(0)
     startTimeRef.current = Date.now()
     
-    // Animate progress over 3 seconds
+    // Animate progress over 1.5 seconds
     progressIntervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current
-      const progress = Math.min((elapsed / 3000) * 100, 100)
+      const progress = Math.min((elapsed / 1500) * 100, 100)
       setLongPressProgress(progress)
       
       if (progress >= 100) {
@@ -110,6 +110,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
 
   const handleQuickOrder = (e: React.MouseEvent) => {
     e.stopPropagation()
+    e.preventDefault()
     if (dish.available) {
       addItem(dish, 1)
     }
@@ -410,6 +411,8 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
           {dish.available ? (
             <motion.button
               onClick={handleQuickOrder}
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
               className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               data-testid="quick-order-button"
               whileHover={{ scale: 1.02 }}
@@ -448,9 +451,9 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
           )}
 
           {/* Dietary Tags with Beach Theme */}
-          {dish.dietaryTags && dish.dietaryTags.length > 0 && (
+          {dish.dietTags && dish.dietTags.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {dish.dietaryTags.map((tag) => {
+              {dish.dietTags.map((tag: string) => {
                 const IconComponent = getDietaryIcon(tag)
                 return (
                   <span

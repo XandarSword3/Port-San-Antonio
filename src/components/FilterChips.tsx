@@ -46,8 +46,8 @@ export default function FilterChips({
   const { t } = useLanguage()
   const activeFilters = filters.filter(filter => filter.active)
   
-  // If no active filters and panel is not open, don't show anything
-  if (!isOpen && (!hasActiveFilters || activeFilters.length === 0)) return null
+  // If panel is explicitly closed and no active filters, don't show anything
+  if (!isOpen && activeFilters.length === 0) return null
 
   return (
     <motion.div
@@ -60,7 +60,9 @@ export default function FilterChips({
       transition={{ duration: DURATION.fast, ease: EASING.soft }}
     >
       <div className="w-full flex justify-between items-center mb-3">
-        <span className="text-sm font-medium text-gray-700 dark:text-beach-dark-muted">{t('filters')}:</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-beach-dark-muted">
+          {t('filters')}: {activeFilters.length} active
+        </span>
         {hasActiveFilters && (
           <button 
             onClick={onClearAll}
@@ -112,15 +114,14 @@ export default function FilterChips({
             key={filter.id}
             onClick={() => onFilterToggle(filter.id)}
             className={cn(
-              "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 hover:scale-105",
+              "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 hover:scale-105 cursor-pointer",
               filter.active ? 
                 (dietTagColors[filter.id] || 'bg-gray-100 text-gray-800 border-gray-200') :
                 'bg-gray-50 text-gray-500 border-gray-200 dark:bg-beach-dark-bg dark:text-beach-dark-muted dark:border-gray-600'
             )}
-          // Remove duplicate className - hover scale is already handled in the cn() function above
-          style={{ transform: 'scale(0.95)' }}
-        aria-pressed={filter.active}
+            aria-pressed={filter.active}
             data-testid="filter-chip"
+            type="button"
           >
             {filter.label}
             <span className="ml-1 inline-flex items-center justify-center h-4 min-w-[1rem] px-1 rounded bg-black/10 text-[10px] text-gray-700 dark:bg-white/10 dark:text-beach-dark-text">

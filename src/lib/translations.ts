@@ -113,6 +113,10 @@ export type TranslationKeys =
   | 'privacy'
   | 'terms'
   | 'copyright'
+  | 'cart'
+  | 'items'
+  | 'copiedToClipboard'
+  | 'shareText'
 
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
@@ -228,6 +232,8 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
     copyright: 'All rights reserved',
+    copiedToClipboard: 'Copied to clipboard!',
+    shareText: 'Share this item',
   },
   
   ar: {
@@ -343,6 +349,8 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     privacy: 'سياسة الخصوصية',
     terms: 'شروط الخدمة',
     copyright: 'جميع الحقوق محفوظة',
+    copiedToClipboard: 'تم النسخ إلى الحافظة!',
+    shareText: 'شارك هذا العنصر',
   },
   
   fr: {
@@ -458,6 +466,8 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     privacy: 'Politique de Confidentialité',
     terms: 'Conditions de Service',
     copyright: 'Tous droits réservés',
+    copiedToClipboard: 'Copié dans le presse-papiers!',
+    shareText: 'Partager cet article',
   }
 }
 

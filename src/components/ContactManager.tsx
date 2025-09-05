@@ -114,7 +114,7 @@ export default function ContactManager() {
                 type="tel"
                 value={contactInfo.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                 placeholder="+961 1 234 567"
               />
             </div>
@@ -128,7 +128,7 @@ export default function ContactManager() {
                 type="email"
                 value={contactInfo.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                 placeholder="info@portsanantonio.com"
               />
             </div>
@@ -143,7 +143,7 @@ export default function ContactManager() {
               value={contactInfo.address}
               onChange={(e) => handleInputChange('address', e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
               placeholder="123 Mediterranean Street, Beirut, Lebanon"
             />
           </div>
@@ -157,7 +157,7 @@ export default function ContactManager() {
               type="url"
               value={contactInfo.website}
               onChange={(e) => handleInputChange('website', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
               placeholder="https://www.portsanantonio.com"
             />
           </div>
@@ -174,7 +174,7 @@ export default function ContactManager() {
                   type="url"
                   value={contactInfo.socialMedia.facebook || ''}
                   onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                   placeholder="https://facebook.com/portsanantonio"
                 />
               </div>
@@ -187,7 +187,7 @@ export default function ContactManager() {
                   type="url"
                   value={contactInfo.socialMedia.instagram || ''}
                   onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                   placeholder="https://instagram.com/portsanantonio"
                 />
               </div>
@@ -200,7 +200,7 @@ export default function ContactManager() {
                   type="url"
                   value={contactInfo.socialMedia.twitter || ''}
                   onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white bg-white dark:bg-gray-700"
                   placeholder="https://twitter.com/portsanantonio"
                 />
               </div>

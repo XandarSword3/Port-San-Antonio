@@ -108,7 +108,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                             </p>
                           )}
                           <p className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
-                            {formatPrice(item.selectedVariant?.price || item.dish.price)}
+                            {formatPrice(item.selectedVariant?.price || item.dish.price || 0)}
                           </p>
                         </div>
 

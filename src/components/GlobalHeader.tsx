@@ -29,7 +29,7 @@ export default function GlobalHeader() {
   }
 
   const toggleCurrency = () => {
-    const order: ('USD'|'LBP'|'JMD')[] = ['USD','LBP','JMD']
+    const order: ('USD'|'LBP')[] = ['USD','LBP']
     const idx = order.indexOf(currency as any)
     const next = order[(idx + 1) % order.length]
     setCurrency(next as any)
@@ -107,7 +107,7 @@ export default function GlobalHeader() {
                 {getTotalItems()}
               </span>
             )}
-          </Link>
+          </button>
 
           {/* Currency Toggle with Lebanese Button */}
           <button 

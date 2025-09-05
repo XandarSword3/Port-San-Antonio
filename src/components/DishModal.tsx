@@ -63,14 +63,31 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
         console.log('Error sharing:', error)
       }
     } else {
-      // Fallback: copy to clipboard
+      // Fallback: create a shareable text and show alert
       const text = `${dish.name} - ${dish.shortDesc}`
       try {
-        await navigator.clipboard.writeText(text)
-        // You could show a toast here
-        alert('Copied to clipboard!')
+        // Try clipboard API first
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text)
+          alert(t('copiedToClipboard') || 'Copied to clipboard!')
+        } else {
+          // Fallback for non-secure contexts
+          const textArea = document.createElement('textarea')
+          textArea.value = text
+          textArea.style.position = 'fixed'
+          textArea.style.left = '-999999px'
+          textArea.style.top = '-999999px'
+          document.body.appendChild(textArea)
+          textArea.focus()
+          textArea.select()
+          document.execCommand('copy')
+          textArea.remove()
+          alert(t('copiedToClipboard') || 'Copied to clipboard!')
+        }
       } catch (error) {
         console.log('Error copying to clipboard:', error)
+        // Final fallback - just show the text
+        alert(`${t('shareText') || 'Share this item'}: ${text}`)
       }
     }
   }

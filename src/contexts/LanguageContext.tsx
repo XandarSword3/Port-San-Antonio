@@ -19,16 +19,30 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const savedLang = localStorage.getItem('language') as Language | null
     if (savedLang && (savedLang === 'en' || savedLang === 'ar' || savedLang === 'fr')) {
       setLanguageState(savedLang)
-      document.documentElement.lang = savedLang
-      document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr'
+      updateDocumentAttributes(savedLang)
+    } else {
+      updateDocumentAttributes('en')
     }
   }, [])
+
+  const updateDocumentAttributes = (lang: Language) => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = lang
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+      
+      // Add or remove RTL class for better styling
+      if (lang === 'ar') {
+        document.body.classList.add('rtl')
+      } else {
+        document.body.classList.remove('rtl')
+      }
+    }
+  }
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
     localStorage.setItem('language', lang)
-    document.documentElement.lang = lang
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+    updateDocumentAttributes(lang)
   }
 
   // Translation function

@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" dir="ltr" className="h-full">
+    <html className="h-full">
       <body className={`${inter.className} h-full overflow-x-hidden`}>
         <ClientLayout>
           {children}
