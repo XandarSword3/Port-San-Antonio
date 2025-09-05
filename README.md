@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Port San Antonio Resort Menu
 
 A production-quality interactive resort menu prototype built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion. Features a responsive design, long-press interactions, admin panel, and live updates.
@@ -230,3 +231,6 @@ For questions or issues:
 ---
 
 **Built with ❤️ for Port San Antonio Resort**
+=======
+# Port-San-Antonio
+>>>>>>> 2529a03cdf9e4009b14feadb982fb98b050bab94
