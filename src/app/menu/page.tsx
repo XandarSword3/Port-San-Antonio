@@ -24,6 +24,7 @@ export default function MenuPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [ads, setAds] = useState<any[]>([])
   const [usingAdminData, setUsingAdminData] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     selectedCategory: null,
@@ -36,6 +37,12 @@ export default function MenuPage() {
   const [quickOrderModalOpen, setQuickOrderModalOpen] = useState(false)
   const [selectedDishForOrder, setSelectedDishForOrder] = useState<Dish | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  // Check admin status
+  useEffect(() => {
+    const adminSession = sessionStorage.getItem('adminAuthenticated')
+    setIsAdmin(adminSession === 'true')
+  }, [])
 
   // Restore filters from session storage on mount
   useEffect(() => {
@@ -198,16 +205,23 @@ export default function MenuPage() {
 
   // Handle diet filter toggle
   const toggleDietFilter = (filterId: string) => {
+    console.log('Toggling diet filter:', filterId)
     setFilters(prev => {
       const wasActive = prev.activeDietFilters.includes(filterId)
       const newActiveDietFilters = wasActive
         ? prev.activeDietFilters.filter(id => id !== filterId)
         : [...prev.activeDietFilters, filterId]
       
-      return {
+      console.log('Previous filters:', prev.activeDietFilters)
+      console.log('New filters:', newActiveDietFilters)
+      
+      const newFilters = {
         ...prev,
         activeDietFilters: newActiveDietFilters
       }
+      
+      console.log('Full new filter state:', newFilters)
+      return newFilters
     })
   }
 
@@ -326,7 +340,7 @@ export default function MenuPage() {
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 {t('menu')}
               </h1>
-              {usingAdminData && (
+              {isAdmin && usingAdminData && (
                 <div className="text-xs text-orange-600 dark:text-orange-400 mt-1 font-medium flex items-center justify-center gap-2">
                   ⚠️ Showing admin changes (localStorage)
                   <button

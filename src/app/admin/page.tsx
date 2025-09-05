@@ -22,13 +22,27 @@ export default function AdminPage() {
   const [currentView, setCurrentView] = useState<AdminView>('dashboard')
   const [data, setData] = useState<AppData>(mockData as AppData)
 
+  const handleLogin = () => {
+    setIsAuthenticated(true)
+    sessionStorage.setItem('adminAuthenticated', 'true')
+  }
+
   const handleLogout = () => {
     setIsAuthenticated(false)
     setCurrentView('dashboard')
+    sessionStorage.removeItem('adminAuthenticated')
   }
 
+  // Check for existing admin session on load
+  useEffect(() => {
+    const adminSession = sessionStorage.getItem('adminAuthenticated')
+    if (adminSession === 'true') {
+      setIsAuthenticated(true)
+    }
+  }, [])
+
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={() => setIsAuthenticated(true)} />
+    return <AdminLogin onLogin={handleLogin} />
   }
 
   return (
