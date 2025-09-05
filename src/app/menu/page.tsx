@@ -23,6 +23,7 @@ export default function MenuPage() {
   const [dishes, setDishes] = useState<Dish[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [ads, setAds] = useState<any[]>([])
+  const [usingAdminData, setUsingAdminData] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     selectedCategory: null,
@@ -55,6 +56,45 @@ export default function MenuPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        // First, check if we have admin-updated data in localStorage
+        const adminMenuData = localStorage.getItem('menuData')
+        if (adminMenuData) {
+          console.log('Loading menu data from localStorage (admin changes)')
+          setUsingAdminData(true)
+          const localDishes = JSON.parse(adminMenuData)
+          const processedDishes: Dish[] = localDishes.map((d: any) => ({
+            id: d.id,
+            categoryId: d.categoryId,
+            name: d.name,
+            shortDesc: d.shortDesc || '',
+            fullDesc: d.fullDesc || '',
+            price: d.price || 0,
+            variants: d.variants || [],
+            currency: d.currency || 'USD',
+            image: d.image || '',
+            imageVariants: d.imageVariants || {},
+            dietTags: d.dietTags || [],
+            allergens: d.allergens || [],
+            calories: d.calories || null,
+            available: d.available !== false,
+            sponsored: d.sponsored || false
+          }))
+          
+          setDishes(processedDishes)
+          
+          // Still load categories and ads from static file
+          const response = await fetch('/menu-data.json')
+          if (response.ok) {
+            const data = await response.json()
+            setCategories(data.categories || [])
+            setAds(data.ads || [])
+          }
+          return
+        }
+        
+        // Fallback: load from static file if no localStorage data
+        console.log('Loading menu data from static file')
+        setUsingAdminData(false)
         const response = await fetch('/menu-data.json')
         if (response.ok) {
           const data = await response.json()
@@ -101,6 +141,7 @@ export default function MenuPage() {
       console.log('Admin update detected, reloading menu data')
       const adminMenuData = localStorage.getItem('menuData')
       if (adminMenuData) {
+        setUsingAdminData(true)
         const data = { dishes: JSON.parse(adminMenuData), categories: [], ads: [] }
         const processedDishes: Dish[] = (data.dishes || []).map((d: any) => ({
           id: d.id,
@@ -281,9 +322,26 @@ export default function MenuPage() {
           {/* Title Row */}
           <div className="flex items-center justify-between mb-4">
             <BackButton />
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center flex-1">
-              {t('menu')}
-            </h1>
+            <div className="text-center flex-1">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {t('menu')}
+              </h1>
+              {usingAdminData && (
+                <div className="text-xs text-orange-600 dark:text-orange-400 mt-1 font-medium flex items-center justify-center gap-2">
+                  ⚠️ Showing admin changes (localStorage)
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem('menuData')
+                      window.location.reload()
+                    }}
+                    className="text-blue-600 hover:text-blue-800 underline"
+                    title="Clear admin changes and reload original data"
+                  >
+                    Reset
+                  </button>
+                </div>
+              )}
+            </div>
             <div className="w-8" /> {/* Spacer for centering */}
           </div>
 
