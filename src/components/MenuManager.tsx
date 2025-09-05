@@ -82,21 +82,54 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
       // Dispatch event to notify other components
       window.dispatchEvent(new CustomEvent('menuDataUpdated', { detail: updatedDishes }))
       
+      // Auto-commit to GitHub
+      await autoCommitToGitHub(updatedDishes)
+      
       setEditingDish(null)
       setIsAddingNew(false)
       setFormData({})
       
-      alert('Menu item saved successfully! Changes are now live on the website.')
-      
-      // Auto-generate updated menu-data.json for deployment
-      setTimeout(() => {
-        generateUpdatedMenuFile(updatedDishes)
-      }, 1000)
+      alert('Menu item saved successfully! Changes are now live and will be deployed automatically.')
     } catch (error) {
       console.error('Error saving dish:', error)
       alert('Error saving menu item. Please try again.')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const autoCommitToGitHub = async (updatedDishes: Dish[]) => {
+    try {
+      const menuData = {
+        dishes: updatedDishes,
+        categories: categories,
+        ads: [] // Include any additional data
+      }
+
+      const response = await fetch('/api/auto-commit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'admin-session': sessionStorage.getItem('adminAuthenticated') || ''
+        },
+        body: JSON.stringify({ menuData })
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log('✅ Auto-committed to GitHub:', result.message)
+        
+        // Show success notification
+        setTimeout(() => {
+          alert('🚀 Changes committed to GitHub! Netlify will rebuild automatically in 1-2 minutes.')
+        }, 1000)
+      } else {
+        const error = await response.json()
+        console.warn('⚠️ Auto-commit failed:', error.error)
+        alert('⚠️ Local changes saved but auto-commit failed. You may need to deploy manually.')
+      }
+    } catch (error) {
+      console.warn('⚠️ Auto-commit error:', error)
     }
   }
 
@@ -139,7 +172,10 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
       // Dispatch event to notify other components
       window.dispatchEvent(new CustomEvent('menuDataUpdated', { detail: updatedDishes }))
       
-      alert('Menu item deleted successfully! Changes are now live on the website.')
+      // Auto-commit to GitHub
+      await autoCommitToGitHub(updatedDishes)
+      
+      alert('Menu item deleted successfully! Changes are now live and will be deployed automatically.')
     }
   }
 
