@@ -5,6 +5,7 @@ import { X, Share2, Clock, AlertTriangle } from 'lucide-react'
 import { Dish } from '@/types'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { formatPrice } from '@/lib/utils'
+import { translateDietTag, translateAllergen } from '@/lib/dishTranslations'
 import BackButton from './BackButton'
 import { useEffect, useRef } from 'react'
 
@@ -16,7 +17,7 @@ interface DishModalProps {
 }
 
 export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const dialogRef = useRef<HTMLDivElement | null>(null)
   const previouslyFocused = useRef<HTMLElement | null>(null)
 
@@ -131,7 +132,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
-            transition={{ duration: 0.2, ease: 'ease-out' }}
+            transition={{ duration: 0.2, ease: [0.42, 0, 0.58, 1] }}
             data-testid="dish-modal"
           >
             {/* Header */}
@@ -180,20 +181,14 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                       key={tag}
                       className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
                     >
-                      {tag}
+                      {translateDietTag(tag, language)}
                     </span>
                   ))}
                 </div>
               )}
 
               {/* Popularity Badge */}
-              {dish.popularity > 80 && (
-                <div className="absolute top-4 end-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800 dark:bg-beach-dark-accent/30 dark:text-beach-dark-accent accent-element">
-                    Popular
-                  </span>
-                </div>
-              )}
+              {/* Popularity badge removed - no ordering occurs */}
             </div>
 
             {/* Content */}
@@ -231,7 +226,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                             key={allergen}
                             className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
                           >
-                            {allergen}
+                            {translateAllergen(allergen, language)}
                           </span>
                         ))}
                       </div>

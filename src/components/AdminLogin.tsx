@@ -2,118 +2,144 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Lock, Eye, EyeOff } from 'lucide-react'
+import { Lock, User, Eye, EyeOff } from 'lucide-react'
 
 interface AdminLoginProps {
   onLogin: () => void
 }
 
 export default function AdminLogin({ onLogin }: AdminLoginProps) {
-  const [password, setPassword] = useState('')
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: ''
+  })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-
-  // For prototype purposes, use a simple password
-  // In production, this should be replaced with proper authentication
-  const ADMIN_PASSWORD = 'admin123'
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     setError('')
-    setIsLoading(true)
 
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    if (password === ADMIN_PASSWORD) {
-      onLogin()
-    } else {
-      setError('Invalid password. Please try again.')
-      setPassword('')
+    try {
+      // Load auth data from public/auth.json
+      const response = await fetch('/auth.json')
+      const authData = await response.json()
+      
+      if (credentials.username === authData.admin.username && 
+          credentials.password === authData.admin.password) {
+        onLogin()
+      } else {
+        setError('Invalid username or password')
+      }
+    } catch (err) {
+      setError('Authentication failed. Please try again.')
+    } finally {
+      setLoading(false)
     }
-    
-    setIsLoading(false)
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4">
       <motion.div
-        className="w-full max-w-md"
+        className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Logo/Header */}
+        {/* Header */}
         <div className="text-center mb-8">
-          <div className="mx-auto h-16 w-16 rounded-full bg-blue-600 flex items-center justify-center mb-4">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-full flex items-center justify-center mb-4">
             <Lock className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Admin Access</h1>
-          <p className="text-gray-600 mt-2">Port San Antonio Resort</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Admin Login
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Port San Antonio Resort
+          </p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => {
-                    console.log('admin: password change', e.target.value.length)
-                    setPassword(e.target.value)
-                  }}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  placeholder="Enter admin password"
-                  required
-                  data-testid="admin-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Username */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Username
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                value={credentials.username}
+                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                placeholder="Enter username"
+                required
+              />
             </div>
-
-            {error && (
-              <motion.div
-                className="text-red-600 text-sm text-center p-3 bg-red-50 rounded-lg border border-red-200"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-              >
-                {error}
-              </motion.div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isLoading || !password}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-colors hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
-              data-testid="admin-submit"
-            >
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </button>
-          </form>
-
-          {/* Demo Info */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="text-sm font-medium text-blue-900 mb-2">Demo Credentials</h3>
-            <p className="text-xs text-blue-700">
-              Password: <code className="bg-blue-100 px-1 rounded">admin123</code>
-            </p>
-            <p className="text-xs text-blue-600 mt-1">
-              This is a prototype. In production, implement proper authentication.
-            </p>
           </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={credentials.password}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
+                placeholder="Enter password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <motion.div
+              className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+            </motion.div>
+          )}
+
+          {/* Submit Button */}
+          <motion.button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </motion.button>
+        </form>
+
+        {/* Demo Credentials */}
+        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+            <strong>Demo Credentials:</strong>
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Username: <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">admin</code>
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Password: <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">password123</code>
+          </p>
         </div>
       </motion.div>
     </div>

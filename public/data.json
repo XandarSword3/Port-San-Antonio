@@ -1,0 +1,43 @@
+{
+  "menu": {
+    "dishes": [],
+    "categories": [
+      {
+        "id": "starters",
+        "name": "Starters",
+        "description": "Appetizers and small plates"
+      },
+      {
+        "id": "mains",
+        "name": "Main Courses",
+        "description": "Hearty main dishes"
+      },
+      {
+        "id": "desserts",
+        "name": "Desserts",
+        "description": "Sweet endings"
+      },
+      {
+        "id": "beverages",
+        "name": "Beverages",
+        "description": "Drinks and refreshments"
+      },
+      {
+        "id": "spa",
+        "name": "Mediterranean Relaxation",
+        "description": "Spa and wellness services"
+      }
+    ]
+  },
+  "contact": {
+    "phone": "+961 1 234 567",
+    "email": "info@portsanantonio.com",
+    "address": "123 Mediterranean Street, Beirut, Lebanon",
+    "website": "https://www.portsanantonio.com",
+    "socialMedia": {
+      "facebook": "https://facebook.com/portsanantonio",
+      "instagram": "https://instagram.com/portsanantonio",
+      "twitter": "https://twitter.com/portsanantonio"
+    }
+  }
+}

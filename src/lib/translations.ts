@@ -1,316 +1,470 @@
-// Translation strings for the application
+export type Language = 'en' | 'ar' | 'fr'
 
-export type SupportedLanguage = 'en' | 'ar' | 'fr';
-
-export type TranslationKeys = {
-  // Header and navigation
-  siteTitle: string;
-  menu: string;
-  admin: string;
-  home: string;
-  contact: string;
+export type TranslationKeys = 
+  // Navigation & Common
+  | 'siteTitle'
+  | 'welcomeTo'
+  | 'experienceLuxury'
+  | 'exploreMenu'
+  | 'menu'
+  | 'admin'
+  | 'debug'
+  | 'home'
+  | 'back'
+  | 'close'
+  | 'share'
+  | 'noResults'
+  | 'contactUs'
+  | 'followUs'
+  | 'search'
+  | 'goBack'
+  | 'itemAdded'
+  | 'orderNow'
+  | 'quantity'
+  | 'specialInstructions'
+  | 'orderSuccess'
+  | 'orderError'
+  | 'tryAgain'
+  | 'variants'
+  | 'price'
+  | 'selectOption'
+  | 'popular'
+  | 'total'
   
-  // Homepage
-  welcomeTo: string;
-  experienceLuxury: string;
+  // Menu Related
+  | 'menuTitle'
+  | 'searchPlaceholder'
+  | 'filters'
+  | 'clearAll'
+  | 'available'
+  | 'unavailable'
+  | 'details'
+  | 'viewDetails'
+  | 'longPressHint'
+  | 'allDishes'
   
-  // Sidebar
-  followUs: string;
-  siteBy: string;
-  
-  // Menu page
-  menuTitle: string;
-  searchPlaceholder: string;
-  backToHome: string;
-  backToMenu: string;
-  
-  // Filters
-  filters: string;
-  clearAll: string;
-  available: string;
-  unavailable: string;
-  priceRange: string;
+  // Categories
+  | 'starters'
+  | 'salads'
+  | 'pizza'
+  | 'pasta'
+  | 'mains'
+  | 'desserts'
+  | 'beverages'
+  | 'burgers'
+  | 'sandwiches'
+  | 'platters'
+  | 'drinks'
+  | 'beers'
+  | 'arak'
+  | 'prosecco'
+  | 'wine'
+  | 'signatureCocktails'
   
   // Dietary tags
-  vegetarian: string;
-  vegan: string;
-  glutenFree: string;
-  containsNuts: string;
-  sugarFree: string;
+  | 'vegetarian'
+  | 'vegan'
+  | 'glutenFree'
+  | 'nutsFree'
+  | 'sugarFree'
+  | 'dairyFree'
+  | 'keto'
+  | 'paleo'
   
-  // Dish modal
-  details: string;
-  ingredients: string;
-  allergens: string;
-  calories: string;
-  pairings: string;
-  noDetailsAvailable: string;
+  // Price ranges
+  | 'priceUnder10'
+  | 'price11to20'
+  | 'priceOver20'
   
-  // CTA
-  exploreMenu: string;
-  share: string;
-  close: string;
+  // Modal content
+  | 'calories'
+  | 'allergens'
+  | 'ingredients'
+  | 'description'
+  | 'editItem'
   
-  // Debug
-  debugTitle: string;
-  debugOverlay: string;
-  loadingDebugInfo: string;
-  systemInformation: string;
-  serverStatus: string;
-  dataStatus: string;
-  activeFilters: string;
-  recentLogs: string;
-  quickActions: string;
-  theme: string;
-  language: string;
-  browser: string;
-  screenSize: string;
-  goToHomePage: string;
-  goToMenuPage: string;
-  goToAdminPanel: string;
-  
-  // Navigation
-  back: string;
-  goBack: string;
-};
+  // Common actions
+  | 'loading'
+  | 'error'
+  | 'retry'
+  | 'cancel'
+  | 'confirm'
+  | 'save'
+  | 'delete'
+  | 'edit'
+  | 'viewMenu'
+  | 'toMenu'
+  | 'cart'
+  | 'items'
+  | 'cartEmpty'
+  | 'addToCart'
+  | 'removeFromCart'
+  | 'checkout'
+  | 'backToTop'
+  | 'mobileMenu'
+  | 'closeMenu'
+  | 'spa'
+  | 'spaPackages'
+  | 'wellness'
+  | 'relaxation'
+  | 'footer'
+  | 'contact'
+  | 'legal'
+  | 'privacy'
+  | 'terms'
+  | 'copyright'
 
-type Translations = {
-  [key in SupportedLanguage]: TranslationKeys;
-};
-
-export const translations: Translations = {
+export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
-    // Header and navigation
-    siteTitle: 'Port San Antonio',
+    // Navigation & Common
+    siteTitle: 'Port San Antonio Resort',
+    welcomeTo: 'Welcome to',
+    experienceLuxury: 'Experience luxury like never before at our beachside paradise',
+    exploreMenu: 'Explore Our Menu',
     menu: 'Menu',
     admin: 'Admin',
+    debug: 'Debug',
     home: 'Home',
-    contact: 'Contact',
-    
-    // Homepage
-    welcomeTo: 'Welcome to',
-    experienceLuxury: 'Experience luxury dining at its finest',
-    
-    // Sidebar
+    back: 'Back',
+    close: 'Close',
+    share: 'Share',
+    noResults: 'No results match your filters',
+    contactUs: 'Contact Us',
     followUs: 'Follow Us',
-    siteBy: 'Site made by',
+    search: 'Search',
+    goBack: 'Go Back',
+    itemAdded: 'Item added to cart',
+    orderNow: 'Order Now',
+    quantity: 'Quantity',
+    specialInstructions: 'Special Instructions',
+    orderSuccess: 'Order placed successfully',
+    orderError: 'Error placing order',
+    tryAgain: 'Please try again',
+    variants: 'Variants',
+    selectOption: 'Select Option',
+    price: 'Price',
+    popular: 'Popular',
+    total: 'Total',
     
-    // Menu page
+    // Menu Related
     menuTitle: 'Our Menu',
-    searchPlaceholder: 'Search dishes...',
-    backToHome: 'Back to Home',
-    backToMenu: 'Back to Menu',
-    
-    // Filters
+    searchPlaceholder: 'Search menu items, ingredients...',
     filters: 'Filters',
-    clearAll: 'Clear all',
+    clearAll: 'Clear All',
     available: 'Available',
-    unavailable: 'Unavailable',
-    priceRange: 'Price Range',
+    unavailable: 'Currently unavailable',
+    details: 'Details',
+    viewDetails: 'View Details',
+    longPressHint: 'Hold for details',
+    allDishes: 'All Dishes',
+    
+    // Categories
+    starters: 'Starters',
+    salads: 'Salads',
+    pizza: 'Pizza',
+    pasta: 'Pasta',
+    mains: 'Main Courses',
+    desserts: 'Desserts',
+    beverages: 'Beverages',
+    burgers: 'Burgers',
+    sandwiches: 'Sandwiches',
+    platters: 'Platters',
+    drinks: 'Drinks',
+    beers: 'Beers',
+    arak: 'Arak',
+    prosecco: 'Prosecco & Couvent',
+    wine: 'Wine',
+    signatureCocktails: 'Signature Cocktails',
     
     // Dietary tags
     vegetarian: 'Vegetarian',
     vegan: 'Vegan',
-    glutenFree: 'Gluten-Free',
-    containsNuts: 'Contains Nuts',
-    sugarFree: 'Sugar-Free',
+    glutenFree: 'Gluten Free',
+    nutsFree: 'Nuts Free',
+    sugarFree: 'Sugar Free',
+    dairyFree: 'Dairy Free',
+    keto: 'Keto',
+    paleo: 'Paleo',
     
-    // Dish modal
-    details: 'Details',
-    ingredients: 'Ingredients',
-    allergens: 'Allergens',
+    // Price ranges
+    priceUnder10: 'Under $10',
+    price11to20: '$11 - $20',
+    priceOver20: 'Over $20',
+    
+    // Modal content
     calories: 'Calories',
-    pairings: 'Recommended Pairings',
-    noDetailsAvailable: 'No details available',
+    allergens: 'Allergens',
+    ingredients: 'Ingredients',
+    description: 'Description',
+    editItem: 'Edit Item',
     
-    // CTA
-    exploreMenu: 'Explore our menu',
-    share: 'Share',
-    close: 'Close',
-    
-    // Debug
-    debugTitle: 'Debug Information',
-    debugOverlay: 'Debug Overlay',
-    loadingDebugInfo: 'Loading debug information...',
-    systemInformation: 'System Information',
-    serverStatus: 'Server Status',
-    dataStatus: 'Data Status',
-    activeFilters: 'Active Filters',
-    recentLogs: 'Recent Logs',
-    quickActions: 'Quick Actions',
-    theme: 'Theme',
-    language: 'Language',
-    browser: 'Browser',
-    screenSize: 'Screen Size',
-    goToHomePage: 'Go to Home Page',
-    goToMenuPage: 'Go to Menu Page',
-    goToAdminPanel: 'Go to Admin Panel',
-    
-    // Navigation
-    back: 'Back',
-    goBack: 'Go back',
+    // Common
+    loading: 'Loading...',
+    error: 'Error',
+    retry: 'Retry',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    save: 'Save',
+    delete: 'Delete',
+    edit: 'Edit',
+    viewMenu: 'View Menu',
+    toMenu: 'To Menu',
+    cart: 'Cart',
+    items: 'items',
+    cartEmpty: 'Your cart is empty',
+    addToCart: 'Add to Cart',
+    removeFromCart: 'Remove from Cart',
+    checkout: 'Checkout',
+    backToTop: 'Back to Top',
+    mobileMenu: 'Mobile Menu',
+    closeMenu: 'Close Menu',
+    spa: 'Spa',
+    spaPackages: 'Spa Packages',
+    wellness: 'Wellness',
+    relaxation: 'Relaxation',
+    footer: 'Footer',
+    contact: 'Contact',
+    legal: 'Legal',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Service',
+    copyright: 'All rights reserved',
   },
+  
   ar: {
-    // Header and navigation
-    siteTitle: 'سان أنطونيو',
+    // Navigation & Common
+    siteTitle: 'منتجع بورت سان أنطونيو',
+    welcomeTo: 'مرحباً بكم في',
+    experienceLuxury: 'اختبر الفخامة كما لم تختبرها من قبل في جنتنا على الشاطئ',
+    exploreMenu: 'استكشف قائمتنا',
     menu: 'القائمة',
-    admin: 'المسؤول',
+    admin: 'الإدارة',
+    debug: 'التصحيح',
     home: 'الرئيسية',
-    contact: 'اتصل بنا',
-    
-    // Homepage
-    welcomeTo: 'مرحبا بكم في',
-    experienceLuxury: 'استمتع بتجربة تناول الطعام الفاخرة',
-    
-    // Sidebar
+    back: 'رجوع',
+    close: 'إغلاق',
+    share: 'مشاركة',
+    noResults: 'لا توجد نتائج تطابق تصفيتك',
+    contactUs: 'تواصل معنا',
     followUs: 'تابعنا',
-    siteBy: 'الموقع من تصميم',
+    search: 'بحث',
+    goBack: 'رجوع',
+    itemAdded: 'تمت إضافة العنصر إلى السلة',
+    orderNow: 'اطلب الآن',
+    addToCart: 'أضف إلى السلة',
+    quantity: 'الكمية',
+    specialInstructions: 'تعليمات خاصة',
+    orderSuccess: 'تم تقديم الطلب بنجاح',
+    orderError: 'خطأ في تقديم الطلب',
+    tryAgain: 'الرجاء المحاولة مرة أخرى',
+    variants: 'المتغيرات',
+    price: 'السعر',
+    selectOption: 'اختر خياراً',
+    popular: 'مشهور',
+    total: 'المجموع',
     
-    // Menu page
+    // Menu Related
     menuTitle: 'قائمتنا',
-    searchPlaceholder: 'البحث عن الأطباق...',
-    backToHome: 'العودة إلى الرئيسية',
-    backToMenu: 'العودة إلى القائمة',
-    
-    // Filters
-    filters: 'التصفية',
+    searchPlaceholder: 'البحث في الأطباق والمكونات...',
+    filters: 'المرشحات',
     clearAll: 'مسح الكل',
     available: 'متوفر',
-    unavailable: 'غير متوفر',
-    priceRange: 'نطاق السعر',
+    unavailable: 'غير متوفر حالياً',
+    details: 'التفاصيل',
+    viewDetails: 'عرض التفاصيل',
+    longPressHint: 'اضغط مطولاً للتفاصيل',
+    allDishes: 'جميع الأطباق',
+    
+    // Categories
+    starters: 'المقبلات',
+    salads: 'السلطات',
+    pizza: 'البيتزا',
+    pasta: 'المعكرونة',
+    mains: 'الأطباق الرئيسية',
+    desserts: 'الحلويات',
+    beverages: 'المشروبات',
+    burgers: 'البرجر',
+    sandwiches: 'الساندويتشات',
+    platters: 'الصواني',
+    drinks: 'المشروبات',
+    beers: 'البيرة',
+    arak: 'العرق',
+    prosecco: 'البروسيكو والكوفنت',
+    wine: 'النبيذ',
+    signatureCocktails: 'الكوكتيلات المميزة',
     
     // Dietary tags
     vegetarian: 'نباتي',
     vegan: 'نباتي صرف',
     glutenFree: 'خالي من الغلوتين',
-    containsNuts: 'يحتوي على مكسرات',
+    nutsFree: 'خالي من المكسرات',
     sugarFree: 'خالي من السكر',
+    dairyFree: 'خالي من الألبان',
+    keto: 'كيتو',
+    paleo: 'باليو',
     
-    // Dish modal
-    details: 'التفاصيل',
-    ingredients: 'المكونات',
-    allergens: 'مسببات الحساسية',
+    // Price ranges
+    priceUnder10: 'أقل من 10$',
+    price11to20: '11$ - 20$',
+    priceOver20: 'أكثر من 20$',
+    
+    // Modal content
     calories: 'السعرات الحرارية',
-    pairings: 'الاقتراحات المصاحبة',
-    noDetailsAvailable: 'لا تتوفر تفاصيل',
+    allergens: 'مسببات الحساسية',
+    ingredients: 'المكونات',
+    description: 'الوصف',
+    editItem: 'تعديل العنصر',
     
-    // CTA
-    exploreMenu: 'استكشف قائمتنا',
-    share: 'مشاركة',
-    close: 'إغلاق',
-    
-    // Debug
-    debugTitle: 'معلومات التصحيح',
-    debugOverlay: 'واجهة التصحيح',
-    loadingDebugInfo: 'جاري تحميل معلومات التصحيح...',
-    systemInformation: 'معلومات النظام',
-    serverStatus: 'حالة الخادم',
-    dataStatus: 'حالة البيانات',
-    activeFilters: 'عوامل التصفية النشطة',
-    recentLogs: 'السجلات الأخيرة',
-    quickActions: 'إجراءات سريعة',
-    theme: 'السمة',
-    language: 'اللغة',
-    browser: 'المتصفح',
-    screenSize: 'حجم الشاشة',
-    goToHomePage: 'الذهاب إلى الصفحة الرئيسية',
-    goToMenuPage: 'الذهاب إلى صفحة القائمة',
-    goToAdminPanel: 'الذهاب إلى لوحة المسؤول',
-    
-    // Navigation
-    back: 'رجوع',
-    goBack: 'العودة',
+    // Common
+    loading: 'جاري التحميل...',
+    error: 'خطأ',
+    retry: 'إعادة المحاولة',
+    cancel: 'إلغاء',
+    confirm: 'تأكيد',
+    save: 'حفظ',
+    delete: 'حذف',
+    edit: 'تعديل',
+    viewMenu: 'عرض القائمة',
+    toMenu: 'إلى القائمة',
+    cart: 'السلة',
+    items: 'عناصر',
+    cartEmpty: 'سلتك فارغة',
+    removeFromCart: 'إزالة من السلة',
+    checkout: 'الدفع',
+    backToTop: 'العودة للأعلى',
+    mobileMenu: 'قائمة الهاتف',
+    closeMenu: 'إغلاق القائمة',
+    spa: 'السبا',
+    spaPackages: 'باقات السبا',
+    wellness: 'العافية',
+    relaxation: 'الاسترخاء',
+    footer: 'التذييل',
+    contact: 'التواصل',
+    legal: 'قانوني',
+    privacy: 'سياسة الخصوصية',
+    terms: 'شروط الخدمة',
+    copyright: 'جميع الحقوق محفوظة',
   },
+  
   fr: {
-    // Header and navigation
-    siteTitle: 'San Antonio',
+    // Navigation & Common
+    siteTitle: 'Port San Antonio Resort',
+    welcomeTo: 'Bienvenue à',
+    experienceLuxury: 'Découvrez le luxe comme jamais auparavant dans notre paradis en bord de mer',
+    exploreMenu: 'Découvrir Notre Menu',
     menu: 'Menu',
     admin: 'Admin',
+    debug: 'Debug',
     home: 'Accueil',
-    contact: 'Contact',
-
-    // Homepage
-    welcomeTo: 'Bienvenue à',
-    experienceLuxury: 'Découvrez une expérience gastronomique d’exception',
-
-    // Sidebar
+    back: 'Retour',
+    close: 'Fermer',
+    share: 'Partager',
+    noResults: 'Aucun résultat ne correspond à vos filtres',
+    contactUs: 'Contactez-nous',
     followUs: 'Suivez-nous',
-    siteBy: 'Site réalisé par',
-
-    // Menu page
-    menuTitle: 'Notre Carte',
-    searchPlaceholder: 'Rechercher des plats…',
-    backToHome: 'Retour à l’accueil',
-    backToMenu: 'Retour au menu',
-
-    // Filters
+    search: 'Rechercher',
+    goBack: 'Retour',
+    itemAdded: 'Article ajouté au panier',
+    orderNow: 'Commander',
+    addToCart: 'Ajouter au Panier',
+    quantity: 'Quantité',
+    specialInstructions: 'Instructions spéciales',
+    orderSuccess: 'Commande passée avec succès',
+    orderError: 'Erreur lors de la commande',
+    tryAgain: 'Veuillez réessayer',
+    variants: 'Variantes',
+    price: 'Prix',
+    selectOption: 'Sélectionnez une option',
+    popular: 'Populaire',
+    total: 'Total',
+    
+    // Menu Related
+    menuTitle: 'Notre Menu',
+    searchPlaceholder: 'Rechercher des plats, ingrédients...',
     filters: 'Filtres',
-    clearAll: 'Tout effacer',
+    clearAll: 'Tout Effacer',
     available: 'Disponible',
-    unavailable: 'Indisponible',
-    priceRange: 'Fourchette de prix',
-
+    unavailable: 'Actuellement indisponible',
+    details: 'Détails',
+    viewDetails: 'Voir Détails',
+    longPressHint: 'Maintenir pour détails',
+    allDishes: 'Tous les Plats',
+    
+    // Categories
+    starters: 'Entrées',
+    salads: 'Salades',
+    pizza: 'Pizza',
+    pasta: 'Pâtes',
+    mains: 'Plats Principaux',
+    desserts: 'Desserts',
+    beverages: 'Boissons',
+    burgers: 'Burgers',
+    sandwiches: 'Sandwiches',
+    platters: 'Plateaux',
+    drinks: 'Boissons',
+    beers: 'Bières',
+    arak: 'Arak',
+    prosecco: 'Prosecco & Couvent',
+    wine: 'Vin',
+    signatureCocktails: 'Cocktails Signature',
+    
     // Dietary tags
     vegetarian: 'Végétarien',
-    vegan: 'Vegan',
-    glutenFree: 'Sans gluten',
-    containsNuts: 'Contient des noix',
-    sugarFree: 'Sans sucre',
-
-    // Dish modal
-    details: 'Détails',
-    ingredients: 'Ingrédients',
+    vegan: 'Végan',
+    glutenFree: 'Sans Gluten',
+    nutsFree: 'Sans Noix',
+    sugarFree: 'Sans Sucre',
+    dairyFree: 'Sans Lait',
+    keto: 'Keto',
+    paleo: 'Paleo',
+    
+    // Price ranges
+    priceUnder10: 'Moins de 10$',
+    price11to20: '11$ - 20$',
+    priceOver20: 'Plus de 20$',
+    
+    // Modal content
+    calories: 'Calories',
     allergens: 'Allergènes',
-    calories: 'calories',
-    pairings: 'Accords recommandés',
-    noDetailsAvailable: 'Aucun détail disponible',
-
-    // CTA
-    exploreMenu: 'Découvrir notre carte',
-    share: 'Partager',
-    close: 'Fermer',
-
-    // Debug
-    debugTitle: 'Informations de débogage',
-    debugOverlay: 'Overlay de débogage',
-    loadingDebugInfo: 'Chargement des informations…',
-    systemInformation: 'Informations système',
-    serverStatus: 'État du serveur',
-    dataStatus: 'État des données',
-    activeFilters: 'Filtres actifs',
-    recentLogs: 'Journaux récents',
-    quickActions: 'Actions rapides',
-    theme: 'Thème',
-    language: 'Langue',
-    browser: 'Navigateur',
-    screenSize: 'Taille de l’écran',
-    goToHomePage: 'Aller à la page d’accueil',
-    goToMenuPage: 'Aller au menu',
-    goToAdminPanel: 'Aller à l’admin',
-
-    // Navigation
-    back: 'Retour',
-    goBack: 'Revenir',
-  },
-};
-
-// Helper function to get translation
-export function getTranslation(lang: SupportedLanguage, key: keyof TranslationKeys): string {
-  // For UI elements only - translate based on language
-  if (!translations[lang] || !translations[lang][key]) {
-    // Fallback to English if translation is missing
-    if (translations.en && translations.en[key]) {
-      return translations.en[key];
-    }
-    // Return the key itself as last resort
-    return key;
+    ingredients: 'Ingrédients',
+    description: 'Description',
+    editItem: 'Modifier l\'Article',
+    
+    // Common
+    loading: 'Chargement...',
+    error: 'Erreur',
+    retry: 'Réessayer',
+    cancel: 'Annuler',
+    confirm: 'Confirmer',
+    save: 'Sauvegarder',
+    delete: 'Supprimer',
+    edit: 'Modifier',
+    viewMenu: 'Voir le Menu',
+    toMenu: 'Au Menu',
+    cart: 'Panier',
+    items: 'articles',
+    cartEmpty: 'Votre panier est vide',
+    removeFromCart: 'Retirer du Panier',
+    checkout: 'Commander',
+    backToTop: 'Retour en Haut',
+    mobileMenu: 'Menu Mobile',
+    closeMenu: 'Fermer le Menu',
+    spa: 'Spa',
+    spaPackages: 'Forfaits Spa',
+    wellness: 'Bien-être',
+    relaxation: 'Relaxation',
+    footer: 'Pied de Page',
+    contact: 'Contact',
+    legal: 'Légal',
+    privacy: 'Politique de Confidentialité',
+    terms: 'Conditions de Service',
+    copyright: 'Tous droits réservés',
   }
-  return translations[lang][key];
 }
 
-// Helper function to determine if a string should be translated
-// This prevents dish names, descriptions, and other content data from being translated
-export function shouldTranslate(key: string): boolean {
-  // Only translate UI elements defined in our TranslationKeys type
-  return Object.keys(translations.en).includes(key as keyof TranslationKeys);
+export function getTranslation(language: Language, key: TranslationKeys): string {
+  return translations[language]?.[key] || translations.en[key] || key
+}
+
+export function shouldTranslate(language: Language): boolean {
+  return language !== 'en'
 }

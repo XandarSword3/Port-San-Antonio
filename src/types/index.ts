@@ -2,6 +2,7 @@ export interface Category {
   id: string
   name: string
   order: number
+  description?: string
 }
 
 export interface PriceVariant {
@@ -13,7 +14,7 @@ export interface Dish {
   id: string
   categoryId: string
   name: string
-  shortDesc: string
+  shortDesc?: string
   fullDesc?: string
   price?: number
   variants?: PriceVariant[]
@@ -26,12 +27,15 @@ export interface Dish {
     thumb?: string
     blurDataURL?: string
   }
-  dietTags: string[]
-  allergens: string[]
+  dietTags?: string[]
+  allergens?: string[]
+  ingredients?: string[]
   calories?: number | null
-  popularity: number
+  // popularity: number // Removed - no ordering occurs
   available: boolean
   sponsored: boolean
+  rating?: number
+  reviewCount?: number
 }
 
 export interface Ad {

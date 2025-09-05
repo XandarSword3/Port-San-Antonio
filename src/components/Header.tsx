@@ -9,15 +9,27 @@ import { useTheme } from '@/contexts/ThemeContext'
 export default function Header() {
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const toggleLanguage = () => {
-    const newLang = language === 'en' ? 'ar' : 'en'
+    const newLang = language === 'en' ? 'ar' : language === 'ar' ? 'fr' : 'en'
     setLanguage(newLang)
-    console.log('Language toggled:', newLang)
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full flex items-center justify-between px-6 py-3 bg-black/20 backdrop-blur-md z-50">
+    <header
+      className={`fixed top-0 left-0 right-0 w-full flex items-center justify-between px-8 py-6 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-black/80 backdrop-blur-md' : 'bg-transparent'
+      }`}
+    >
       <div className="flex items-center gap-4">
         <Link href="/" className="text-lg font-bold text-white hover:text-resort-300 transition-colors">
           {t('siteTitle')}

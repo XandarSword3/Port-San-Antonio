@@ -1,5 +1,5 @@
 // Test setup file for Vitest
-import { beforeAll, afterAll } from 'vitest'
+import { beforeAll, afterAll, vi } from 'vitest'
 
 // Mock localStorage for tests
 const localStorageMock = {
@@ -7,8 +7,10 @@ const localStorageMock = {
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
 }
-global.localStorage = localStorageMock
+global.localStorage = localStorageMock as any
 
 // Mock sessionStorage for tests
 const sessionStorageMock = {
@@ -16,8 +18,10 @@ const sessionStorageMock = {
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
 }
-global.sessionStorage = sessionStorageMock
+global.sessionStorage = sessionStorageMock as any
 
 // Mock window.matchMedia for tests
 Object.defineProperty(window, 'matchMedia', {

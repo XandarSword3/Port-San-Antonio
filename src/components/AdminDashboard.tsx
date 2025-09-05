@@ -14,12 +14,12 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
     totalCategories: (data.categories || []).length,
     totalAds: (data.ads || []).length,
     availableDishes: (data.dishes || []).filter(d => d.available).length,
-    popularDishes: (data.dishes || []).filter(d => d.popularity > 80).length,
+    popularDishes: 0, // Popularity removed - no ordering occurs
     averagePrice: (data.dishes && data.dishes.length > 0) ? (data.dishes.reduce((sum, d) => sum + (d.price || 0), 0) / data.dishes.length) : 0
   }
 
   const recentDishes = (data.dishes || [])
-    .sort((a, b) => b.popularity - a.popularity)
+    .sort((a, b) => a.name.localeCompare(b.name)) // Sort by name instead of popularity
     .slice(0, 5)
 
   return (
@@ -161,7 +161,7 @@ export default function AdminDashboard({ data }: AdminDashboardProps) {
                 </div>
                 <div className="text-right">
                   <p className="font-medium text-gray-900">${dish.price}</p>
-                  <p className="text-sm text-gray-600">{dish.popularity}% popularity</p>
+                  <p className="text-sm text-gray-600">Menu item</p>
                 </div>
               </div>
             ))}

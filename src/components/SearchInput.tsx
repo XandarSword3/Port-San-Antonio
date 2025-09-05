@@ -1,60 +1,98 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { Search, X } from 'lucide-react'
+import { Search, X, ChevronDown } from 'lucide-react'
 
 interface SearchInputProps {
-  onSearch: (query: string) => void
+  value?: string
+  onChange: (query: string) => void
   placeholder?: string
   className?: string
+  suggestions?: string[]
 }
 
-export default function SearchInput({ onSearch, placeholder = "Search dishes, ingredients...", className = "" }: SearchInputProps) {
+export default function SearchInput({ value = '', onChange, placeholder = "Search dishes, ingredients...", className = "", suggestions = [] }: SearchInputProps) {
   const { t } = useLanguage()
-  const [value, setValue] = useState('')
-  const [debouncedValue, setDebouncedValue] = useState('')
-
-  // Debounce the search input
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  
+  // Memoize filtered suggestions
+  const filteredSuggestions = useMemo(() => {
+    if (!value || !suggestions.length) return []
+    return suggestions
+      .filter(suggestion => suggestion.toLowerCase().includes(value.toLowerCase()))
+      .slice(0, 5)
+  }, [value, suggestions])
+  
+  // Debounce the onChange callback
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedValue(value)
+      onChange(value)
     }, 300)
-
     return () => clearTimeout(timer)
-  }, [value])
+  }, [value, onChange])
 
-  // Trigger search when debounced value changes
+  // Update visibility of suggestions dropdown
   useEffect(() => {
-    onSearch(debouncedValue)
-  }, [debouncedValue])
+    const shouldShow = value !== '' && filteredSuggestions.length > 0
+    if (showSuggestions !== shouldShow) {
+      setShowSuggestions(shouldShow)
+    }
+  }, [value, filteredSuggestions.length, showSuggestions])
 
   const handleClear = () => {
-    setValue('')
-    setDebouncedValue('')
-    onSearch('')
+    onChange('')
+    setShowSuggestions(false)
+  }
+
+  const handleSuggestionClick = (suggestion: string) => {
+    onChange(suggestion)
+    setShowSuggestions(false)
+    inputRef.current?.focus()
   }
 
   return (
     <div className={`relative ${className}`}>
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
       <input
+        ref={inputRef}
         type="text"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder={placeholder || t('searchPlaceholder')}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => value && setShowSuggestions(true)}
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+        placeholder={placeholder || t('searchPlaceholder') || "Search menu items, ingredients..."}
         aria-label="Search dishes"
-        className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-resort-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+        className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-resort-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm hover:shadow-md transition-all duration-200"
       />
       {value && (
         <button
           onClick={handleClear}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
           aria-label="Clear search"
         >
-          <X className="w-4 h-4" />
-        </button>
-      )}
-    </div>
-  )
+                  <X className="w-4 h-4" />
+      </button>
+    )}
+
+    {/* Autocomplete Suggestions */}
+    {showSuggestions && filteredSuggestions.length > 0 && (
+      <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+        {filteredSuggestions.map((suggestion: string, index: number) => (
+          <button
+            key={index}
+            onClick={() => handleSuggestionClick(suggestion)}
+            className="w-full px-4 py-3 text-left text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
+          >
+            <div className="flex items-center gap-2">
+              <Search className="w-4 h-4 text-gray-400" />
+              <span>{suggestion}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+)
 }

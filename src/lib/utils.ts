@@ -6,10 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(price: number, currency: string = 'USD'): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-  }).format(price)
+  // This is a fallback function - the main formatting should use CurrencyContext
+  if (currency === 'USD') {
+    return `$${price.toFixed(2)} USD`
+  }
+  return `${price.toLocaleString()} ${currency}`
 }
 
 export function debounce<T extends (...args: any[]) => any>(

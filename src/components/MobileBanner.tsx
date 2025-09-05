@@ -36,7 +36,7 @@ export default function MobileBanner({ ads }: MobileBannerProps) {
           initial={{ y: 100 }}
           animate={{ y: 0 }}
           exit={{ y: 100 }}
-          transition={{ duration: 0.3, ease: 'ease-out' }}
+          transition={{ duration: 0.3, ease: [0.42, 0, 0.58, 1] }}
         >
           {/* Banner */}
           <div className="relative mx-4 mb-4 overflow-hidden rounded-xl bg-white shadow-2xl">

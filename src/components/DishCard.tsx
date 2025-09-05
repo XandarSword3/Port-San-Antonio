@@ -2,26 +2,51 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Info, Clock } from 'lucide-react'
+import { Info, Clock, AlertCircle, Star, ShoppingCart, Users, Leaf, Heart, Wheat, Fish as FishIcon, TreePine } from 'lucide-react'
 import { Dish } from '@/types'
 import { formatPrice } from '@/lib/utils'
+import { getFoodImage, generateImageSrcSet, getImageDimensions } from '@/lib/imageUtils'
+import { translateDish, translateDietTag, translateAllergen } from '@/lib/dishTranslations'
 import DishModal from './DishModal'
 import { EASING, DURATION } from '@/lib/animation'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useCurrency } from '@/contexts/CurrencyContext'
+import { useCart } from '@/contexts/CartContext'
 
 interface DishCardProps {
   dish: Dish
   onLongPress?: (dish: Dish) => void
+  onQuickOrder?: (dish: Dish) => void
 }
 
-export default function DishCard({ dish, onLongPress }: DishCardProps) {
+export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardProps) {
   const { t, language } = useLanguage()
+  const { formatPrice: formatCurrencyPrice } = useCurrency()
+  const { addItem } = useCart()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [longPressProgress, setLongPressProgress] = useState(0)
   const [isLongPressing, setIsLongPressing] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const longPressTimerRef = useRef<NodeJS.Timeout | null>(null)
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+
+  // Translate the dish data
+  const translatedDish = translateDish(dish, language)
+
+  // Get dietary tag icon
+  const getDietaryIcon = (tag: string) => {
+    const iconMap: { [key: string]: React.ComponentType<any> } = {
+      'vegetarian': Leaf,
+      'vegan': Heart,
+      'gluten-free': Wheat,
+      'seafood': FishIcon,
+      'dairy-free': AlertCircle,
+      'halal': TreePine
+    }
+    return iconMap[tag.toLowerCase()] || Leaf
+  }
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault()
@@ -83,10 +108,79 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
     setIsModalOpen(false)
   }
 
+  const handleQuickOrder = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (dish.available) {
+      addItem(dish, 1)
+    }
+    onQuickOrder?.(dish)
+  }
+
   // Generate descriptive alt text
   const getAltText = () => {
-    const category = dish.categoryId.charAt(0).toUpperCase() + dish.categoryId.slice(1)
-    return `${dish.name} — ${dish.shortDesc} (${category})`
+    const category = translatedDish.categoryId.charAt(0).toUpperCase() + translatedDish.categoryId.slice(1)
+    const price = getPriceDisplay()
+    const availability = dish.available ? 'Available' : 'Currently unavailable'
+    return `${translatedDish.name} — ${translatedDish.shortDesc || 'Delicious dish'} (${category}). Price: ${price}. ${availability}.`
+  }
+
+  // Get appropriate food image
+  const getFoodImageUrl = () => {
+    // Use the image property from the dish data directly
+    return dish.image || getFoodImage(dish.id)
+  }
+
+  // Get error message for unavailable items
+  const getErrorMessage = () => {
+    if (!dish.available) {
+      return t('unavailable') || 'Currently unavailable'
+    }
+    return null
+  }
+
+  // Generate star rating display
+  const renderRating = () => {
+    if (!dish.rating || dish.rating === 0) return null
+    
+    const stars = []
+    const fullStars = Math.floor(dish.rating)
+    const hasHalfStar = dish.rating % 1 !== 0
+    
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+      )
+    }
+    
+    if (hasHalfStar) {
+      stars.push(
+        <Star key="half" className="w-4 h-4 fill-yellow-400/50 text-yellow-400" />
+      )
+    }
+    
+    const emptyStars = 5 - Math.ceil(dish.rating)
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />
+      )
+    }
+    
+    return (
+      <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
+          {stars}
+        </div>
+        <span className="text-sm text-gray-600 dark:text-gray-400">
+          {dish.rating.toFixed(1)}
+        </span>
+        {dish.reviewCount && (
+          <span className="text-xs text-gray-500 dark:text-gray-500 flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            {dish.reviewCount}
+          </span>
+        )}
+      </div>
+    )
   }
 
   // Handle price display for variants
@@ -95,19 +189,23 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
       const minPrice = Math.min(...dish.variants.map(v => v.price))
       const maxPrice = Math.max(...dish.variants.map(v => v.price))
       if (minPrice === maxPrice) {
-        return formatPrice(minPrice, dish.currency)
+        return formatCurrencyPrice(minPrice, dish.currency)
       }
-      return `${formatPrice(minPrice, dish.currency)} - ${formatPrice(maxPrice, dish.currency)}`
+      return `${formatCurrencyPrice(minPrice, dish.currency)} - ${formatCurrencyPrice(maxPrice, dish.currency)}`
     }
-    return dish.price ? formatPrice(dish.price, dish.currency) : ''
+    return dish.price ? formatCurrencyPrice(dish.price, dish.currency) : ''
   }
 
   return (
     <>
-      <motion.div
-        className="group relative overflow-hidden rounded-xl card card-hover transition-all duration-300 will-change-transform dish-card"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
+      <motion.article
+        className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-all duration-500 will-change-transform border border-gray-200 dark:border-gray-700 card-responsive hover:border-resort-500 dark:hover:border-beach-dark-accent backdrop-blur-sm"
+        whileHover={{
+          scale: 1.02,
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.3)',
+        }}
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: DURATION.medium, ease: EASING.soft }}
         viewport={{ once: true }}
         onPointerDown={handlePointerDown}
@@ -116,90 +214,148 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
         onPointerLeave={handlePointerLeave}
         style={{ touchAction: 'manipulation' }}
         data-testid="dish-card"
-        // Remove accidental open on tap; use explicit Details button
+        role="article"
+        aria-labelledby={`dish-title-${dish.id}`}
+        aria-describedby={`dish-desc-${dish.id}`}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            handleDetailsClick()
+          }
+        }}
       >
         {/* Long-press Progress Indicator */}
         <AnimatePresence>
           {isLongPressing && (
             <motion.div
-              className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 backdrop-blur-sm"
+              className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 backdrop-blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="relative w-16 h-16">
-                <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+              <div className="relative w-20 h-20">
+                <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 80 80">
                   <circle
-                    cx="32"
-                    cy="32"
-                    r="28"
+                    cx="40"
+                    cy="40"
+                    r="36"
                     stroke="rgba(255,255,255,0.3)"
                     strokeWidth="4"
                     fill="none"
                   />
                   <circle
-                    cx="32"
-                    cy="32"
-                    r="28"
+                    cx="40"
+                    cy="40"
+                    r="36"
                     stroke="white"
                     strokeWidth="4"
                     fill="none"
-                    strokeDasharray={`${2 * Math.PI * 28}`}
-                    strokeDashoffset={`${2 * Math.PI * 28 * (1 - longPressProgress / 100)}`}
+                    strokeDasharray={`${2 * Math.PI * 36}`}
+                    strokeDashoffset={`${2 * Math.PI * 36 * (1 - longPressProgress / 100)}`}
                     strokeLinecap="round"
-                    className="transition-all duration-100 ease-out"
+                    className="transition-all duration-100 ease-in-out"
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-white" />
+                  <Clock className="w-8 h-8 text-white" />
                 </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <img
-            src={dish.image}
-            alt={getAltText()}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            loading="lazy"
-            onError={(e) => {
-              const target = e.currentTarget as HTMLImageElement
-              if (target.src !== '/seed/resort-hero.jpg') {
-                target.src = '/seed/resort-hero.jpg'
-              }
-            }}
-          />
+        {/* High-Quality Food Image */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+          <AnimatePresence mode="wait">
+            {!imageLoaded && !imageError && (
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700"
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="text-4xl opacity-40">
+                  {translatedDish.categoryId === 'starters' && '🥗'}
+                  {translatedDish.categoryId === 'salads' && '🥙'}
+                  {translatedDish.categoryId === 'pizza' && '🍕'}
+                  {translatedDish.categoryId === 'pasta' && '🍝'}
+                  {translatedDish.categoryId === 'mains' && '🍖'}
+                  {translatedDish.categoryId === 'desserts' && '🍰'}
+                  {translatedDish.categoryId === 'beverages' && '🥤'}
+                  {translatedDish.categoryId === 'burgers' && '🍔'}
+                  {translatedDish.categoryId === 'sandwiches' && '🥪'}
+                  {translatedDish.categoryId === 'platters' && '🍽️'}
+                  {translatedDish.categoryId === 'drinks' && '🥤'}
+                  {translatedDish.categoryId === 'beers' && '🍺'}
+                  {translatedDish.categoryId === 'arak' && '🍶'}
+                  {translatedDish.categoryId === 'prosecco' && '🥂'}
+                  {translatedDish.categoryId === 'wine' && '🍷'}
+                  {translatedDish.categoryId === 'signatureCocktails' && '🍸'}
+                  {!['starters', 'salads', 'pizza', 'pasta', 'mains', 'desserts', 'beverages', 'burgers', 'sandwiches', 'platters', 'drinks', 'beers', 'arak', 'prosecco', 'wine', 'signatureCocktails'].includes(translatedDish.categoryId) && '🍽️'}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+                      <img
+              src={getFoodImageUrl()}
+              alt={getAltText()}
+              className={`w-full h-full object-cover transition-all duration-500 ${
+                imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-110'
+              } group-hover:scale-105`}
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+              style={{ maxWidth: '300px' }}
+              role="img"
+              aria-describedby={`dish-desc-${dish.id}`}
+            />
+
+          {/* Image Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           
           {/* Dietary Tags */}
-          {dish.dietTags && dish.dietTags.length > 0 && (
-            <div className="absolute top-2 start-2 flex flex-wrap gap-1">
-              {dish.dietTags.map((tag) => (
-                <span
+          {translatedDish.dietTags && translatedDish.dietTags.length > 0 && (
+            <div className="absolute top-3 start-3 flex flex-wrap gap-1">
+              {translatedDish.dietTags.map((tag) => (
+                <motion.span
                   key={tag}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100/90 backdrop-blur-sm text-green-800 dark:bg-green-900/60 dark:text-green-300 shadow-sm"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1 }}
                 >
-                  {tag}
-                </span>
+                  {translateDietTag(tag, language)}
+                </motion.span>
               ))}
             </div>
           )}
 
-          {/* Popularity Badge */}
-          {dish.popularity > 80 && (
-            <div className="absolute top-2 end-2">
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-beach-dark-accent/30 dark:text-beach-dark-accent accent-element">
-                Popular
-              </span>
+          {/* Popularity badge removed - no ordering occurs */}
+
+          {/* Error/Unavailable Badge */}
+          {!dish.available && (
+            <div className="absolute top-3 end-3">
+              <motion.span 
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100/90 backdrop-blur-sm text-red-800 dark:bg-red-900/60 dark:text-red-300 shadow-sm"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <AlertCircle className="w-3 h-3" />
+                {getErrorMessage()}
+              </motion.span>
             </div>
           )}
 
           {/* Details Button */}
           <button
             onClick={handleDetailsClick}
-            className="absolute bottom-2 end-2 p-2 rounded-full bg-white/90 text-gray-700 hover:bg-white dark:bg-beach-dark-card/90 dark:text-beach-dark-text dark:hover:bg-beach-dark-card transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-beach-dark-accent focus:ring-offset-2"
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+            className="absolute bottom-3 end-3 p-2 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white dark:bg-gray-800/90 dark:text-gray-300 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-resort-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-110"
             aria-label={`View details for ${dish.name}`}
             aria-haspopup="dialog"
             aria-controls={`dish-modal-${dish.id}`}
@@ -216,53 +372,107 @@ export default function DishCard({ dish, onLongPress }: DishCardProps) {
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <div className="mb-2">
-            <h3 className="font-semibold text-gray-900 dark:text-beach-dark-text group-hover:text-resort-500 dark:group-hover:text-beach-dark-accent transition-colors duration-200">
-              {dish.name}
+        <div className="p-5 space-y-4">
+          {/* Title and Description */}
+          <div className="space-y-2">
+            <h3 
+              id={`dish-title-${dish.id}`}
+              className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-resort-500 dark:group-hover:text-beach-dark-accent transition-colors duration-200 leading-tight"
+            >
+              {translatedDish.name}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-beach-dark-muted mt-1 line-clamp-2 text-muted">
-              {dish.shortDesc}
+            <p 
+              id={`dish-desc-${dish.id}`}
+              className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed"
+            >
+              {translatedDish.shortDesc || 'Delicious dish'}
             </p>
+            
+            {/* Rating */}
+            {renderRating()}
           </div>
 
+          {/* Price and Status */}
           <div className="flex items-center justify-between">
-            <div className="text-lg font-bold text-resort-500 dark:text-beach-dark-accent accent-element">
+            <div className="text-xl font-bold text-resort-500 dark:text-beach-dark-accent">
               {getPriceDisplay()}
             </div>
             
-            {/* Availability Status */}
-            <div className={`text-xs px-2 py-1 rounded-full ${
-              dish.available 
-                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400' 
-                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-400'
-            }`}>
-              {dish.available ? t('available') : t('unavailable')}
-            </div>
+            {/* Availability Status - only show if available */}
+            {dish.available && (
+              <div className="text-xs px-3 py-1 rounded-full bg-green-100/80 backdrop-blur-sm dark:bg-green-900/30 text-green-800 dark:text-green-400 font-medium">
+                {t('available')}
+              </div>
+            )}
           </div>
 
+          {/* Quick Order Button */}
+          {dish.available ? (
+            <motion.button
+              onClick={handleQuickOrder}
+              className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              data-testid="quick-order-button"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <ShoppingCart className="w-4 h-4" />
+                {t('orderNow')}
+              </div>
+            </motion.button>
+          ) : (
+            <motion.button
+              disabled
+              className="w-full px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl transition-all duration-300 font-medium text-sm shadow-lg cursor-not-allowed opacity-75"
+              data-testid="unavailable-button"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                {t('unavailable')}
+              </div>
+            </motion.button>
+          )}
+
           {/* Allergens */}
-          {dish.allergens && dish.allergens.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {dish.allergens.map((allergen) => (
+          {translatedDish.allergens && translatedDish.allergens.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {translatedDish.allergens.map((allergen) => (
                 <span
                   key={allergen}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-400"
+                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100/80 backdrop-blur-sm dark:bg-red-900/30 text-red-800 dark:text-red-400"
                 >
-                  {allergen}
+                  {translateAllergen(allergen, language)}
                 </span>
               ))}
             </div>
           )}
+
+          {/* Dietary Tags with Beach Theme */}
+          {dish.dietaryTags && dish.dietaryTags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {dish.dietaryTags.map((tag) => {
+                const IconComponent = getDietaryIcon(tag)
+                return (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-700"
+                  >
+                    <IconComponent className="w-3 h-3" />
+                    {translateDietTag(tag, language)}
+                  </span>
+                )
+              })}
+            </div>
+          )}
         </div>
 
-        {/* Hover Effect Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/0 via-transparent to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-      </motion.div>
+        {/* Enhanced Hover Effect Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/0 via-transparent to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      </motion.article>
 
-      {/* Modal */}
+      {/* Dish Modal */}
       <DishModal
-        dish={dish}
+        dish={translatedDish}
         isOpen={isModalOpen}
         onClose={handleModalClose}
         id={`dish-modal-${dish.id}`}

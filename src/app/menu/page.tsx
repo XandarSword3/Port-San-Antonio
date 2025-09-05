@@ -1,22 +1,25 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Filter } from 'lucide-react'
-import { Dish, Category, FilterState, DietFilter } from '@/types'
+import { Dish, Category, FilterState } from '@/types'
 import DishCard from '@/components/DishCard'
 import CategoryStrip from '@/components/CategoryStrip'
+import CategoryAccordion from '@/components/CategoryAccordion'
 import FilterChips from '@/components/FilterChips'
+import FilterModal from '@/components/FilterModal'
+import QuickOrderModal from '@/components/QuickOrderModal'
 import SideRail from '@/components/SideRail'
 import MobileBanner from '@/components/MobileBanner'
 import MenuSkeleton from '@/components/MenuSkeleton'
 import SearchInput from '@/components/SearchInput'
 import BackButton from '@/components/BackButton'
-import { EASING, DURATION } from '@/lib/animation'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { translateCategory } from '@/lib/dishTranslations'
 
 export default function MenuPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [dishes, setDishes] = useState<Dish[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [ads, setAds] = useState<any[]>([])
@@ -28,36 +31,95 @@ export default function MenuPage() {
     priceBucket: null,
   })
   const [filterPanelOpen, setFilterPanelOpen] = useState(false)
+  const [filterModalOpen, setFilterModalOpen] = useState(false)
+  const [quickOrderModalOpen, setQuickOrderModalOpen] = useState(false)
+  const [selectedDishForOrder, setSelectedDishForOrder] = useState<Dish | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   // Load data from JSON file and restore session filters
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/api/menu')
-        if (response.ok) {
-          const data = await response.json()
-          setDishes(data.dishes || [])
-          setCategories(data.categories || [])
-          setAds(data.ads || [])
+        // First check if there are admin changes in localStorage
+        const adminMenuData = localStorage.getItem('menuData')
+        let data
+        
+        if (adminMenuData) {
+          // Use admin-modified data
+          console.log('Loading admin-modified menu data from localStorage')
+          data = { dishes: JSON.parse(adminMenuData), categories: [], ads: [] }
         } else {
-          // Fallback to static data if API fails
-          console.warn('API failed, using fallback data')
-          const fallbackData = await import('@/../../data/dishes.json')
-          setDishes(fallbackData.dishes || [])
-          setCategories(fallbackData.categories || [])
-          setAds(fallbackData.ads || [])
+          // Load from API (original JSON file)
+          console.log('Loading menu data from API')
+          const response = await fetch('/api/menu')
+          if (response.ok) {
+            data = await response.json()
+          } else {
+            throw new Error('Failed to load menu data')
+          }
+        }
+        
+        const processedDishes: Dish[] = (data.dishes || []).map((d: any) => ({
+          id: d.id,
+          categoryId: d.categoryId,
+          name: d.name,
+          shortDesc: d.shortDesc || '',
+          fullDesc: d.fullDesc || '',
+          price: d.price || 0,
+          variants: d.variants || [],
+          currency: d.currency || 'USD',
+          image: d.image || '',
+          imageVariants: d.imageVariants || {},
+          dietTags: d.dietTags || [],
+          allergens: d.allergens || [],
+          calories: d.calories || null,
+          // popularity: d.popularity || 0, // Removed
+          available: d.available || false,
+          sponsored: d.sponsored || false
+        }))
+        setDishes(processedDishes)
+        setCategories(data.categories || [])
+        setAds(data.ads || [])
+
+        // Restore session filters
+        const savedFilters = sessionStorage.getItem('menuFilters')
+        if (savedFilters) {
+          try {
+            const parsedFilters = JSON.parse(savedFilters)
+            setFilters(prev => ({ ...prev, ...parsedFilters }))
+          } catch (e) {
+            console.warn('Failed to parse saved filters:', e)
+          }
         }
       } catch (error) {
         console.error('Error loading menu data:', error)
-        // Fallback to static data
+        // Fallback to static data if API fails
+        console.warn('API failed, using fallback data')
         try {
           const fallbackData = await import('@/../../data/dishes.json')
-          setDishes(fallbackData.dishes || [])
+          const fallbackDishes: Dish[] = (fallbackData.dishes || []).map((d: any) => ({
+            id: d.id,
+            categoryId: d.categoryId,
+            name: d.name,
+            shortDesc: d.shortDesc || '',
+            fullDesc: d.fullDesc || '',
+            price: d.price || 0,
+            variants: d.variants || [],
+            currency: d.currency || 'USD',
+            image: d.image || '',
+            imageVariants: d.imageVariants || {},
+            dietTags: d.dietTags || [],
+            allergens: d.allergens || [],
+            calories: d.calories || null,
+            // popularity: d.popularity || 0, // Removed
+            available: d.available || false,
+            sponsored: d.sponsored || false
+          }))
+          setDishes(fallbackDishes)
           setCategories(fallbackData.categories || [])
           setAds(fallbackData.ads || [])
         } catch (fallbackError) {
-          console.error('Fallback data also failed:', fallbackError)
+          console.error('Fallback data loading failed:', fallbackError)
         }
       } finally {
         setIsLoading(false)
@@ -65,273 +127,155 @@ export default function MenuPage() {
     }
 
     loadData()
-
-    // Restore filters from sessionStorage
-    const saved = sessionStorage.getItem('menuFilters')
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved)
-        setFilters(prev => ({ ...prev, ...parsed }))
-      } catch {}
-    }
-
-    // Listen for admin updates
-    const handleAdminUpdate = () => {
-      loadData()
-    }
-
-    window.addEventListener('admin-update', handleAdminUpdate)
-    
-    return () => {
-      window.removeEventListener('admin-update', handleAdminUpdate)
-    }
   }, [])
 
-  // Create diet filter options - include predefined options plus any from dishes
-  const dietFilterOptions = useMemo(() => {
-    // Predefined filter options to ensure they're always available
-    const predefinedFilters = [
-      'vegetarian',
-      'vegan',
-      'gluten-free',
-      'nuts-free',
-      'sugar-free',
-      'dairy-free',
-      'keto',
-      'paleo'
-    ];
-    
-    const allDietTags = new Set<string>(predefinedFilters)
-    dishes.forEach(dish => {
-      if (dish.dietTags) {
-        dish.dietTags.forEach(tag => allDietTags.add(tag))
+  // Listen for admin updates
+  useEffect(() => {
+    const handleAdminUpdate = () => {
+      console.log('Admin update detected, reloading menu data')
+      const adminMenuData = localStorage.getItem('menuData')
+      if (adminMenuData) {
+        const data = { dishes: JSON.parse(adminMenuData), categories: [], ads: [] }
+        const processedDishes: Dish[] = (data.dishes || []).map((d: any) => ({
+          id: d.id,
+          categoryId: d.categoryId,
+          name: d.name,
+          shortDesc: d.shortDesc || '',
+          fullDesc: d.fullDesc || '',
+          price: d.price || 0,
+          variants: d.variants || [],
+          currency: d.currency || 'USD',
+          image: d.image || '',
+          imageVariants: d.imageVariants || {},
+          dietTags: d.dietTags || [],
+          allergens: d.allergens || [],
+          calories: d.calories || null,
+          // popularity: d.popularity || 0, // Removed
+          available: d.available || false,
+          sponsored: d.sponsored || false
+        }))
+        setDishes(processedDishes)
       }
-    })
-    
-    return Array.from(allDietTags).map(tag => ({
-      id: tag,
-      label: tag.charAt(0).toUpperCase() + tag.slice(1).replace(/-/g, ' '),
-      active: filters.activeDietFilters.includes(tag)
-    }))
-  }, [dishes, filters.activeDietFilters])
-
-  // Counts per diet filter considering other active filters
-  const dietCounts = useMemo(() => {
-    const baseFilter = (dish: Dish) => {
-      // Apply all current filters except diet tag itself
-      // Search
-      const q = filters.search?.trim().toLowerCase();
-      if (q) {
-        const name = (dish.name ?? '').toString().toLowerCase();
-        const shortDesc = (dish.shortDesc ?? '').toString().toLowerCase();
-        const fullDesc = (dish.fullDesc ?? '').toString().toLowerCase();
-        const allergens = (dish.allergens ?? []).join(' ').toLowerCase();
-        const variants = (dish.variants ?? []).map(v => (v.label ?? '') + ' ' + (v.price ?? '')).join(' ').toLowerCase();
-        if (!name.includes(q) && !shortDesc.includes(q) && !fullDesc.includes(q) && !allergens.includes(q) && !variants.includes(q)) {
-          return false;
-        }
-      }
-      if (filters.selectedCategory && dish.categoryId !== filters.selectedCategory) return false
-      if (filters.availabilityOnly && !dish.available) return false
-      if (filters.priceBucket) {
-        const values = dish.variants && dish.variants.length ? dish.variants.map(v => v.price) : (dish.price ? [dish.price] : [])
-        if (values.length === 0) return false
-        const min = Math.min(...values)
-        const max = Math.max(...values)
-        switch (filters.priceBucket) {
-          case 'lte10': if (!(min <= 10)) return false; break
-          case 'btw11_20': if (!(max >= 11 && min <= 20)) return false; break
-          case 'gt20': if (!(max > 20)) return false; break
-        }
-      }
-      // For existing active diet tags, require them too
-      if (filters.activeDietFilters.length > 0) {
-        const hasAll = (filters.activeDietFilters || []).every(tag => dish.dietTags?.includes(tag))
-        if (!hasAll) return false
-      }
-      return true
     }
-    const counts: Record<string, number> = {}
-    const tags = new Set<string>()
-    dishes.forEach(d => (d.dietTags || []).forEach(tag => tags.add(tag)))
-    Array.from(tags).forEach(tag => {
-      counts[tag] = dishes.filter(d => baseFilter(d) && d.dietTags?.includes(tag)).length
-    })
-    return counts
-  }, [dishes, filters])
+
+    window.addEventListener('menuDataUpdated', handleAdminUpdate)
+    return () => window.removeEventListener('menuDataUpdated', handleAdminUpdate)
+  }, [])
+
+  // Save filters to session storage
+  useEffect(() => {
+    sessionStorage.setItem('menuFilters', JSON.stringify(filters))
+  }, [filters])
+
+  const handleQuickOrder = (dish: Dish) => {
+    setSelectedDishForOrder(dish)
+    setQuickOrderModalOpen(true)
+  }
+
+  const handleLongPress = (dish: Dish) => {
+    // Long press functionality can be implemented here
+    console.log('Long press on dish:', dish.name)
+  }
 
   // Filter dishes based on current filters
   const filteredDishes = useMemo(() => {
-    const matches: Dish[] = dishes.filter(dish => {
-      // Search filter (defensive + matches name, shortDesc, fullDesc, ingredients, variants)
-      const q = filters.search?.trim().toLowerCase();
-      if (q) {
-        const name = (dish.name ?? '').toString().toLowerCase();
-        const shortDesc = (dish.shortDesc ?? '').toString().toLowerCase();
-        const fullDesc = (dish.fullDesc ?? '').toString().toLowerCase();
-        const allergens = (dish.allergens ?? []).join(' ').toLowerCase();
-        const variants = (dish.variants ?? []).map(v => (v.label ?? '') + ' ' + (v.price ?? '')).join(' ').toLowerCase();
-        if (!name.includes(q) && !shortDesc.includes(q) && !fullDesc.includes(q) && !allergens.includes(q) && !variants.includes(q)) {
-          return false;
-        }
+    return dishes.filter(dish => {
+      // Search filter
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase()
+        const matchesSearch = 
+          dish.name.toLowerCase().includes(searchLower) ||
+          dish.shortDesc?.toLowerCase().includes(searchLower) ||
+          dish.fullDesc?.toLowerCase().includes(searchLower)
+        if (!matchesSearch) return false
       }
 
       // Category filter
-      if (filters.selectedCategory && dish.categoryId !== filters.selectedCategory) {
-        return false
+      if (filters.selectedCategory && filters.selectedCategory !== 'all') {
+        if (dish.categoryId !== filters.selectedCategory) return false
       }
 
-      // Diet filter
+      // Diet filters
       if (filters.activeDietFilters.length > 0) {
-        const hasMatchingDiet = dish.dietTags && dish.dietTags.some(tag => 
-          filters.activeDietFilters.includes(tag)
+        const hasMatchingDiet = filters.activeDietFilters.some(diet => 
+          dish.dietTags?.includes(diet)
         )
-        if (!hasMatchingDiet) {
-          return false
-        }
+        if (!hasMatchingDiet) return false
       }
 
-      // Availability
+      // Availability filter
       if (filters.availabilityOnly && !dish.available) {
         return false
       }
 
-      // Price buckets
+      // Price filter
       if (filters.priceBucket) {
-        const priceValues = dish.variants && dish.variants.length > 0
-          ? dish.variants.map(v => v.price)
-          : (dish.price ? [dish.price] : [])
-
-        if (priceValues.length === 0) return false
-
-        const min = Math.min(...priceValues)
-        const max = Math.max(...priceValues)
-
+        const price = dish.price || 0
         switch (filters.priceBucket) {
           case 'lte10':
-            if (!(min <= 10)) return false
+            if (price > 10) return false
             break
           case 'btw11_20':
-            if (!(max >= 11 && min <= 20)) return false
+            if (price < 11 || price > 20) return false
             break
           case 'gt20':
-            if (!(max > 20)) return false
+            if (price < 20) return false
             break
         }
       }
 
       return true
     })
-    return matches
   }, [dishes, filters])
-
-  // Persist filters to sessionStorage
-  useEffect(() => {
-    try {
-      const toSave = {
-        search: filters.search,
-        selectedCategory: filters.selectedCategory,
-        activeDietFilters: filters.activeDietFilters,
-        availabilityOnly: filters.availabilityOnly,
-        priceBucket: filters.priceBucket,
-      }
-      sessionStorage.setItem('menuFilters', JSON.stringify(toSave))
-    } catch {}
-  }, [filters])
 
   // Group dishes by category
   const dishesByCategory = useMemo(() => {
     const grouped: { [key: string]: Dish[] } = {}
-    
     filteredDishes.forEach(dish => {
       if (!grouped[dish.categoryId]) {
         grouped[dish.categoryId] = []
       }
       grouped[dish.categoryId].push(dish)
     })
-    
     return grouped
   }, [filteredDishes])
 
-  // Handle category selection
-  const handleCategorySelect = (categoryId: string | null) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedCategory: categoryId
-    }))
-  }
-
-  // Handle diet filter toggle
-  const handleDietFilterToggle = (filterId: string) => {
-    setFilters(prev => ({
-      ...prev,
-      activeDietFilters: prev.activeDietFilters.includes(filterId)
-        ? prev.activeDietFilters.filter(id => id !== filterId)
-        : [...prev.activeDietFilters, filterId]
-    }))
-  }
-
-  const handleAvailabilityToggle = () => {
-    setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))
-  }
-
-  const handlePriceBucketChange = (bucket: 'lte10' | 'btw11_20' | 'gt20' | null) => {
-    setFilters(prev => ({ ...prev, priceBucket: bucket }))
-  }
-
-  // Handle search input
-  const handleSearchChange = (value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      search: value
-    }))
-  }
-
-  // Clear all filters
-  const clearAllFilters = () => {
-    setFilters({
-      search: '',
-      selectedCategory: 'starters',
-      activeDietFilters: [],
-      availabilityOnly: false,
-      priceBucket: null,
-    })
-  }
-
-  // Handle long-press on dish card
-  const handleDishLongPress = (dish: Dish) => {
-    console.log('Long-press triggered for:', dish.name)
-  }
+  // Get unique categories from filtered dishes
+  const availableCategories = useMemo(() => {
+    const categoryIds = new Set(filteredDishes.map(dish => dish.categoryId))
+    return categories.filter(cat => categoryIds.has(cat.id))
+  }, [filteredDishes, categories])
 
   if (isLoading) {
     return <MenuSkeleton />
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="sticky top-16 z-40 bg-white dark:bg-beach-dark-bg shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <BackButton />
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-beach-dark-text accent-element">{t('menuTitle')}</h1>
-            </div>
-            
-            {/* Search Bar */}
-            <div className="flex-1 max-w-md mx-8">
-              <SearchInput onSearch={handleSearchChange} placeholder={t('searchPlaceholder')} />
-            </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Mobile Banner */}
+      <MobileBanner ads={ads} />
 
-            {/* Filter Button */}
-            <button 
-              onClick={() => {
-                setFilterPanelOpen(prev => !prev)
-                console.log('Filter panel toggled:', !filterPanelOpen)
-              }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 ${filterPanelOpen ? 'bg-blue-700 dark:bg-beach-dark-accent/90' : 'bg-blue-600 dark:bg-beach-dark-accent'} text-white hover:bg-blue-700 dark:hover:bg-beach-dark-accent/90`}
-              aria-expanded={filterPanelOpen}
-              aria-controls="filter-panel"
+      {/* Header */}
+      <div className="sticky top-16 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <BackButton />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {t('menu')}
+            </h1>
+            <div className="w-8" /> {/* Spacer for centering */}
+          </div>
+
+          {/* Search and Filter */}
+          <div className="flex gap-3">
+            <SearchInput
+              value={filters.search}
+              onChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
+              placeholder={t('searchMenu')}
+            />
+            <button
+              onClick={() => setFilterModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               data-testid="filter-button"
             >
               <Filter className="w-4 h-4" />
@@ -341,83 +285,76 @@ export default function MenuPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Category Strip */}
-            <CategoryStrip
-              categories={categories}
-              selectedCategory={filters.selectedCategory}
-              onCategorySelect={handleCategorySelect}
-            />
+      {/* Filter Chips */}
+      <FilterChips
+        filters={filters}
+        onUpdateFilters={setFilters}
+        availableCategories={availableCategories}
+      />
 
-            {/* Filter Chips */}
-            <FilterChips
-              filters={dietFilterOptions}
-              onFilterToggle={handleDietFilterToggle}
-              onClearAll={clearAllFilters}
-              hasActiveFilters={filters.activeDietFilters.length > 0 || !!filters.search || !!filters.selectedCategory}
-              isOpen={filterPanelOpen}
-              availabilityOnly={!!filters.availabilityOnly}
-              onAvailabilityToggle={handleAvailabilityToggle}
-              priceBucket={filters.priceBucket || null}
-              onPriceBucketChange={handlePriceBucketChange}
-              dietCounts={dietCounts}
-            />
+      {/* Main Content */}
+      <div className="px-4 py-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <SideRail
+                selectedCategory={filters.selectedCategory}
+                onCategorySelect={(categoryId: string) => 
+                  setFilters(prev => ({ ...prev, selectedCategory: categoryId }))
+                }
+                onFilterToggle={() => setFilterPanelOpen(!filterPanelOpen)}
+                filterPanelOpen={filterPanelOpen}
+              />
+            </div>
 
-            {/* Dishes Grid */}
-            <div className="mt-8">
+            {/* Menu Content */}
+            <div className="lg:col-span-3">
               {Object.keys(dishesByCategory).length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500 dark:text-beach-dark-muted text-lg">No dishes found matching your filters.</p>
-                  <button
-                    onClick={clearAllFilters}
-                    className="mt-4 px-6 py-2 bg-blue-600 dark:bg-beach-dark-accent text-white rounded-lg hover:bg-blue-700 dark:hover:bg-beach-dark-accent/90 transition-colors duration-200"
-                  >
-                    {t('clearAll')}
-                  </button>
+                  <p className="text-gray-500 dark:text-gray-400 text-lg">
+                    {t('noDishesFound')}
+                  </p>
                 </div>
               ) : (
-                Object.entries(dishesByCategory).map(([categoryId, categoryDishes]) => {
-                  const category = categories.find(c => c.id === categoryId)
-                  return (
-                    <div key={categoryId} className="mb-12">
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-beach-dark-text mb-6 accent-element">
-                        {category?.name || categoryId}
-                      </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {categoryDishes.map((dish, index) => (
-                                                     <motion.div
-                             key={dish.id}
-                             initial={{ opacity: 0, y: 12 }}
-                             whileInView={{ opacity: 1, y: 0 }}
-                             transition={{ duration: DURATION.medium, ease: EASING.soft, delay: index * 0.06 }}
-                             viewport={{ once: true }}
-                           >
-                            <DishCard
-                              dish={dish}
-                              onLongPress={handleDishLongPress}
-                            />
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                })
+                <div className="space-y-6">
+                  {availableCategories.map(category => {
+                    const categoryDishes = dishesByCategory[category.id] || []
+                    if (categoryDishes.length === 0) return null
+
+                    return (
+                      <CategoryAccordion
+                        key={category.id}
+                        category={category}
+                        dishes={categoryDishes}
+                        onQuickOrder={handleQuickOrder}
+                        onLongPress={handleLongPress}
+                      />
+                    )
+                  })}
+                </div>
               )}
             </div>
-          </div>
-
-          {/* Side Rail */}
-          <div className="hidden lg:block w-80 flex-shrink-0">
-            <SideRail ads={ads} />
           </div>
         </div>
       </div>
 
-      {/* Mobile Banner */}
-      <MobileBanner ads={ads} />
+      {/* Modals */}
+      <FilterModal
+        isOpen={filterModalOpen}
+        onClose={() => setFilterModalOpen(false)}
+        filters={filters}
+        onUpdateFilters={setFilters}
+        availableCategories={availableCategories}
+      />
+
+      {selectedDishForOrder && (
+        <QuickOrderModal
+          isOpen={quickOrderModalOpen}
+          onClose={() => setQuickOrderModalOpen(false)}
+          dish={selectedDishForOrder}
+        />
+      )}
     </div>
   )
 }

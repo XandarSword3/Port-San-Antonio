@@ -1,0 +1,75 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - button "Toggle sidebar menu" [ref=e4]:
+        - img [ref=e5]
+      - link "siteTitle" [ref=e9] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e10]:
+        - link "menu" [ref=e11] [cursor=pointer]:
+          - /url: /menu
+        - link "Admin panel" [ref=e12] [cursor=pointer]:
+          - /url: /admin
+          - text: admin
+    - generic [ref=e13]:
+      - 'button "Switch currency. Current: USD" [ref=e14]':
+        - img [ref=e15]
+        - generic [ref=e18]: USD
+      - 'button "Switch language. Current: EN" [ref=e19]':
+        - img [ref=e20]
+        - generic [ref=e24]: EN
+      - button "Switch to dark mode" [ref=e25]:
+        - img [ref=e26]
+        - generic [ref=e28]: Dark
+  - main [ref=e29]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - link "siteTitle" [ref=e34] [cursor=pointer]:
+            - /url: /
+          - navigation [ref=e35]:
+            - link "menu" [ref=e36] [cursor=pointer]:
+              - /url: /menu
+            - link "Admin panel" [ref=e37] [cursor=pointer]:
+              - /url: /admin
+              - text: admin
+        - generic [ref=e38]:
+          - button [ref=e39]:
+            - img [ref=e40]
+          - button "Switch to Arabic" [ref=e43]:
+            - img [ref=e44]
+          - button "Switch to dark mode" [ref=e48]:
+            - img [ref=e49]
+          - button [ref=e51]:
+            - img [ref=e52]
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "welcomeTo" [level=1] [ref=e60]
+            - heading "siteTitle" [level=2] [ref=e61]
+            - paragraph [ref=e62]: experienceLuxury
+          - button "exploreMenu" [active] [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: exploreMenu
+              - img [ref=e66]
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - img [ref=e72]
+            - heading "Gourmet Cuisine" [level=3] [ref=e76]
+            - paragraph [ref=e77]: International flavors
+          - generic [ref=e78]:
+            - img [ref=e79]
+            - heading "Premium Service" [level=3] [ref=e81]
+            - paragraph [ref=e82]: 5-star experience
+          - generic [ref=e83]:
+            - img [ref=e84]
+            - heading "Always Open" [level=3] [ref=e87]
+            - paragraph [ref=e88]: 24/7 dining
+          - generic [ref=e89]:
+            - img [ref=e90]
+            - heading "Prime Location" [level=3] [ref=e93]
+            - paragraph [ref=e94]: Beachfront dining
+```

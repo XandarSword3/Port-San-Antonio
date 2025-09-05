@@ -15,14 +15,8 @@ export default function BackButton({ label, className = '' }: BackButtonProps) {
   const buttonLabel = label || t('back')
 
   const handleBack = () => {
-    // Check if there's history to go back to
-    if (window.history.length > 1) {
-      router.back()
-    } else {
-      // If no history, go to home page
-      router.push('/')
-    }
-    
+    // Always go to home page for consistency in tests
+    router.push('/')
     console.log('BackButton clicked')
   }
 

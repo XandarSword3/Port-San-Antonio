@@ -15,11 +15,38 @@ module.exports = {
         'slide-up': 'slideUp 420ms ease-out forwards',
         'card-reveal': 'cardReveal 360ms ease-out forwards',
         'modal-enter': 'modalEnter 320ms ease-out forwards',
+        'fadeIn': 'fadeIn 1s ease-out forwards',
+        'fadeInSlideUp': 'fadeInSlideUp 1s cubic-bezier(0.22, 0.8, 0.2, 1) forwards',
+        'shimmer': 'shimmer 3s linear infinite',
       },
       keyframes: {
         kenBurns: {
           '0%': { transform: 'scale(1.03)' },
           '100%': { transform: 'scale(1)' },
+        },
+        fadeIn: {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(10px)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+        },
+        fadeInSlideUp: {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
         },
         fadeInUp: {
           '0%': { 

@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   keywords: 'resort, dining, menu, port san antonio, luxury, cuisine',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+}
+
 import ClientLayout from '@/components/ClientLayout'
 
 export default function RootLayout({
@@ -18,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" dir="ltr">
-      <body className={inter.className}>
+    <html lang="en" dir="ltr" className="h-full">
+      <body className={`${inter.className} h-full overflow-x-hidden`}>
         <ClientLayout>
           {children}
         </ClientLayout>

@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Users, Utensils, BarChart3, Settings, LogOut } from 'lucide-react'
+import { Lock, Users, Utensils, BarChart3, Settings, LogOut, DollarSign, Phone } from 'lucide-react'
 import { AppData } from '@/types'
 import AdminLogin from '@/components/AdminLogin'
 import AdminDashboard from '@/components/AdminDashboard'
 import MenuManager from '@/components/MenuManager'
 import CategoryManager from '@/components/CategoryManager'
 import AdManager from '@/components/AdManager'
+import CurrencySettings from '@/components/CurrencySettings'
+import ContactManager from '@/components/ContactManager'
 
 // Mock data - in real app this would come from API
 import mockData from '../../../data/dishes.json'
 
-type AdminView = 'dashboard' | 'menu' | 'categories' | 'ads'
+type AdminView = 'dashboard' | 'menu' | 'categories' | 'ads' | 'currency' | 'contact'
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -30,14 +32,14 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-yellow-600">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
-              <span className="text-sm text-gray-500">Port San Antonio Resort</span>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-yellow-400">Admin Panel</h1>
+              <span className="text-sm text-gray-500 dark:text-gray-300">Port San Antonio Resort</span>
             </div>
             
             <button
@@ -59,8 +61,8 @@ export default function AdminPage() {
               onClick={() => setCurrentView('dashboard')}
               className={`w-full flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
                 currentView === 'dashboard'
-                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
               }`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -73,8 +75,8 @@ export default function AdminPage() {
               onClick={() => setCurrentView('menu')}
               className={`w-full flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
                 currentView === 'menu'
-                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
               }`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -87,8 +89,8 @@ export default function AdminPage() {
               onClick={() => setCurrentView('categories')}
               className={`w-full flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
                 currentView === 'categories'
-                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
               }`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -101,14 +103,42 @@ export default function AdminPage() {
               onClick={() => setCurrentView('ads')}
               className={`w-full flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
                 currentView === 'ads'
-                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
               }`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               <Settings className="h-5 w-5" />
               Ad Manager
+            </motion.button>
+
+            <motion.button
+              onClick={() => setCurrentView('currency')}
+              className={`w-full flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
+                currentView === 'currency'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <DollarSign className="h-5 w-5" />
+              Currency Settings
+            </motion.button>
+
+            <motion.button
+              onClick={() => setCurrentView('contact')}
+              className={`w-full flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
+                currentView === 'contact'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Phone className="h-5 w-5" />
+              Contact Info
             </motion.button>
           </nav>
 
@@ -135,7 +165,7 @@ export default function AdminPage() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <MenuManager dishes={data.dishes} onUpdate={(dishes) => setData({ ...data, dishes })} />
+                  <MenuManager dishes={data.dishes} categories={data.categories} onUpdate={(dishes) => setData({ ...data, dishes })} />
                 </motion.div>
               )}
 
@@ -160,6 +190,30 @@ export default function AdminPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <AdManager data={data} onDataChange={setData} />
+                </motion.div>
+              )}
+
+              {currentView === 'currency' && (
+                <motion.div
+                  key="currency"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <CurrencySettings />
+                </motion.div>
+              )}
+
+              {currentView === 'contact' && (
+                <motion.div
+                  key="contact"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ContactManager />
                 </motion.div>
               )}
             </AnimatePresence>

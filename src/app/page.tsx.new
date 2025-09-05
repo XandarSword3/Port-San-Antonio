@@ -1,0 +1,79 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
+import { ArrowRight, Utensils, Star, Clock, MapPin } from 'lucide-react'
+import Header from '@/components/Header'
+import { useLanguage } from '@/contexts/LanguageContext'
+import VideoBackground from '@/components/VideoBackground'
+
+export default function HomePage() {
+  const router = useRouter()
+  const { t } = useLanguage()
+  const containerRef = useRef(null)
+
+  const handleCTAClick = () => {
+    router.push('/menu')
+  }
+
+  return (
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden bg-black">
+      <Header />
+      
+      {/* Video Background */}
+      <VideoBackground />
+
+      {/* Hero Content */}
+      <div className="relative z-10 flex min-h-screen flex-col">
+        {/* Main Content */}
+        <div className="flex flex-1 flex-col items-center justify-center px-6 text-center text-white">
+          <div className="mb-12 max-w-4xl opacity-0 transform translate-y-4 animate-fadeIn">
+            <h1 className="mb-4 font-serif text-7xl font-light tracking-wider md:text-8xl lg:text-9xl">
+              {t('welcomeTo')}
+            </h1>
+            <h2 className="mb-8 font-serif text-8xl font-bold tracking-tight md:text-9xl lg:text-[10rem] bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-200 text-transparent bg-clip-text">
+              {t('siteTitle')}
+            </h2>
+            <p className="text-2xl font-light leading-relaxed md:text-3xl lg:text-4xl text-gray-200">
+              {t('experienceLuxury')}
+            </p>
+          </div>
+
+          {/* CTA Button */}
+          <button
+            onClick={handleCTAClick}
+            className="group relative overflow-hidden rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-10 py-5 text-xl font-medium text-white shadow-lg transition-all duration-300 hover:from-amber-600 hover:to-amber-700 hover:scale-105 active:scale-95"
+            aria-label={t('exploreMenu')}
+            data-testid="home-cta-button"
+          >
+            <span className="flex items-center gap-3">
+              {t('exploreMenu')}
+              <ArrowRight className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
+          </button>
+        </div>
+
+        {/* Bento Grid Features */}
+        <div className="relative z-20 mx-auto w-full max-w-7xl px-6 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { icon: Utensils, title: "Gourmet Cuisine", desc: "International flavors" },
+              { icon: Star, title: "Premium Service", desc: "5-star experience" },
+              { icon: Clock, title: "Always Open", desc: "24/7 dining" },
+              { icon: MapPin, title: "Prime Location", desc: "Beachfront dining" }
+            ].map((feature, i) => (
+              <div
+                key={feature.title}
+                className="group relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-sm p-6 transition-all duration-300 hover:bg-white/20 hover:scale-[1.02]"
+              >
+                <feature.icon className="h-6 w-6 text-amber-400" />
+                <h3 className="mt-4 text-lg font-semibold text-white">{feature.title}</h3>
+                <p className="mt-2 text-sm text-white/70">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -1,22 +1,22 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { SupportedLanguage, getTranslation, shouldTranslate } from '@/lib/translations'
+import { Language, getTranslation, shouldTranslate } from '@/lib/translations'
 
 type LanguageContextType = {
-  language: SupportedLanguage
-  setLanguage: (lang: SupportedLanguage) => void
+  language: Language
+  setLanguage: (lang: Language) => void
   t: (key: string) => string
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<SupportedLanguage>('en')
+  const [language, setLanguageState] = useState<Language>('en')
 
   useEffect(() => {
     // Initialize language from localStorage
-    const savedLang = localStorage.getItem('language') as SupportedLanguage | null
+    const savedLang = localStorage.getItem('language') as Language | null
     if (savedLang && (savedLang === 'en' || savedLang === 'ar' || savedLang === 'fr')) {
       setLanguageState(savedLang)
       document.documentElement.lang = savedLang
@@ -24,7 +24,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const setLanguage = (lang: SupportedLanguage) => {
+  const setLanguage = (lang: Language) => {
     setLanguageState(lang)
     localStorage.setItem('language', lang)
     document.documentElement.lang = lang
@@ -34,11 +34,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   // Translation function
   const t = (key: string) => {
     try {
-      // Only translate UI elements, not content data like dish names/descriptions
-      if (shouldTranslate(key)) {
-        return getTranslation(language, key as any) || key
-      }
-      return key
+      // Always translate UI elements
+      return getTranslation(language, key as any) || key
     } catch (error) {
       console.warn(`Translation missing for key: ${key}`)
       return key
