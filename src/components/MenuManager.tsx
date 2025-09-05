@@ -87,11 +87,46 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
       setFormData({})
       
       alert('Menu item saved successfully! Changes are now live on the website.')
+      
+      // Auto-generate updated menu-data.json for deployment
+      setTimeout(() => {
+        generateUpdatedMenuFile(updatedDishes)
+      }, 1000)
     } catch (error) {
       console.error('Error saving dish:', error)
       alert('Error saving menu item. Please try again.')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const generateUpdatedMenuFile = (updatedDishes: Dish[]) => {
+    try {
+      // Create the complete menu data structure
+      const menuData = {
+        dishes: updatedDishes,
+        categories: categories,
+        ads: [] // You can include ads here if needed
+      }
+      
+      // Generate downloadable file
+      const dataStr = JSON.stringify(menuData, null, 2)
+      const dataBlob = new Blob([dataStr], { type: 'application/json' })
+      const url = URL.createObjectURL(dataBlob)
+      
+      // Create download link
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'menu-data.json'
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+      
+      alert('📁 Updated menu-data.json downloaded! Replace the file in /public/ and redeploy to make changes permanent for all users.')
+    } catch (error) {
+      console.error('Error generating menu file:', error)
     }
   }
 
@@ -118,15 +153,26 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
     <div className="space-y-6">
               <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Menu Manager</h2>
-        <motion.button
-          onClick={handleAddNew}
-          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4" />
-          Add New Dish
-        </motion.button>
+        <div className="flex gap-3">
+          <motion.button
+            onClick={() => generateUpdatedMenuFile(dishes)}
+            className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Upload className="h-4 w-4" />
+            Export Data
+          </motion.button>
+          <motion.button
+            onClick={handleAddNew}
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Plus className="h-4 w-4" />
+            Add New Dish
+          </motion.button>
+        </div>
       </div>
 
       {/* Dishes List */}
