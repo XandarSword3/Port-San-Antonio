@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Removed output: 'export' to enable API routes for Netlify Functions
-  trailingSlash: true,
-  skipTrailingSlashRedirect: true,
   images: {
     domains: ['localhost', 'port-san-antonio.vercel.app'],
     formats: ['image/webp', 'image/avif'],
