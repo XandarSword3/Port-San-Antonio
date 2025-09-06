@@ -68,7 +68,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
             Admin Login
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            Port San Antonio Resort
+            Port Antonio Resort
           </p>
         </div>
 

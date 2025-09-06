@@ -4,12 +4,12 @@ console.log('Testing Arabic translations...')
 // Test basic translations
 const testTranslations = {
   en: {
-    siteTitle: 'Port San Antonio Resort',
+    siteTitle: 'Port Antonio Resort',
     welcomeTo: 'Welcome to',
     menu: 'Menu'
   },
   ar: {
-    siteTitle: 'منتجع بورت سان أنطونيو',
+    siteTitle: 'منتجع بورت أنطونيو',
     welcomeTo: 'مرحباً بكم في',
     menu: 'القائمة'
   }

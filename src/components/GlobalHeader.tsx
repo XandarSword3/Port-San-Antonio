@@ -67,7 +67,7 @@ export default function GlobalHeader() {
           <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-beach-dark-text hover:text-resort-500 dark:hover:text-beach-dark-accent transition-colors accent-element">
             <img 
               src="/Photos/Logo.jpg" 
-              alt="Port San Antonio Resort Logo" 
+              alt="Port Antonio Resort Logo" 
               className="w-10 h-10 rounded-lg object-cover shadow-sm"
             />
             <span>{t('siteTitle')}</span>

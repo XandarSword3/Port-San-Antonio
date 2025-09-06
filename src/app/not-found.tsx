@@ -83,7 +83,7 @@ export default function NotFound() {
           transition={{ duration: 0.5, delay: 0.7 }}
           className="mt-12 text-sm text-gray-500 dark:text-gray-400"
         >
-          <p>Port San Antonio Resort</p>
+          <p>Port Antonio Resort</p>
           <p>Experience luxury dining and hospitality</p>
         </motion.div>
       </motion.div>

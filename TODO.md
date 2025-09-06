@@ -1,4 +1,4 @@
-# TODO - Port San Antonio Resort Menu Page
+# TODO - Port Antonio Resort Menu Page
 
 ## 🚀 Immediate Priorities (Next 2-4 weeks)
 
