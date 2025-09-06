@@ -158,12 +158,9 @@ export default function SideRail({ ads }: SideRailProps) {
                     <h3 className="text-lg font-semibold text-white">
                       {ads[currentAdIndex].title}
                     </h3>
-                    <p className="text-sm text-white/90">
-                      {ads[currentAdIndex].description}
-                    </p>
-                    {ads[currentAdIndex].link && (
+                    {ads[currentAdIndex].url && (
                       <a
-                        href={ads[currentAdIndex].link}
+                        href={ads[currentAdIndex].url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-2 inline-flex items-center text-sm text-blue-300 hover:text-blue-200"
