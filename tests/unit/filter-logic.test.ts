@@ -14,7 +14,6 @@ const mockDishes: Dish[] = [
     dietTags: ['vegetarian', 'vegan'],
     allergens: [],
     calories: null,
-    popularity: 40,
     available: true,
     sponsored: false
   },
@@ -30,7 +29,6 @@ const mockDishes: Dish[] = [
     dietTags: [],
     allergens: ['gluten'],
     calories: null,
-    popularity: 80,
     available: true,
     sponsored: false
   },
@@ -45,7 +43,6 @@ const mockDishes: Dish[] = [
     dietTags: ['vegetarian'],
     allergens: ['dairy'],
     calories: null,
-    popularity: 58,
     available: true,
     sponsored: false
   },
@@ -60,7 +57,6 @@ const mockDishes: Dish[] = [
     dietTags: ['vegetarian'],
     allergens: [],
     calories: null,
-    popularity: 30,
     available: false,
     sponsored: false
   }
@@ -244,7 +240,7 @@ describe('Filter Logic', () => {
 
       const result = filterDishes(mockDishes, filters)
       expect(result).toHaveLength(3) // edamame ($5), greek-fusion ($10), unavailable-dish ($8)
-      expect(result.every(dish => dish.price <= 10)).toBe(true)
+      expect(result.every(dish => dish.price != null && dish.price <= 10)).toBe(true)
     })
 
     it('should filter by price $11-$20', () => {

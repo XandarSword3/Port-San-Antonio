@@ -1,0 +1,33 @@
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Resort Logo Design -->
+  <defs>
+    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="palmGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#228B22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#006400;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E90FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066CC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sun -->
+  <circle cx="15" cy="15" r="8" fill="url(#sunGradient)" />
+  <path d="M15 3v4M15 23v4M27 15h-4M7 15H3M24.5 6.5l-2.8 2.8M10.3 20.7l-2.8 2.8M24.5 23.5l-2.8-2.8M10.3 9.3l-2.8-2.8" stroke="url(#sunGradient)" stroke-width="1.5" stroke-linecap="round" />
+  
+  <!-- Palm Tree -->
+  <ellipse cx="35" cy="30" rx="3" ry="8" fill="#8B4513" />
+  <path d="M32 22c-2-2 0-8 6-6M38 22c2-2 0-8-6-6M35 20c0-4 3-6 6-4M35 20c0-4-3-6-6-4" fill="url(#palmGradient)" />
+  
+  <!-- Waves -->
+  <path d="M50 25c3-2 6-2 9 0s6 2 9 0M50 30c3-2 6-2 9 0s6 2 9 0M50 35c3-2 6-2 9 0s6 2 9 0" stroke="url(#waveGradient)" stroke-width="2" fill="none" />
+  
+  <!-- Text -->
+  <text x="75" y="18" font-family="serif" font-size="12" font-weight="bold" fill="#1E40AF">PORT SAN</text>
+  <text x="75" y="32" font-family="serif" font-size="10" font-weight="normal" fill="#059669">ANTONIO</text>
+</svg>

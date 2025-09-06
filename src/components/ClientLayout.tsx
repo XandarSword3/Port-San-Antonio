@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { CurrencyProvider } from '@/contexts/CurrencyContext'
 import { CartProvider } from '@/contexts/CartContext'
+import { LoadingProvider, useLoading } from '@/contexts/LoadingContext'
 import GlobalHeader from '@/components/GlobalHeader'
 import BackToTop from '@/components/BackToTop'
 import Footer from '@/components/Footer'
@@ -13,45 +14,76 @@ import LebaneseDecor from '@/components/LebaneseDecor'
 import BeachAmbience from '@/components/BeachAmbience'
 import ReducedMotionToggle from '@/components/ReducedMotionToggle'
 import ClickFeedback, { useClickFeedback } from '@/components/ClickFeedback'
+import FloatingBeachElements from '@/components/FloatingBeachElements'
+import EnhancedWaveAnimation from '@/components/EnhancedWaveAnimation'
+import SandParticles from '@/components/SandParticles'
+import SubtlePageTransition from '@/components/SubtlePageTransition'
+import WaveLoader from '@/components/WaveLoader'
+
+const ClientLayoutContent = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
+  const { clickFeedback, addClickFeedback, clearClickFeedback } = useClickFeedback()
+  const { isInitialLoading, setInitialLoadingComplete } = useLoading()
+
+  const handleClick = (event: React.MouseEvent) => {
+    addClickFeedback(event)
+  }
+
+  if (isInitialLoading) {
+    return <WaveLoader onComplete={setInitialLoadingComplete} />
+  }
+
+  return (
+    <>
+      <GlobalHeader />
+      <FloatingBeachElements />
+      <SandParticles />
+      <SubtlePageTransition>
+        <main className="pt-16 min-h-screen relative" onClick={handleClick}>
+          <LebaneseDecor />
+          <div className="pointer-events-auto relative z-10">
+            {children}
+          </div>
+          <SeaweedDecor />
+          <div className="absolute inset-x-0 bottom-0 z-0">
+            <OceanDecor />
+          </div>
+          <EnhancedWaveAnimation />
+          <BackToTop />
+        </main>
+      </SubtlePageTransition>
+      <Footer />
+      <BeachAmbience />
+      <ReducedMotionToggle />
+      {clickFeedback && (
+        <ClickFeedback
+          x={clickFeedback.x}
+          y={clickFeedback.y}
+          onComplete={clearClickFeedback}
+        />
+      )}
+    </>
+  )
+}
 
 export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { clickFeedback, addClickFeedback, clearClickFeedback } = useClickFeedback()
-
-  const handleClick = (event: React.MouseEvent) => {
-    addClickFeedback(event)
-  }
-
   return (
     <ThemeProvider>
       <LanguageProvider>
         <CurrencyProvider>
           <CartProvider>
-            <GlobalHeader />
-            <main className="pt-16 min-h-screen relative" onClick={handleClick}>
-              <LebaneseDecor />
-              <div className="pointer-events-auto relative z-10">
+            <LoadingProvider>
+              <ClientLayoutContent>
                 {children}
-              </div>
-              <SeaweedDecor />
-              <div className="absolute inset-x-0 bottom-0 z-0">
-                <OceanDecor />
-              </div>
-              <BackToTop />
-            </main>
-            <Footer />
-            <BeachAmbience />
-            <ReducedMotionToggle />
-            {clickFeedback && (
-              <ClickFeedback
-                x={clickFeedback.x}
-                y={clickFeedback.y}
-                onComplete={clearClickFeedback}
-              />
-            )}
+              </ClientLayoutContent>
+            </LoadingProvider>
           </CartProvider>
         </CurrencyProvider>
       </LanguageProvider>

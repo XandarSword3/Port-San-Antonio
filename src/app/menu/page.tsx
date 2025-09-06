@@ -13,8 +13,10 @@ import QuickOrderModal from '@/components/QuickOrderModal'
 import SideRail from '@/components/SideRail'
 import MobileBanner from '@/components/MobileBanner'
 import MenuSkeleton from '@/components/MenuSkeleton'
+import BeachLoading from '@/components/BeachLoading'
 import SearchInput from '@/components/SearchInput'
 import BackButton from '@/components/BackButton'
+import PageTransition from '@/components/PageTransition'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translateCategory } from '@/lib/dishTranslations'
 
@@ -37,6 +39,11 @@ export default function MenuPage() {
   const [quickOrderModalOpen, setQuickOrderModalOpen] = useState(false)
   const [selectedDishForOrder, setSelectedDishForOrder] = useState<Dish | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
 
   // Check admin status
   useEffect(() => {
@@ -322,27 +329,29 @@ export default function MenuPage() {
   }, [filteredDishes, categories])
 
   if (isLoading) {
-    return <MenuSkeleton />
+    return <BeachLoading isLoading={true} message="Loading delicious menu..." />
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <PageTransition type="menu">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile Banner */}
       <MobileBanner ads={ads} />
 
       {/* Header */}
-      <div className="sticky top-16 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="px-4 py-4">
+      <div className="sticky top-16 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="px-3 sm:px-4 py-3 sm:py-4">
           {/* Title Row */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
             <BackButton />
-            <div className="text-center flex-1">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="text-center flex-1 px-2">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                 {t('menu')}
               </h1>
               {isAdmin && usingAdminData && (
                 <div className="text-xs text-orange-600 dark:text-orange-400 mt-1 font-medium flex items-center justify-center gap-2">
-                  ⚠️ Showing admin changes (localStorage)
+                  <span className="hidden sm:inline">⚠️ Showing admin changes (localStorage)</span>
+                  <span className="sm:hidden">⚠️ Admin mode</span>
                   <button
                     onClick={() => {
                       localStorage.removeItem('menuData')
@@ -360,8 +369,8 @@ export default function MenuPage() {
           </div>
 
           {/* Search and Filter Row */}
-          <div className="flex gap-3 items-center">
-            <div className="flex-1">
+          <div className="flex gap-2 sm:gap-3 items-center">
+            <div className="flex-1 min-w-0">
               <SearchInput
                 value={filters.search}
                 onChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
@@ -370,12 +379,12 @@ export default function MenuPage() {
             </div>
             <button
               onClick={() => setFilterModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors shadow-sm"
+              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors shadow-sm text-sm sm:text-base shrink-0"
               data-testid="filter-button"
             >
               <Filter className="w-4 h-4" />
               {hasActiveFilters && (
-                <span className="bg-white text-primary-500 text-xs px-2 py-0.5 rounded-full font-medium">
+                <span className="bg-white text-primary-500 text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-medium">
                   {filters.activeDietFilters.length + (filters.availabilityOnly ? 1 : 0) + (filters.priceBucket ? 1 : 0)}
                 </span>
               )}
@@ -395,32 +404,36 @@ export default function MenuPage() {
       />
 
       {/* Filter Chips */}
-      <FilterChips
-        filters={dietFilterOptions}
-        onFilterToggle={toggleDietFilter}
-        onClearAll={clearAllFilters}
-        hasActiveFilters={hasActiveFilters}
-        isOpen={true}
-        availabilityOnly={filters.availabilityOnly}
-        onAvailabilityToggle={() => setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))}
-        priceBucket={filters.priceBucket}
-        onPriceBucketChange={(bucket) => setFilters(prev => ({ ...prev, priceBucket: bucket }))}
-        dietCounts={dietCounts}
-      />
+      <div className="px-3 sm:px-4 mt-4">
+        <FilterChips
+          filters={dietFilterOptions}
+          onFilterToggle={toggleDietFilter}
+          onClearAll={clearAllFilters}
+          hasActiveFilters={hasActiveFilters}
+          isOpen={true}
+          availabilityOnly={filters.availabilityOnly}
+          onAvailabilityToggle={() => setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))}
+          priceBucket={filters.priceBucket}
+          onPriceBucketChange={(bucket) => setFilters(prev => ({ ...prev, priceBucket: bucket }))}
+          dietCounts={dietCounts}
+        />
+      </div>
 
       {/* Main Content */}
-      <div className="px-4 py-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <SideRail
-                ads={[]}
-              />
+      <div className="px-3 sm:px-4 py-4 sm:py-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6">
+            {/* Sidebar - Hidden on mobile and tablet, visible on larger screens */}
+            <div className="hidden xl:block xl:col-span-1">
+              <div className="sticky top-48 space-y-4">
+                <SideRail
+                  ads={[]}
+                />
+              </div>
             </div>
 
-            {/* Menu Content */}
-            <div className="lg:col-span-3">
+            {/* Menu Content - Full width on mobile/tablet, 3/4 on desktop */}
+            <div className="xl:col-span-3">
               {Object.keys(dishesByCategory).length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-500 dark:text-gray-400 text-lg">
@@ -467,6 +480,7 @@ export default function MenuPage() {
           dish={selectedDishForOrder}
         />
       )}
-    </div>
+      </div>
+    </PageTransition>
   )
 }

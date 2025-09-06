@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Filter, Sliders, DollarSign, Leaf, Clock, Star } from 'lucide-react'
+import { X, Filter, Sliders, DollarSign, Leaf, Clock, Star, Waves, Shell, Fish, Palmtree } from 'lucide-react'
 import { FilterState, DietFilter } from '@/types'
 import { EASING, DURATION } from '@/lib/animation'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -25,15 +25,29 @@ export default function FilterModal({
   dietCounts
 }: FilterModalProps) {
   const { t, language } = useLanguage()
-  const [localFilters, setLocalFilters] = useState<FilterState>(filters)
 
-  useEffect(() => {
-    setLocalFilters(filters)
-  }, [filters])
+  const handleDietFilterToggle = (filterId: string) => {
+    console.log('FilterModal: Toggling diet filter:', filterId)
+    const wasActive = filters.activeDietFilters.includes(filterId)
+    const newActiveDietFilters = wasActive
+      ? filters.activeDietFilters.filter(id => id !== filterId)
+      : [...filters.activeDietFilters, filterId]
+    
+    console.log('FilterModal: Previous filters:', filters.activeDietFilters)
+    console.log('FilterModal: New filters:', newActiveDietFilters)
+    
+    onFiltersChange({
+      ...filters,
+      activeDietFilters: newActiveDietFilters
+    })
+  }
 
-  const handleApplyFilters = () => {
-    onFiltersChange(localFilters)
-    onClose()
+  const handleAvailabilityToggle = () => {
+    onFiltersChange({ ...filters, availabilityOnly: !filters.availabilityOnly })
+  }
+
+  const handlePriceBucketChange = (bucket: 'lte10' | 'btw11_20' | 'gt20' | null) => {
+    onFiltersChange({ ...filters, priceBucket: bucket })
   }
 
   const handleResetFilters = () => {
@@ -44,26 +58,12 @@ export default function FilterModal({
       availabilityOnly: false,
       priceBucket: null,
     }
-    setLocalFilters(resetFilters)
     onFiltersChange(resetFilters)
     onClose()
   }
 
-  const handleDietFilterToggle = (filterId: string) => {
-    setLocalFilters(prev => ({
-      ...prev,
-      activeDietFilters: prev.activeDietFilters.includes(filterId)
-        ? prev.activeDietFilters.filter(id => id !== filterId)
-        : [...prev.activeDietFilters, filterId]
-    }))
-  }
-
-  const handleAvailabilityToggle = () => {
-    setLocalFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))
-  }
-
-  const handlePriceBucketChange = (bucket: 'lte10' | 'btw11_20' | 'gt20' | null) => {
-    setLocalFilters(prev => ({ ...prev, priceBucket: bucket }))
+  const handleApplyFilters = () => {
+    onClose()
   }
 
   const getPriceBucketLabel = (bucket: string) => {
@@ -93,14 +93,44 @@ export default function FilterModal({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Enhanced Beach-themed Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-gradient-to-b from-sky-900/70 via-blue-900/70 to-blue-800/70 backdrop-blur-sm z-[100]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-          />
+          >
+            {/* Floating beach elements in background */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {[Waves, Shell, Fish, Palmtree].map((Icon, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0, rotate: 0 }}
+                  animate={{ 
+                    opacity: [0, 0.1, 0],
+                    scale: [0, 1, 0],
+                    rotate: [0, 180, 360],
+                    x: [0, Math.random() * 100 - 50],
+                    y: [0, Math.random() * 100 - 50]
+                  }}
+                  transition={{
+                    duration: 8,
+                    delay: i * 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute"
+                  style={{
+                    left: `${20 + i * 20}%`,
+                    top: `${10 + i * 15}%`
+                  }}
+                >
+                  <Icon className="w-16 h-16 text-white/5" />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
           {/* Modal */}
           <motion.div
@@ -153,10 +183,10 @@ export default function FilterModal({
                         <button
                           key={bucket}
                           onClick={() => handlePriceBucketChange(
-                            localFilters.priceBucket === bucket ? null : bucket
+                            filters.priceBucket === bucket ? null : bucket
                           )}
                           className={`p-3 rounded-xl border-2 transition-all duration-200 ${
-                            localFilters.priceBucket === bucket
+                            filters.priceBucket === bucket
                               ? 'border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300'
                               : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                           }`}
@@ -180,7 +210,7 @@ export default function FilterModal({
                     <button
                       onClick={handleAvailabilityToggle}
                       className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
-                        localFilters.availabilityOnly
+                        filters.availabilityOnly
                           ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
                           : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                       }`}
@@ -188,11 +218,11 @@ export default function FilterModal({
                       <div className="flex items-center justify-between">
                         <span className="font-medium">Available Items Only</span>
                         <div className={`w-5 h-5 rounded-full border-2 transition-colors duration-200 ${
-                          localFilters.availabilityOnly
+                          filters.availabilityOnly
                             ? 'border-blue-500 bg-blue-500'
                             : 'border-gray-300 dark:border-gray-600'
                         }`}>
-                          {localFilters.availabilityOnly && (
+                          {filters.availabilityOnly && (
                             <div className="w-full h-full rounded-full bg-white scale-75" />
                           )}
                         </div>
@@ -214,7 +244,7 @@ export default function FilterModal({
                           key={filter.id}
                           onClick={() => handleDietFilterToggle(filter.id)}
                           className={`p-3 rounded-xl border-2 transition-all duration-200 ${
-                            localFilters.activeDietFilters.includes(filter.id)
+                            filters.activeDietFilters.includes(filter.id)
                               ? 'border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300'
                               : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                           }`}

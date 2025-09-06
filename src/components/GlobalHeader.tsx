@@ -45,7 +45,7 @@ export default function GlobalHeader() {
 
   return (
     <>
-      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-6 py-3 bg-white/80 dark:bg-beach-dark-bg/90 backdrop-blur-md z-[100] border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-sm">
+      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-6 py-3 bg-white/90 dark:bg-beach-dark-bg/95 backdrop-blur-md z-[110] border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-lg">
         <div className="flex items-center gap-4">
           {/* Hamburger Menu */}
           <button 
@@ -63,10 +63,13 @@ export default function GlobalHeader() {
             <Menu className="w-5 h-5" />
           </button>
           
-          {/* Site Title */}
+          {/* Site Logo & Title */}
           <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-beach-dark-text hover:text-resort-500 dark:hover:text-beach-dark-accent transition-colors accent-element">
-            <Home className="w-5 h-5 text-blue-500" />
-            <TreePine className="w-5 h-5 text-green-600" />
+            <img 
+              src="/Photos/Logo.jpg" 
+              alt="Port San Antonio Resort Logo" 
+              className="w-10 h-10 rounded-lg object-cover shadow-sm"
+            />
             <span>{t('siteTitle')}</span>
             <Mountain className="w-4 h-4 text-amber-500" />
           </Link>

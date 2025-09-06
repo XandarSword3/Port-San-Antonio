@@ -53,7 +53,7 @@ export default function FilterChips({
     <motion.div
       id="filter-panel"
       data-testid="filter-panel"
-      className="flex flex-wrap items-center gap-2 mt-4 p-4 bg-white dark:bg-beach-dark-card rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+      className="flex flex-wrap items-center gap-2 p-4 bg-white dark:bg-beach-dark-card rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}

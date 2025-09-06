@@ -131,7 +131,7 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
 
   test('Menu page loads with categories and dishes', async ({ page }: { page: Page }) => {
     // Set up console error listener before navigation
-    const consoleErrors = []
+    const consoleErrors: string[] = []
     page.on('console', (msg: any) => {
       if (msg.type() === 'error') {
         const errorText = msg.text()
@@ -227,7 +227,7 @@ test.describe('San Antonio Resort - Smoke Tests', () => {
     
     // Check if the click handler was called by looking for console logs
     const logs = await page.evaluate(() => {
-      return window.console.logs || []
+      return (window as any).console.logs || []
     })
     console.log('Console logs after click:', logs)
     

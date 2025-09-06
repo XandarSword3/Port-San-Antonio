@@ -11,6 +11,8 @@ import CategoryManager from '@/components/CategoryManager'
 import AdManager from '@/components/AdManager'
 import CurrencySettings from '@/components/CurrencySettings'
 import ContactManager from '@/components/ContactManager'
+import PageTransition from '@/components/PageTransition'
+import { isAuthenticated, verifyAuthentication, logout, getCurrentUser } from '@/lib/authUtils'
 
 // Mock data - in real app this would come from API
 import mockData from '../../../data/dishes.json'
@@ -18,35 +20,66 @@ import mockData from '../../../data/dishes.json'
 type AdminView = 'dashboard' | 'menu' | 'categories' | 'ads' | 'currency' | 'contact'
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
+  const [isVerifying, setIsVerifying] = useState(true)
   const [currentView, setCurrentView] = useState<AdminView>('dashboard')
   const [data, setData] = useState<AppData>(mockData as AppData)
 
   const handleLogin = () => {
-    setIsAuthenticated(true)
-    sessionStorage.setItem('adminAuthenticated', 'true')
+    setIsAuth(true)
   }
 
-  const handleLogout = () => {
-    setIsAuthenticated(false)
+  const handleLogout = async () => {
+    await logout()
+    setIsAuth(false)
     setCurrentView('dashboard')
-    sessionStorage.removeItem('adminAuthenticated')
   }
 
-  // Check for existing admin session on load
+  // Verify authentication on load
   useEffect(() => {
-    const adminSession = sessionStorage.getItem('adminAuthenticated')
-    if (adminSession === 'true') {
-      setIsAuthenticated(true)
+    const checkAuth = async () => {
+      setIsVerifying(true)
+      
+      // Check client-side auth first
+      const clientAuth = isAuthenticated()
+      
+      if (clientAuth) {
+        // Verify with server
+        const serverAuth = await verifyAuthentication()
+        setIsAuth(serverAuth)
+        
+        if (!serverAuth) {
+          // Clear invalid session
+          sessionStorage.removeItem('adminAuthenticated')
+          sessionStorage.removeItem('adminUser')
+        }
+      }
+      
+      setIsVerifying(false)
     }
+    
+    checkAuth()
   }, [])
 
-  if (!isAuthenticated) {
+  // Show loading while verifying
+  if (isVerifying) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white mb-4"></div>
+          <p className="text-white text-lg">Verifying authentication...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isAuth) {
     return <AdminLogin onLogin={handleLogin} />
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
+    <PageTransition type="admin">
+      <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-yellow-600">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -234,6 +267,7 @@ export default function AdminPage() {
           </main>
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   )
 }

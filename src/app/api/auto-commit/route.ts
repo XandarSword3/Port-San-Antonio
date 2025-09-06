@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { AuthService } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    // Only allow in development or with proper authentication
-    const adminSession = request.headers.get('admin-session')
-    if (!adminSession && process.env.NODE_ENV === 'production') {
+    // Verify authentication
+    const authToken = request.cookies.get('auth-token')?.value || 
+                      AuthService.extractTokenFromHeader(request.headers.get('authorization'))
+
+    if (!authToken || !AuthService.verifyAdminToken(authToken)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -15,12 +18,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare the GitHub API request
-    const token = process.env.GITHUB_TOKEN
+    const githubToken = process.env.GITHUB_TOKEN
     const repo = process.env.GITHUB_REPO || 'XandarSword3/Port-San-Antonio'
     const branch = process.env.GITHUB_BRANCH || 'main'
     const path = 'public/menu-data.json'
 
-    if (!token) {
+    if (!githubToken) {
       return NextResponse.json({ error: 'GitHub token not configured' }, { status: 500 })
     }
 
@@ -31,7 +34,7 @@ export async function POST(request: NextRequest) {
         `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${githubToken}`,
             'Accept': 'application/vnd.github.v3+json',
             'User-Agent': 'Port-San-Antonio-Admin'
           }
@@ -55,7 +58,7 @@ export async function POST(request: NextRequest) {
       {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${githubToken}`,
           'Accept': 'application/vnd.github.v3+json',
           'Content-Type': 'application/json',
           'User-Agent': 'Port-San-Antonio-Admin'

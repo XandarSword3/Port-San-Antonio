@@ -23,18 +23,29 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     setError('')
 
     try {
-      // Load auth data from public/auth.json
-      const response = await fetch('/auth.json')
-      const authData = await response.json()
-      
-      if (credentials.username === authData.admin.username && 
-          credentials.password === authData.admin.password) {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Store auth state in sessionStorage for persistence
+        sessionStorage.setItem('adminAuthenticated', 'true')
+        sessionStorage.setItem('adminUser', JSON.stringify(data.user))
+        
+        // Call parent callback
         onLogin()
       } else {
-        setError('Invalid username or password')
+        setError(data.error || 'Authentication failed')
       }
-    } catch (err) {
-      setError('Authentication failed. Please try again.')
+    } catch (error) {
+      setError('Connection error. Please try again.')
+      console.error('Login error:', error)
     } finally {
       setLoading(false)
     }
@@ -129,16 +140,11 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
           </motion.button>
         </form>
 
-        {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-            <strong>Demo Credentials:</strong>
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            Username: <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">admin</code>
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            Password: <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">password123</code>
+        {/* Security Notice */}
+        <div className="mt-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+          <p className="text-sm text-red-700 dark:text-red-300 text-center">
+            <strong>🔒 Secure Access Required</strong><br/>
+            Contact your administrator for credentials
           </p>
         </div>
       </motion.div>

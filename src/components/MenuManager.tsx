@@ -110,8 +110,8 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'admin-session': sessionStorage.getItem('adminAuthenticated') || ''
         },
+        credentials: 'include', // Include httpOnly cookies
         body: JSON.stringify({ menuData })
       })
 

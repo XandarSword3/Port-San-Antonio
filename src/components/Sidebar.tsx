@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { X, Facebook, Instagram, Youtube, Home, Menu, Settings, Mail } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useTransitionRouter } from '@/hooks/useTransitionRouter'
 
 interface SidebarProps {
   isOpen: boolean
@@ -14,6 +15,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const sidebarRef = useRef<HTMLDivElement>(null)
   const { t } = useLanguage()
+  const { navigateWithTransition } = useTransitionRouter()
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -95,14 +97,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <Menu className="w-5 h-5" />
                   <span>{t('menu')}</span>
                 </Link>
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted text-muted"
-                  onClick={onClose}
+                <button
+                  onClick={() => {
+                    onClose()
+                    navigateWithTransition('/admin', 'admin')
+                  }}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted text-muted transition-all duration-300 hover:scale-105 hover:shadow-md"
                 >
                   <Settings className="w-5 h-5" />
                   <span>{t('admin')}</span>
-                </Link>
+                </button>
                 <Link
                   href="#contact"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"

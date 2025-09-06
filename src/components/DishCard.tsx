@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Info, Clock, AlertCircle, Star, ShoppingCart, Users, Leaf, Heart, Wheat, Fish as FishIcon, TreePine } from 'lucide-react'
+import { Info, Clock, AlertCircle, Star, ShoppingCart, Users, Leaf, Heart, Wheat, Fish as FishIcon, TreePine, Waves, Shell } from 'lucide-react'
 import { Dish } from '@/types'
 import { formatPrice } from '@/lib/utils'
 import { getFoodImage, generateImageSrcSet, getImageDimensions } from '@/lib/imageUtils'
@@ -201,13 +201,17 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
     <>
       <motion.article
         className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-all duration-500 will-change-transform border border-gray-200 dark:border-gray-700 card-responsive hover:border-resort-500 dark:hover:border-beach-dark-accent backdrop-blur-sm"
-        whileHover={{
-          scale: 1.02,
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.3)',
+        transition={{ 
+          duration: DURATION.medium, 
+          ease: EASING.soft
         }}
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: DURATION.medium, ease: EASING.soft }}
+        whileHover={{
+          scale: 1.03,
+          y: -5,
+          boxShadow: '0 25px 50px -12px rgba(59, 130, 246, 0.3), 0 0 0 1px rgba(245, 158, 11, 0.4)',
+          filter: 'brightness(1.05)',
+          transition: { duration: 0.3, ease: "easeOut" }
+        }}
         viewport={{ once: true }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
