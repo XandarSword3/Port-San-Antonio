@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }: { page: Page }) => {
   await page.setViewportSize({ width: 1280, height: 720 })
 })
 
-test.describe('San Antonio Resort - Smoke Tests', () => {
+test.describe('Port Antonio Resort - Smoke Tests', () => {
   test('Home page loads with hero and CTA', async ({ page }: { page: Page }) => {
     await page.goto('http://localhost:3003')
     

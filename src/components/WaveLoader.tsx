@@ -106,7 +106,7 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
               >
                 <img 
                   src="/Photos/Logo.jpg" 
-                  alt="Port San Antonio Resort" 
+                  alt="Port Antonio Resort" 
                   className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto rounded-full shadow-2xl border-4 border-white/30"
                 />
               </motion.div>
@@ -118,7 +118,7 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
                 transition={{ delay: 0.3, duration: 0.6 }}
                 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 sm:mb-4 drop-shadow-lg"
               >
-                Port San Antonio Resort
+                Port Antonio Resort
               </motion.h1>
 
               {/* Loading text */}

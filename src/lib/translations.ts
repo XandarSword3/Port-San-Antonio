@@ -121,7 +121,7 @@ export type TranslationKeys =
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
     // Navigation & Common
-    siteTitle: 'Port San Antonio Resort',
+    siteTitle: 'Port Antonio Resort',
     welcomeTo: 'Welcome to',
     experienceLuxury: 'Experience luxury like never before at our beachside paradise',
     exploreMenu: 'Explore Our Menu',
@@ -238,7 +238,7 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
   
   ar: {
     // Navigation & Common
-    siteTitle: 'منتجع بورت سان أنطونيو',
+    siteTitle: 'منتجع بورت أنطونيو',
     welcomeTo: 'مرحباً بكم في',
     experienceLuxury: 'اختبر الفخامة كما لم تختبرها من قبل في جنتنا على الشاطئ',
     exploreMenu: 'استكشف قائمتنا',
@@ -355,7 +355,7 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
   
   fr: {
     // Navigation & Common
-    siteTitle: 'Port San Antonio Resort',
+    siteTitle: 'Port Antonio Resort',
     welcomeTo: 'Bienvenue à',
     experienceLuxury: 'Découvrez le luxe comme jamais auparavant dans notre paradis en bord de mer',
     exploreMenu: 'Découvrir Notre Menu',

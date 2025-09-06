@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 /**
- * Comprehensive seed script for San Antonio Resort Menu
+ * Comprehensive seed script for Port Antonio Resort Menu
  * Generates missing images, thumbnails, and LQIP placeholders
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Sample data structure with all San Antonio menu items
+// Sample data structure with all Port Antonio menu items
 const sampleData = {
   categories: [
     { id: "starters", name: "Starters", order: 1 },
@@ -236,7 +236,7 @@ function createImageFiles() {
       </defs>
       <rect width="1200" height="800" fill="url(#heroGradient)"/>
       <text x="600" y="300" font-family="Arial, sans-serif" font-size="48" text-anchor="middle" fill="white" font-weight="bold">
-        Port San Antonio Resort
+        Port Antonio Resort
       </text>
       <text x="600" y="350" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">
         Luxury Dining Experience
@@ -255,7 +255,7 @@ function createImageFiles() {
 // Main execution
 function main() {
   try {
-    console.log('🚀 Starting San Antonio Resort Menu seed...\n');
+    console.log('🚀 Starting Port Antonio Resort Menu seed...\n');
 
     // Ensure data directory exists
     const dataDir = path.join(__dirname, '..', 'data');

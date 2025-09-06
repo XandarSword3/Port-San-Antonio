@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Port San Antonio Resort Menu Page project will be documented in this file.
+All notable changes to the Port Antonio Resort Menu Page project will be documented in this file.
 
 ## [0.1.0] - 2024-12-19
 

@@ -37,7 +37,7 @@ export default function Footer() {
             </p>
             <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               <MapPin className="w-4 h-4" />
-              <span>Port San Antonio, Mastita, Lebanon</span>
+              <span>Port Antonio, Mastita, Lebanon</span>
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export default function Footer() {
               </div>
               <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <Mail className="w-4 h-4" />
-                <span>info@portsanantonio.com</span>
+                <span>info@portantonio.com</span>
               </div>
               <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <Clock className="w-4 h-4" />
@@ -133,7 +133,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className={`${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              © {currentYear} Port San Antonio Resort. {t('copyright')} — Relax on our Lebanese sands
+              © {currentYear} Port Antonio Resort. {t('copyright')} — Relax on our Lebanese sands
             </p>
             <div className={`flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               <Globe className="w-4 h-4" />

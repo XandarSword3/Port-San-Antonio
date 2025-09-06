@@ -34,7 +34,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 text-lg font-bold text-white hover:text-resort-300 transition-colors">
           <img 
             src="/Photos/Logo.jpg" 
-            alt="Port San Antonio Resort Logo" 
+            alt="Port Antonio Resort Logo" 
             className="w-10 h-10 rounded-lg object-cover shadow-lg border-2 border-white/20"
           />
           {t('siteTitle')}
