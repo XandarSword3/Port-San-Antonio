@@ -84,7 +84,8 @@
       ],
       "currency": "USD",
       "image": "/seed/beirut.jpg",
-      "available": true
+      "available": true,
+      "price": 5
     },
     {
       "id": "pizza-ham",
