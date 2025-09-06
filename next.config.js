@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Remove static export for Netlify deployment with API routes
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   images: {
@@ -9,8 +9,7 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; img-src 'self' data: https:; sandbox;",
     unoptimized: true
-  },
-  // Removed deprecated experimental options
+  }
 }
 
 module.exports = nextConfig
