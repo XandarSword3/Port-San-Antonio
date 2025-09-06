@@ -150,7 +150,7 @@ export default function SideRail({ ads }: SideRailProps) {
               {ads[currentAdIndex] && (
                 <div className="aspect-square">
                   <img
-                    src={ads[currentAdIndex].imageUrl}
+                    src={ads[currentAdIndex].image}
                     alt={ads[currentAdIndex].title}
                     className="h-full w-full object-cover"
                   />
