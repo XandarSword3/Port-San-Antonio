@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   trailingSlash: true,
+  skipTrailingSlashRedirect: true,
   images: {
     domains: ['localhost', 'port-san-antonio.vercel.app'],
     formats: ['image/webp', 'image/avif'],
