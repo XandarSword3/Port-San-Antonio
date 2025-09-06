@@ -20,6 +20,7 @@ import SandParticles from '@/components/SandParticles'
 import SubtlePageTransition from '@/components/SubtlePageTransition'
 import WaveLoader from '@/components/WaveLoader'
 import OfflineNotification from '@/components/OfflineNotification'
+import CartButton from '@/components/CartButton'
 
 const ClientLayoutContent = ({
   children,
@@ -55,6 +56,7 @@ const ClientLayoutContent = ({
           </div>
           <EnhancedWaveAnimation />
           <BackToTop />
+          <CartButton />
         </main>
       </SubtlePageTransition>
       <Footer />

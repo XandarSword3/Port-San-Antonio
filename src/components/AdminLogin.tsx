@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, User, Eye, EyeOff } from 'lucide-react'
+import { User as UserType } from '@/types'
+import { loginUser } from '@/lib/auth'
 
 interface AdminLoginProps {
-  onLogin: () => void
+  onLogin: (user: UserType) => void
 }
 
 export default function AdminLogin({ onLogin }: AdminLoginProps) {
@@ -23,25 +25,13 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     setError('')
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials)
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        // Store auth state in sessionStorage for persistence
-        sessionStorage.setItem('adminAuthenticated', 'true')
-        sessionStorage.setItem('adminUser', JSON.stringify(data.user))
-        
-        // Call parent callback
-        onLogin()
+      const user = await loginUser(credentials.username, credentials.password);
+      
+      if (user) {
+        // Call parent callback with user
+        onLogin(user)
       } else {
-        setError(data.error || 'Authentication failed')
+        setError('Invalid username or password')
       }
     } catch (error) {
       setError('Connection error. Please try again.')

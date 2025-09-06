@@ -143,5 +143,67 @@ export async function generatePasswordHash(password: string): Promise<string> {
   return AuthService.hashPassword(password)
 }
 
+// Utility functions for components
+export const loginUser = async (username: string, password: string): Promise<User | null> => {
+  const token = await AuthService.authenticate(username, password);
+  
+  if (token) {
+    // Store token in localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('adminToken', token);
+    }
+    
+    // Get user info
+    const payload = AuthService.verifyToken(token);
+    if (payload) {
+      const user = AuthService.getUserById(payload.userId);
+      if (user) {
+        // Create audit log
+        AuthService.createAuditLog({
+          userId: user.id,
+          username: user.username,
+          action: 'login',
+          details: 'User logged in successfully'
+        });
+        return user;
+      }
+    }
+  }
+  
+  return null;
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+  if (typeof window === 'undefined') return null;
+  
+  const token = localStorage.getItem('adminToken');
+  if (!token) return null;
+  
+  const payload = AuthService.verifyToken(token);
+  if (!payload) return null;
+  
+  return AuthService.getUserById(payload.userId);
+};
+
+export const isAuthenticated = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  
+  const token = localStorage.getItem('adminToken');
+  if (!token) return false;
+  
+  const payload = AuthService.verifyToken(token);
+  return payload !== null;
+};
+
+export const logout = async (): Promise<void> => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('adminToken');
+  }
+};
+
+export const hasPermission = (role: UserRole, permission: string): boolean => {
+  return AuthService.hasPermission(role, permission);
+};
+
 // Default password is "admin123" - change this!
 export const DEFAULT_PASSWORD = 'admin123'
