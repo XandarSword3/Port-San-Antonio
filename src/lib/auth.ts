@@ -12,7 +12,7 @@ const USERS: User[] = [
     id: '1',
     username: 'admin',
     email: 'admin@portsanantonio.com',
-    role: 'owner',
+    role: 'admin',
     createdAt: new Date(),
     active: true
   },
@@ -21,6 +21,14 @@ const USERS: User[] = [
     username: 'worker',
     email: 'worker@portsanantonio.com',
     role: 'worker',
+    createdAt: new Date(),
+    active: true
+  },
+  {
+    id: '3',
+    username: 'owner',
+    email: 'owner@portsanantonio.com',
+    role: 'owner',
     createdAt: new Date(),
     active: true
   }
@@ -66,36 +74,27 @@ export class AuthService {
       return null
     }
 
-    // For now, use the existing admin password system
-    if (username === ADMIN_USERNAME) {
-      if (!ADMIN_PASSWORD_HASH) {
-        throw new Error('Admin password not configured')
-      }
-
-      // TEMPORARY: Allow the secure password to work
-      if (password === 'E9fCHhEG6NrN18UZ') {
-        console.log('TEMP: Password accepted directly')
-        return this.generateToken(user.id, user.username, user.role)
-      }
-
-      console.log('Verifying password "E9fCHhEG6NrN18UZ" against hash:', ADMIN_PASSWORD_HASH)
-      
-      const isValid = await this.verifyPassword(password, ADMIN_PASSWORD_HASH)
-      console.log('Password verification result:', isValid)
-      
-      if (!isValid) {
-        return null
-      }
-
-      return this.generateToken(user.id, user.username, user.role)
+    // Check credentials based on role
+    let isValid = false
+    
+    if (username === 'admin' && password === 'admin123') {
+      isValid = true
+    } else if (username === 'worker' && password === 'worker123') {
+      isValid = true
+    } else if (username === 'owner' && password === 'owner123') {
+      isValid = true
+    } else if (username === 'admin' && password === 'E9fCHhEG6NrN18UZ') {
+      // Keep existing secure password as backup
+      isValid = true
     }
 
-    // For other users, use a simple password for demo (in production, use proper hashing)
-    if (username === 'worker' && password === 'worker123') {
-      return this.generateToken(user.id, user.username, user.role)
+    if (!isValid) {
+      console.log('Invalid credentials')
+      return null
     }
 
-    return null
+    console.log('Authentication successful for:', username)
+    return this.generateToken(user.id, user.username, user.role)
   }
 
   // Extract token from Authorization header

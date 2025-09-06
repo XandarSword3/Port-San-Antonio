@@ -260,7 +260,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto modal-mobile"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 text-center">

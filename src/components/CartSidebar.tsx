@@ -94,7 +94,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3 }}
-              className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-800 shadow-xl z-50 flex flex-col"
+              className="fixed right-0 top-0 h-full w-96 max-w-full sm:w-96 bg-white dark:bg-gray-800 shadow-xl z-50 flex flex-col cart-sidebar-mobile"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600">

@@ -174,11 +174,12 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                   </button>
                   <button
                     onClick={() => {
-                      alert('Checkout functionality would be implemented here!')
+                      onClose();
+                      // User should open the cart sidebar for full checkout functionality
                     }}
                     className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors font-medium"
                   >
-                    Proceed to Checkout
+                    View Full Cart
                   </button>
                 </div>
               </div>

@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { CurrencyProvider } from '@/contexts/CurrencyContext'
 import { CartProvider } from '@/contexts/CartContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { LoadingProvider, useLoading } from '@/contexts/LoadingContext'
 import GlobalHeader from '@/components/GlobalHeader'
 import BackToTop from '@/components/BackToTop'
@@ -83,11 +84,13 @@ export default function ClientLayout({
       <LanguageProvider>
         <CurrencyProvider>
           <CartProvider>
-            <LoadingProvider>
-              <ClientLayoutContent>
-                {children}
-              </ClientLayoutContent>
-            </LoadingProvider>
+            <AuthProvider>
+              <LoadingProvider>
+                <ClientLayoutContent>
+                  {children}
+                </ClientLayoutContent>
+              </LoadingProvider>
+            </AuthProvider>
           </CartProvider>
         </CurrencyProvider>
       </LanguageProvider>

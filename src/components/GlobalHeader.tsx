@@ -3,21 +3,25 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, Globe, Sun, Moon, DollarSign, ShoppingCart, Waves, Shell, Anchor, Home, ShoppingBag, TreePine, Mountain } from 'lucide-react'
+import { Menu, Globe, Sun, Moon, DollarSign, ShoppingCart, Waves, Shell, Anchor, Home, ShoppingBag, TreePine, Mountain, LogOut, Lock } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { useCart } from '@/contexts/CartContext'
+import { useAuth } from '@/contexts/AuthContext'
 import Sidebar from '@/components/Sidebar'
 import CartModal from '@/components/CartModal'
+import LoginModal from '@/components/LoginModal'
 
 export default function GlobalHeader() {
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
   const { currency, setCurrency } = useCurrency()
   const { getTotalItems } = useCart()
+  const { isLoggedIn, userRole, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const pathname = usePathname()
 
   const toggleLanguage = () => {
@@ -83,14 +87,34 @@ export default function GlobalHeader() {
               <Anchor className="w-4 h-4" />
               {t('menu')}
             </Link>
-            {process.env.NEXT_PUBLIC_SHOW_ADMIN === 'true' && (
-              <Link 
-                href="/admin" 
-                className={`text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card ${pathname === '/admin' ? 'text-resort-500 dark:text-beach-dark-accent accent-element' : 'text-gray-700 dark:text-beach-dark-muted text-muted'} transition-colors`}
-                aria-label="Admin panel"
+            {isLoggedIn ? (
+              <div className="flex items-center gap-2">
+                <Link 
+                  href="/admin" 
+                  className={`text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card ${pathname === '/admin' ? 'text-resort-500 dark:text-beach-dark-accent accent-element' : 'text-gray-700 dark:text-beach-dark-muted text-muted'} transition-colors flex items-center gap-2`}
+                  aria-label="Admin panel"
+                >
+                  <Lock className="w-4 h-4" />
+                  {t('admin')} ({userRole})
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors flex items-center gap-2"
+                  aria-label="Logout"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowLoginModal(true)}
+                className="text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors flex items-center gap-2"
+                aria-label="Staff login"
               >
-                {t('admin')}
-              </Link>
+                <Lock className="w-4 h-4" />
+                Staff Login
+              </button>
             )}
           </nav>
         </div>
@@ -152,6 +176,9 @@ export default function GlobalHeader() {
       
       {/* Cart Modal */}
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      {/* Login Modal */}
+      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </>
   )
 }
