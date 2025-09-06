@@ -67,3 +67,70 @@ export interface FilterState {
   availabilityOnly?: boolean
   priceBucket?: 'lte10' | 'btw11_20' | 'gt20' | null
 }
+
+export type UserRole = 'guest' | 'worker' | 'admin' | 'owner'
+
+export interface User {
+  id: string
+  username: string
+  email?: string
+  role: UserRole
+  createdAt: Date
+  lastLogin?: Date
+  active: boolean
+}
+
+export interface AuthPayload {
+  userId: string
+  username: string
+  role: UserRole
+  iat: number
+  exp: number
+}
+
+export interface AuditLog {
+  id: string
+  userId: string
+  username: string
+  action: string
+  resource?: string
+  details?: any
+  timestamp: Date
+  ipAddress?: string
+  userAgent?: string
+}
+
+export const ROLE_PERMISSIONS = {
+  guest: {
+    canView: true,
+    canEdit: false,
+    canDelete: false,
+    canManageUsers: false,
+    canViewAnalytics: false,
+    canManageSettings: false
+  },
+  worker: {
+    canView: true,
+    canEdit: true,
+    canDelete: false,
+    canManageUsers: false,
+    canViewAnalytics: false,
+    canManageSettings: false
+  },
+  admin: {
+    canView: true,
+    canEdit: true,
+    canDelete: true,
+    canManageUsers: false,
+    canViewAnalytics: true,
+    canManageSettings: true
+  },
+  owner: {
+    canView: true,
+    canEdit: true,
+    canDelete: true,
+    canManageUsers: true,
+    canViewAnalytics: true,
+    canManageSettings: true
+  }
+} as const

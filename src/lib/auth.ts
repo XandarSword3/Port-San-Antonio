@@ -1,16 +1,30 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { UserRole, AuthPayload, User } from '@/types'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-jwt-key-for-production-change-this-to-something-secure'
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin'
 const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || '$2b$12$VAcSIB2OY1Ii8obqODSGK.rQP/MiKQfTcTGQa4vkNhEWcZmTc7rVm'
 
-export interface AuthPayload {
-  username: string
-  role: string
-  iat: number
-  exp: number
-}
+// In-memory user store (in production, this would be a database)
+const USERS: User[] = [
+  {
+    id: '1',
+    username: 'admin',
+    email: 'admin@portsanantonio.com',
+    role: 'owner',
+    createdAt: new Date(),
+    active: true
+  },
+  {
+    id: '2', 
+    username: 'worker',
+    email: 'worker@portsanantonio.com',
+    role: 'worker',
+    createdAt: new Date(),
+    active: true
+  }
+]
 
 export class AuthService {
   // Hash a password
@@ -24,9 +38,9 @@ export class AuthService {
   }
 
   // Generate JWT token
-  static generateToken(username: string, role: string = 'admin'): string {
+  static generateToken(userId: string, username: string, role: UserRole): string {
     return jwt.sign(
-      { username, role },
+      { userId, username, role },
       JWT_SECRET,
       { expiresIn: '24h' } // Token expires in 24 hours
     )
@@ -44,34 +58,44 @@ export class AuthService {
   // Authenticate user credentials
   static async authenticate(username: string, password: string): Promise<string | null> {
     console.log('Authentication attempt:', { username, passwordLength: password.length })
-    console.log('Expected username:', ADMIN_USERNAME)
-    console.log('Password hash available:', !!ADMIN_PASSWORD_HASH)
     
-    if (username !== ADMIN_USERNAME) {
-      console.log('Username mismatch')
+    // Find user
+    const user = USERS.find(u => u.username === username && u.active)
+    if (!user) {
+      console.log('User not found or inactive')
       return null
     }
 
-    if (!ADMIN_PASSWORD_HASH) {
-      throw new Error('Admin password not configured')
+    // For now, use the existing admin password system
+    if (username === ADMIN_USERNAME) {
+      if (!ADMIN_PASSWORD_HASH) {
+        throw new Error('Admin password not configured')
+      }
+
+      // TEMPORARY: Allow the secure password to work
+      if (password === 'E9fCHhEG6NrN18UZ') {
+        console.log('TEMP: Password accepted directly')
+        return this.generateToken(user.id, user.username, user.role)
+      }
+
+      console.log('Verifying password "E9fCHhEG6NrN18UZ" against hash:', ADMIN_PASSWORD_HASH)
+      
+      const isValid = await this.verifyPassword(password, ADMIN_PASSWORD_HASH)
+      console.log('Password verification result:', isValid)
+      
+      if (!isValid) {
+        return null
+      }
+
+      return this.generateToken(user.id, user.username, user.role)
     }
 
-    // TEMPORARY: Allow the secure password to work
-    if (password === 'E9fCHhEG6NrN18UZ') {
-      console.log('TEMP: Password accepted directly')
-      return this.generateToken(username, 'admin')
+    // For other users, use a simple password for demo (in production, use proper hashing)
+    if (username === 'worker' && password === 'worker123') {
+      return this.generateToken(user.id, user.username, user.role)
     }
 
-    console.log('Verifying password "E9fCHhEG6NrN18UZ" against hash:', ADMIN_PASSWORD_HASH)
-    
-    const isValid = await this.verifyPassword(password, ADMIN_PASSWORD_HASH)
-    console.log('Password verification result:', isValid)
-    
-    if (!isValid) {
-      return null
-    }
-
-    return this.generateToken(username, 'admin')
+    return null
   }
 
   // Extract token from Authorization header
@@ -85,7 +109,32 @@ export class AuthService {
   // Middleware to verify admin access
   static verifyAdminToken(token: string): boolean {
     const payload = this.verifyToken(token)
-    return payload !== null && payload.role === 'admin'
+    return payload !== null && ['admin', 'owner'].includes(payload.role)
+  }
+
+  // Check if user has specific permission
+  static hasPermission(role: UserRole, permission: string): boolean {
+    const { ROLE_PERMISSIONS } = require('@/types')
+    return ROLE_PERMISSIONS[role]?.[permission] || false
+  }
+
+  // Get user by ID
+  static getUserById(userId: string): User | null {
+    return USERS.find(u => u.id === userId) || null
+  }
+
+  // Get all users (admin/owner only)
+  static getAllUsers(): User[] {
+    return USERS
+  }
+
+  // Create audit log entry
+  static createAuditLog(log: Omit<import('@/types').AuditLog, 'id' | 'timestamp'>) {
+    // In production, this would save to a database
+    console.log('Audit Log:', {
+      ...log,
+      timestamp: new Date()
+    })
   }
 }
 

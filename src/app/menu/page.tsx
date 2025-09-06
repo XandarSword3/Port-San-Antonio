@@ -18,10 +18,13 @@ import SearchInput from '@/components/SearchInput'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
+import { OfflineStorage } from '@/lib/offlineStorage'
 import { translateCategory } from '@/lib/dishTranslations'
 
 export default function MenuPage() {
   const { t, language } = useLanguage()
+  const { isOnline } = useOnlineStatus()
   const [dishes, setDishes] = useState<Dish[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [ads, setAds] = useState<any[]>([])
@@ -70,6 +73,19 @@ export default function MenuPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        // If offline, try to load from cache first
+        if (!isOnline) {
+          const cachedData = OfflineStorage.getMenuData()
+          if (cachedData) {
+            console.log('Loading menu data from offline cache')
+            setDishes(cachedData.dishes)
+            setCategories(cachedData.categories)
+            setAds(cachedData.ads)
+            setIsLoading(false)
+            return
+          }
+        }
+
         // First, check if we have admin-updated data in localStorage
         const adminMenuData = localStorage.getItem('menuData')
         if (adminMenuData) {
@@ -102,6 +118,13 @@ export default function MenuPage() {
             const data = await response.json()
             setCategories(data.categories || [])
             setAds(data.ads || [])
+            
+            // Cache for offline use
+            OfflineStorage.saveMenuData({
+              dishes: processedDishes,
+              categories: data.categories || [],
+              ads: data.ads || []
+            })
           }
           return
         }
@@ -135,19 +158,42 @@ export default function MenuPage() {
           setDishes(processedDishes)
           setCategories(data.categories || [])
           setAds(data.ads || [])
+          
+          // Cache for offline use
+          OfflineStorage.saveMenuData({
+            dishes: processedDishes,
+            categories: data.categories || [],
+            ads: data.ads || []
+          })
         }
       } catch (error) {
         console.error('Error loading menu data:', error)
-        setDishes([])
-        setCategories([])
-        setAds([])
+        
+        // If online fetch failed, try offline cache as fallback
+        if (isOnline) {
+          const cachedData = OfflineStorage.getMenuData()
+          if (cachedData) {
+            console.log('Network failed, falling back to cached data')
+            setDishes(cachedData.dishes)
+            setCategories(cachedData.categories)
+            setAds(cachedData.ads)
+          } else {
+            setDishes([])
+            setCategories([])
+            setAds([])
+          }
+        } else {
+          setDishes([])
+          setCategories([])
+          setAds([])
+        }
       } finally {
         setIsLoading(false)
       }
     }
 
     loadData()
-  }, [])
+  }, [isOnline])
 
   // Listen for admin updates
   useEffect(() => {

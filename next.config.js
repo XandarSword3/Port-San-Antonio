@@ -1,4 +1,23 @@
 /** @type {import('next').NextConfig} */
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /^https?.*/,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'offlineCache',
+        expiration: {
+          maxEntries: 200,
+          maxAgeSeconds: 24 * 60 * 60, // 24 hours
+        },
+      },
+    },
+  ],
+})
+
 const nextConfig = {
   trailingSlash: true,
   images: {
@@ -11,4 +30,4 @@ const nextConfig = {
   // Removed deprecated experimental options
 }
 
-module.exports = nextConfig
+module.exports = withPWA(nextConfig)

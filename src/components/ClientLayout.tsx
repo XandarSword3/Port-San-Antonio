@@ -19,6 +19,7 @@ import EnhancedWaveAnimation from '@/components/EnhancedWaveAnimation'
 import SandParticles from '@/components/SandParticles'
 import SubtlePageTransition from '@/components/SubtlePageTransition'
 import WaveLoader from '@/components/WaveLoader'
+import OfflineNotification from '@/components/OfflineNotification'
 
 const ClientLayoutContent = ({
   children,
@@ -39,6 +40,7 @@ const ClientLayoutContent = ({
   return (
     <>
       <GlobalHeader />
+      <OfflineNotification />
       <FloatingBeachElements />
       <SandParticles />
       <SubtlePageTransition>
