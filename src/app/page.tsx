@@ -59,10 +59,10 @@ export default function Home() {
         {!isDark && (
           <div className="absolute inset-0 z-0">
             {/* Floating geometric shapes */}
-            <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute top-40 right-20 w-24 h-24 bg-amber-200/40 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
-            <div className="absolute bottom-40 left-20 w-40 h-40 bg-purple-200/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-            <div className="absolute bottom-20 right-40 w-28 h-28 bg-teal-200/30 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '3s' }} />
+            <div className="absolute top-20 left-10 w-20 sm:w-32 h-20 sm:h-32 bg-blue-200/30 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute top-40 right-20 w-16 sm:w-24 h-16 sm:h-24 bg-amber-200/40 rounded-full blur-2xl animate-pulse mobile-hide-decorative" style={{ animationDelay: '1s' }} />
+            <div className="absolute bottom-40 left-20 w-24 sm:w-40 h-24 sm:h-40 bg-purple-200/20 rounded-full blur-3xl animate-pulse mobile-hide-decorative" style={{ animationDelay: '2s' }} />
+            <div className="absolute bottom-20 right-40 w-18 sm:w-28 h-18 sm:h-28 bg-teal-200/30 rounded-full blur-2xl animate-pulse mobile-hide-decorative" style={{ animationDelay: '3s' }} />
             
             {/* Subtle pattern overlay */}
             <div className="absolute inset-0 opacity-5" style={{
@@ -97,28 +97,28 @@ export default function Home() {
         )}
 
         {/* Hero Content */}
-        <div className="relative z-10 flex min-h-screen flex-col">
+        <div className="relative z-10 flex min-h-screen mobile-hero flex-col">
           {/* Main Content */}
-          <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
+          <div className="flex flex-1 flex-col items-center justify-center px-6 mobile-container text-center">
             <motion.div 
               className="mb-12 max-w-4xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <h1 className={`mb-4 font-serif text-7xl font-light tracking-wider md:text-8xl lg:text-9xl ${
+              <h1 className={`mb-4 mobile-title-primary font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-wider ${
                 isDark ? 'text-white' : 'text-gray-900'
               }`}>
                 {t('welcomeTo')}
               </h1>
-              <h2 className={`mb-8 font-serif text-8xl font-bold tracking-tight md:text-9xl lg:text-[10rem] bg-gradient-to-r ${
+              <h2 className={`mb-8 mobile-title-secondary font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight bg-gradient-to-r ${
                 isDark 
                   ? 'from-amber-200 via-amber-300 to-amber-400' 
                   : 'from-amber-600 via-amber-500 to-amber-700'
               } text-transparent bg-clip-text drop-shadow-lg`}>
                 {t('siteTitle')}
               </h2>
-              <p className={`text-2xl font-light leading-relaxed md:text-3xl lg:text-4xl ${
+              <p className={`mobile-subtitle text-lg sm:text-xl md:text-2xl lg:text-3xl font-light leading-relaxed ${
                 isDark ? 'text-gray-100' : 'text-gray-700'
               }`}>
                 {t('experienceLuxury')}
@@ -128,7 +128,7 @@ export default function Home() {
             {/* Enhanced CTA Button with cool animations */}
             <motion.button
               onClick={handleCTAClick}
-              className={`group relative overflow-hidden rounded-full px-12 py-6 text-xl font-medium text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${
+              className={`group relative overflow-hidden rounded-full mobile-cta-button px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-lg sm:text-xl font-medium text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${
                 isDark 
                   ? 'bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600' 
                   : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700'
@@ -191,16 +191,16 @@ export default function Home() {
 
           {/* Feature Grid */}
           <motion.div 
-            className="relative z-20 mx-auto w-full max-w-7xl px-6 pb-20"
+            className="relative z-20 mx-auto w-full max-w-7xl mobile-container mobile-feature-grid px-4 sm:px-6 pb-12 sm:pb-20"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {features.map((feature, i) => (
                 <motion.div
                   key={feature.title}
-                  className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm p-6 transition-all duration-300 hover:scale-[1.02] border ${
+                  className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl backdrop-blur-sm mobile-feature-card p-4 sm:p-6 transition-all duration-300 hover:scale-[1.02] border ${
                     isDark 
                       ? 'bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20' 
                       : 'bg-white/80 hover:bg-white/90 border-gray-200 shadow-lg hover:shadow-xl'
@@ -210,13 +210,13 @@ export default function Home() {
                   transition={{ duration: 0.4, delay: 1.4 + i * 0.1 }}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <feature.icon className={`h-8 w-8 mb-4 ${
+                  <feature.icon className={`mobile-feature-icon h-6 sm:h-8 w-6 sm:w-8 mb-3 sm:mb-4 ${
                     isDark ? 'text-amber-400' : 'text-amber-500'
                   }`} />
-                  <h3 className={`mt-4 text-lg font-semibold ${
+                  <h3 className={`mobile-feature-title mt-3 sm:mt-4 text-base sm:text-lg font-semibold ${
                     isDark ? 'text-white' : 'text-gray-900'
                   }`}>{feature.title}</h3>
-                  <p className={`mt-2 text-sm ${
+                  <p className={`mobile-feature-desc mt-1 sm:mt-2 text-xs sm:text-sm ${
                     isDark ? 'text-gray-300' : 'text-gray-600'
                   }`}>{feature.desc}</p>
                 </motion.div>
