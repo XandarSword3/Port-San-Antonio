@@ -10,6 +10,19 @@ export interface PriceVariant {
   price: number
 }
 
+export interface Promotion {
+  id: string
+  name: string
+  description?: string
+  discountType: 'percentage' | 'fixed'
+  discountValue: number
+  startDate: Date
+  endDate: Date
+  active: boolean
+  applicableCategories?: string[]
+  applicableDishes?: string[]
+}
+
 export interface Dish {
   id: string
   categoryId: string
@@ -31,11 +44,11 @@ export interface Dish {
   allergens?: string[]
   ingredients?: string[]
   calories?: number | null
-  // popularity: number // Removed - no ordering occurs
   available: boolean
   sponsored: boolean
   rating?: number
   reviewCount?: number
+  promotions?: string[] // IDs of applicable promotions
 }
 
 export interface Ad {
