@@ -15,6 +15,7 @@ import MobileBanner from '@/components/MobileBanner'
 import MenuSkeleton from '@/components/MenuSkeleton'
 import BeachLoading from '@/components/BeachLoading'
 import SearchInput from '@/components/SearchInput'
+import ExpandableSearchBar from '@/components/ExpandableSearchBar'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -410,28 +411,14 @@ export default function MenuPage() {
           </div>
 
           {/* Search and Filter Row */}
-          <div className="flex gap-2 sm:gap-3 items-center">
-            <div className="flex-1 min-w-0">
-              <SearchInput
-                value={filters.search}
-                onChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
-                placeholder={t('searchMenu')}
-              />
-            </div>
-            <button
-              onClick={() => setFilterModalOpen(true)}
-              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors shadow-sm text-sm sm:text-base shrink-0"
-              data-testid="filter-button"
-            >
-              <Filter className="w-4 h-4" />
-              {hasActiveFilters && (
-                <span className="bg-white text-primary-500 text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-medium">
-                  {filters.activeDietFilters.length + (filters.availabilityOnly ? 1 : 0) + (filters.priceBucket ? 1 : 0)}
-                </span>
-              )}
-              <span className="hidden sm:inline">{t('filters')}</span>
-            </button>
-          </div>
+          <ExpandableSearchBar
+            searchValue={filters.search}
+            onSearchChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
+            onFilterClick={() => setFilterModalOpen(true)}
+            placeholder={t('searchMenu')}
+            hasActiveFilters={hasActiveFilters}
+            filterCount={filters.activeDietFilters.length + (filters.availabilityOnly ? 1 : 0) + (filters.priceBucket ? 1 : 0)}
+          />
         </div>
       </div>
 

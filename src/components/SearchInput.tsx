@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, forwardRef } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { Search, X, ChevronDown } from 'lucide-react'
 
@@ -10,12 +10,14 @@ interface SearchInputProps {
   placeholder?: string
   className?: string
   suggestions?: string[]
+  onBlur?: () => void
 }
 
-export default function SearchInput({ value = '', onChange, placeholder = "Search dishes, ingredients...", className = "", suggestions = [] }: SearchInputProps) {
+const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(({ value = '', onChange, placeholder = "Search dishes, ingredients...", className = "", suggestions = [], onBlur }: SearchInputProps, ref) => {
   const { t } = useLanguage()
   const [showSuggestions, setShowSuggestions] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const actualRef = ref || inputRef
   
   // Memoize filtered suggestions
   const filteredSuggestions = useMemo(() => {
@@ -49,19 +51,24 @@ export default function SearchInput({ value = '', onChange, placeholder = "Searc
   const handleSuggestionClick = (suggestion: string) => {
     onChange(suggestion)
     setShowSuggestions(false)
-    inputRef.current?.focus()
+    if (actualRef && 'current' in actualRef) {
+      actualRef.current?.focus()
+    }
   }
 
   return (
     <div className={`relative ${className}`}>
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
       <input
-        ref={inputRef}
+        ref={actualRef}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => value && setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+        onBlur={(e) => {
+          onBlur?.()
+          setTimeout(() => setShowSuggestions(false), 200)
+        }}
         placeholder={placeholder || t('searchPlaceholder') || "Search menu items, ingredients..."}
         aria-label="Search dishes"
         className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-resort-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm hover:shadow-md transition-all duration-200"
@@ -94,5 +101,8 @@ export default function SearchInput({ value = '', onChange, placeholder = "Searc
       </div>
     )}
   </div>
-)
-}
+  )
+})
+
+SearchInput.displayName = 'SearchInput'
+export default SearchInput
