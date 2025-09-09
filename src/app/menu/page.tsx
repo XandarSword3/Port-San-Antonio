@@ -411,7 +411,7 @@ export default function MenuPage() {
           hasActiveFilters={hasActiveFilters}
           availabilityOnly={!!filters.availabilityOnly}
           onAvailabilityToggle={() => setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))}
-          priceBucket={filters.priceBucket}
+          priceBucket={filters.priceBucket || null}
           onPriceBucketChange={(bucket) => setFilters(prev => ({ ...prev, priceBucket: bucket }))}
           dietCounts={dietCounts}
         />
