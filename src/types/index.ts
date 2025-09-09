@@ -56,15 +56,27 @@ export interface Ad {
   title: string
   image: string
   url: string
-  position: 'side-rail' | 'mobile-banner'
+  position: 'side-rail' | 'mobile-banner' | 'header' | 'footer'
   weight: number
   active?: boolean
+  description?: string
+  targetAudience?: string
+  targetKeywords?: string[]
+  startDate?: Date
+  endDate?: Date
+  budget?: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface AppData {
   categories: Category[]
   dishes: Dish[]
   ads: Ad[]
+  reservations?: Reservation[]
+  events?: Event[]
+  jobPositions?: JobPosition[]
+  pageContent?: PageContent[]
 }
 
 export interface DietFilter {
@@ -91,6 +103,100 @@ export interface User {
   createdAt: Date
   lastLogin?: Date
   active: boolean
+}
+
+export interface Reservation {
+  id: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  date: Date
+  time: string
+  guests: number
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  specialRequests?: string
+  createdAt: Date
+  createdBy: string // User ID
+  updatedAt?: Date
+  notes?: string
+}
+
+export interface Event {
+  id: string
+  title: string
+  description: string
+  date: Date
+  startTime: string
+  endTime: string
+  location: string
+  maxCapacity?: number
+  currentCapacity: number
+  price?: number
+  currency: string
+  image?: string
+  category: 'conference' | 'dining' | 'entertainment' | 'special'
+  status: 'draft' | 'published' | 'cancelled' | 'completed'
+  createdAt: Date
+  createdBy: string // User ID
+  updatedAt?: Date
+  featuredUntil?: Date
+}
+
+export interface JobPosition {
+  id: string
+  title: string
+  department: string
+  type: 'full-time' | 'part-time' | 'contract' | 'internship'
+  location: string
+  description: string
+  requirements: string[]
+  benefits: string[]
+  salary?: string
+  active: boolean
+  createdAt: Date
+  updatedAt?: Date
+}
+
+export interface PageContent {
+  id: string
+  pageId: 'careers' | 'privacy' | 'terms' | 'accessibility'
+  section: string
+  content: string
+  updatedAt: Date
+  updatedBy: string
+}
+
+export interface FooterSettings {
+  id: string
+  companyName: string
+  description: string
+  address: string
+  phone: string
+  email: string
+  diningHours: string
+  diningLocation: string
+  socialLinks: {
+    facebook?: string
+    instagram?: string
+    twitter?: string
+    linkedin?: string
+  }
+  lastUpdated: Date
+  updatedBy: string
+}
+
+export interface LegalPageContent {
+  id: string
+  type: 'privacy' | 'terms' | 'accessibility'
+  title: string
+  sections: {
+    id: string
+    title: string
+    content: string
+    order: number
+  }[]
+  lastUpdated: Date
+  updatedBy: string
 }
 
 export interface AuthPayload {
@@ -120,12 +226,16 @@ export const ROLE_PERMISSIONS = {
     manage_categories: false,
     manage_settings: false,
     manage_users: false,
+    manage_reservations: false,
+    manage_events: false,
+    manage_content: false,
     canView: true,
     canEdit: false,
     canDelete: false,
     canManageUsers: false,
     canViewAnalytics: false,
-    canManageSettings: false
+    canManageSettings: false,
+    view_analytics: false
   },
   worker: {
     view_dashboard: true,
@@ -133,12 +243,16 @@ export const ROLE_PERMISSIONS = {
     manage_categories: false,
     manage_settings: false,
     manage_users: false,
+    manage_reservations: true,
+    manage_events: false,
+    manage_content: false,
     canView: true,
     canEdit: true,
     canDelete: false,
     canManageUsers: false,
     canViewAnalytics: false,
-    canManageSettings: false
+    canManageSettings: false,
+    view_analytics: false
   },
   admin: {
     view_dashboard: true,
@@ -146,12 +260,16 @@ export const ROLE_PERMISSIONS = {
     manage_categories: true,
     manage_settings: true,
     manage_users: false,
+    manage_reservations: true,
+    manage_events: true,
+    manage_content: true,
     canView: true,
     canEdit: true,
     canDelete: true,
     canManageUsers: false,
     canViewAnalytics: true,
-    canManageSettings: true
+    canManageSettings: true,
+    view_analytics: true
   },
   owner: {
     view_dashboard: true,
@@ -159,11 +277,15 @@ export const ROLE_PERMISSIONS = {
     manage_categories: true,
     manage_settings: true,
     manage_users: true,
+    manage_reservations: true,
+    manage_events: true,
+    manage_content: true,
     canView: true,
     canEdit: true,
     canDelete: true,
     canManageUsers: true,
     canViewAnalytics: true,
-    canManageSettings: true
+    canManageSettings: true,
+    view_analytics: true
   }
 } as const

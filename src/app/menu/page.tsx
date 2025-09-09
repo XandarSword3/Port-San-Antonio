@@ -24,10 +24,15 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { OfflineStorage } from '@/lib/offlineStorage'
 import { translateCategory } from '@/lib/dishTranslations'
+import { usePageView, useSearchTracking } from '@/hooks/useAnalytics'
 
 export default function MenuPage() {
   const { t, language } = useLanguage()
   const { isOnline } = useOnlineStatus()
+  
+  // Analytics tracking
+  usePageView('/menu')
+  const trackSearch = useSearchTracking()
   const [dishes, setDishes] = useState<Dish[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [ads, setAds] = useState<any[]>([])
@@ -385,7 +390,20 @@ export default function MenuPage() {
       {/* Expandable Header */}
       <ExpandableMenuHeader
         searchValue={filters.search}
-        onSearchChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
+        onSearchChange={(value) => {
+          setFilters(prev => ({ ...prev, search: value }))
+          
+          // Track search analytics if user actually searched
+          if (value.length > 2) {
+            // Count results after filtering
+            const searchResults = filteredDishes.filter(dish => 
+              dish.name.toLowerCase().includes(value.toLowerCase()) ||
+              dish.shortDesc?.toLowerCase().includes(value.toLowerCase()) ||
+              dish.fullDesc?.toLowerCase().includes(value.toLowerCase())
+            )
+            trackSearch(value, searchResults.length)
+          }
+        }}
         onFilterClick={() => setFilterModalOpen(true)}
         hasActiveFilters={hasActiveFilters}
         filterCount={filters.activeDietFilters.length + (filters.availabilityOnly ? 1 : 0) + (filters.priceBucket ? 1 : 0)}

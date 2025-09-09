@@ -307,6 +307,58 @@ export type TranslationKeys =
   | 'enableAmbientSounds'
   | 'disableAmbientSounds'
   | 'settings'
+  
+  // Footer/Pages
+  | 'callUs'
+  | 'noEventsAtMoment'
+  | 'checkBackLater'
+  | 'manageReservations'
+  | 'manageEvents'
+  | 'createReservation'
+  | 'createEvent'
+  
+  // Admin - Reservations
+  | 'reservationManager'
+  | 'addReservation'
+  | 'editReservation'
+  | 'customerName'
+  | 'customerEmail'
+  | 'customerPhone'
+  | 'reservationDate'
+  | 'reservationTime'
+  | 'numberOfGuests'
+  | 'specialRequests'
+  | 'reservationStatus'
+  | 'pending'
+  | 'confirmed'
+  | 'cancelled'
+  | 'completed'
+  | 'reservationNotes'
+  
+  // Admin - Events
+  | 'eventManager'
+  | 'addEvent'
+  | 'editEvent'
+  | 'eventTitle'
+  | 'eventDescription'
+  | 'eventDate'
+  | 'startTime'
+  | 'endTime'
+  | 'eventLocation'
+  | 'maxCapacity'
+  | 'currentCapacity'
+  | 'eventPrice'
+  | 'eventCategory'
+  | 'conference'
+  | 'dining'
+  | 'entertainment'
+  | 'special'
+  | 'draft'
+  | 'published'
+  | 'featuredUntil'
+  
+  // Admin - Content Management
+  | 'contentManager'
 
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
@@ -610,6 +662,58 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     enableAmbientSounds: 'Enable ambient sounds',
     disableAmbientSounds: 'Disable ambient sounds',
     settings: 'Settings',
+    
+    // Footer/Pages
+    callUs: 'Call Us',
+    noEventsAtMoment: 'No events at the moment',
+    checkBackLater: 'Please check back later for upcoming events',
+    manageReservations: 'Manage Reservations',
+    manageEvents: 'Manage Events',
+    createReservation: 'Create Reservation',
+    createEvent: 'Create Event',
+    
+    // Admin - Reservations
+    reservationManager: 'Reservation Manager',
+    addReservation: 'Add Reservation',
+    editReservation: 'Edit Reservation',
+    customerName: 'Customer Name',
+    customerEmail: 'Customer Email',
+    customerPhone: 'Customer Phone',
+    reservationDate: 'Date',
+    reservationTime: 'Time',
+    numberOfGuests: 'Number of Guests',
+    specialRequests: 'Special Requests',
+    reservationStatus: 'Status',
+    pending: 'Pending',
+    confirmed: 'Confirmed',
+    cancelled: 'Cancelled',
+    completed: 'Completed',
+    reservationNotes: 'Notes',
+    
+    // Admin - Events
+    eventManager: 'Event Manager',
+    addEvent: 'Add Event',
+    editEvent: 'Edit Event',
+    eventTitle: 'Event Title',
+    eventDescription: 'Event Description',
+    eventDate: 'Date',
+    startTime: 'Start Time',
+    endTime: 'End Time',
+    eventLocation: 'Location',
+    maxCapacity: 'Max Capacity',
+    currentCapacity: 'Current Capacity',
+    eventPrice: 'Price',
+    eventCategory: 'Category',
+    conference: 'Conference',
+    dining: 'Dining',
+    entertainment: 'Entertainment',
+    special: 'Special',
+    draft: 'Draft',
+    published: 'Published',
+    featuredUntil: 'Featured Until',
+    
+    // Admin - Content Management
+    contentManager: 'Content Manager',
   },
   
   ar: {
@@ -913,6 +1017,58 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     enableAmbientSounds: 'تفعيل الأصوات المحيطة',
     disableAmbientSounds: 'إيقاف الأصوات المحيطة',
     settings: 'الإعدادات',
+    
+    // Footer/Pages
+    callUs: 'اتصل بنا',
+    noEventsAtMoment: 'لا توجد فعاليات في الوقت الحالي',
+    checkBackLater: 'يرجى العودة لاحقاً للاطلاع على الفعاليات القادمة',
+    manageReservations: 'إدارة الحجوزات',
+    manageEvents: 'إدارة الفعاليات',
+    createReservation: 'إنشاء حجز',
+    createEvent: 'إنشاء فعالية',
+    
+    // Admin - Reservations
+    reservationManager: 'مدير الحجوزات',
+    addReservation: 'إضافة حجز',
+    editReservation: 'تعديل الحجز',
+    customerName: 'اسم العميل',
+    customerEmail: 'بريد العميل الإلكتروني',
+    customerPhone: 'هاتف العميل',
+    reservationDate: 'التاريخ',
+    reservationTime: 'الوقت',
+    numberOfGuests: 'عدد الضيوف',
+    specialRequests: 'طلبات خاصة',
+    reservationStatus: 'الحالة',
+    pending: 'في الانتظار',
+    confirmed: 'مؤكد',
+    cancelled: 'ملغي',
+    completed: 'مكتمل',
+    reservationNotes: 'ملاحظات',
+    
+    // Admin - Events
+    eventManager: 'مدير الفعاليات',
+    addEvent: 'إضافة فعالية',
+    editEvent: 'تعديل الفعالية',
+    eventTitle: 'عنوان الفعالية',
+    eventDescription: 'وصف الفعالية',
+    eventDate: 'التاريخ',
+    startTime: 'وقت البداية',
+    endTime: 'وقت النهاية',
+    eventLocation: 'الموقع',
+    maxCapacity: 'السعة القصوى',
+    currentCapacity: 'السعة الحالية',
+    eventPrice: 'السعر',
+    eventCategory: 'الفئة',
+    conference: 'مؤتمر',
+    dining: 'تناول الطعام',
+    entertainment: 'ترفيه',
+    special: 'خاص',
+    draft: 'مسودة',
+    published: 'منشور',
+    featuredUntil: 'مميز حتى',
+    
+    // Admin - Content Management
+    contentManager: 'مدير المحتوى',
   },
   
   fr: {
@@ -1216,6 +1372,58 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     enableAmbientSounds: 'Activer les sons ambiants',
     disableAmbientSounds: 'Désactiver les sons ambiants',
     settings: 'Paramètres',
+    
+    // Footer/Pages
+    callUs: 'Appelez-nous',
+    noEventsAtMoment: 'Aucun événement pour le moment',
+    checkBackLater: 'Veuillez revenir plus tard pour les événements à venir',
+    manageReservations: 'Gérer les Réservations',
+    manageEvents: 'Gérer les Événements',
+    createReservation: 'Créer une Réservation',
+    createEvent: 'Créer un Événement',
+    
+    // Admin - Reservations
+    reservationManager: 'Gestionnaire de Réservations',
+    addReservation: 'Ajouter une Réservation',
+    editReservation: 'Modifier la Réservation',
+    customerName: 'Nom du Client',
+    customerEmail: 'Email du Client',
+    customerPhone: 'Téléphone du Client',
+    reservationDate: 'Date',
+    reservationTime: 'Heure',
+    numberOfGuests: 'Nombre d\'Invités',
+    specialRequests: 'Demandes Spéciales',
+    reservationStatus: 'Statut',
+    pending: 'En Attente',
+    confirmed: 'Confirmé',
+    cancelled: 'Annulé',
+    completed: 'Terminé',
+    reservationNotes: 'Notes',
+    
+    // Admin - Events
+    eventManager: 'Gestionnaire d\'Événements',
+    addEvent: 'Ajouter un Événement',
+    editEvent: 'Modifier l\'Événement',
+    eventTitle: 'Titre de l\'Événement',
+    eventDescription: 'Description de l\'Événement',
+    eventDate: 'Date',
+    startTime: 'Heure de Début',
+    endTime: 'Heure de Fin',
+    eventLocation: 'Lieu',
+    maxCapacity: 'Capacité Maximale',
+    currentCapacity: 'Capacité Actuelle',
+    eventPrice: 'Prix',
+    eventCategory: 'Catégorie',
+    conference: 'Conférence',
+    dining: 'Restauration',
+    entertainment: 'Divertissement',
+    special: 'Spécial',
+    draft: 'Brouillon',
+    published: 'Publié',
+    featuredUntil: 'En Vedette Jusqu\'au',
+    
+    // Admin - Content Management
+    contentManager: 'Gestionnaire de Contenu',
   }
 }
 

@@ -2,13 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Users, Utensils, BarChart3, Settings, LogOut, DollarSign, Phone, CreditCard, Shield, UserCog } from 'lucide-react'
-import { AppData, User, UserRole } from '@/types'
+import { Lock, Users, Utensils, BarChart3, Settings, LogOut, DollarSign, Phone, CreditCard, Shield, UserCog, Calendar, CalendarCheck, FileText } from 'lucide-react'
+import { AppData, User, UserRole, Reservation, Event, JobPosition, PageContent, FooterSettings, LegalPageContent } from '@/types'
 import AdminLogin from '@/components/AdminLogin'
 import AdminDashboard from '@/components/AdminDashboard'
 import MenuManager from '@/components/MenuManager'
 import CategoryManager from '@/components/CategoryManager'
-import AdManager from '@/components/AdManager'
+import ReservationManager from '@/components/ReservationManager'
+import EventManager from '@/components/EventManager'
+import ContentManager from '@/components/ContentManager'
+import TargetedAdManager from '@/components/TargetedAdManager'
+import { AnalyticsDashboard } from '@/components/AnalyticsDashboard'
 import CurrencySettings from '@/components/CurrencySettings'
 import ContactManager from '@/components/ContactManager'
 import PaymentSettings from '@/components/admin/PaymentSettings'
@@ -19,14 +23,28 @@ import { isAuthenticated, logout, getCurrentUser, hasPermission } from '@/lib/au
 // Mock data - in real app this would come from API
 import mockData from '../../../data/dishes.json'
 
-type AdminView = 'dashboard' | 'menu' | 'categories' | 'ads' | 'currency' | 'contact' | 'payments' | 'users'
+type AdminView = 'dashboard' | 'menu' | 'categories' | 'ads' | 'currency' | 'contact' | 'payments' | 'users' | 'reservations' | 'events' | 'content' | 'analytics'
 
 export default function AdminPage() {
   const { t } = useLanguage()
   const [isAuth, setIsAuth] = useState(false)
   const [isVerifying, setIsVerifying] = useState(true)
   const [currentView, setCurrentView] = useState<AdminView>('dashboard')
-  const [data, setData] = useState<AppData>({ ...mockData, ads: [] } as AppData)
+  const [data, setData] = useState<AppData>({ ...mockData, ads: [], reservations: [], events: [], jobPositions: [], pageContent: [] } as AppData)
+  const [footerSettings, setFooterSettings] = useState<FooterSettings>({
+    id: 'default',
+    companyName: 'Port Antonio Resort',
+    description: 'Luxury beachfront resort with world-class dining',
+    address: 'Port Antonio, Mastita, Lebanon',
+    phone: '+1 (876) 555-0123',
+    email: 'info@portantonio.com',
+    diningHours: 'Dining Available 24/7',
+    diningLocation: 'Main Restaurant & Beachside',
+    socialLinks: {},
+    lastUpdated: new Date(),
+    updatedBy: 'system'
+  })
+  const [legalPages, setLegalPages] = useState<LegalPageContent[]>([])
   const [currentUser, setCurrentUser] = useState<User | null>(null)
 
   const handleLogin = (user: User) => {
@@ -39,6 +57,94 @@ export default function AdminPage() {
     setIsAuth(false)
     setCurrentUser(null)
     setCurrentView('dashboard')
+  }
+
+  // Reservation handlers
+  const handleAddReservation = (reservation: Omit<Reservation, 'id' | 'createdAt'>) => {
+    const newReservation: Reservation = {
+      ...reservation,
+      id: Date.now().toString(),
+      createdAt: new Date()
+    }
+    setData(prev => ({
+      ...prev,
+      reservations: [...(prev.reservations || []), newReservation]
+    }))
+  }
+
+  const handleUpdateReservation = (id: string, updates: Partial<Reservation>) => {
+    setData(prev => ({
+      ...prev,
+      reservations: (prev.reservations || []).map(reservation =>
+        reservation.id === id ? { ...reservation, ...updates } : reservation
+      )
+    }))
+  }
+
+  const handleDeleteReservation = (id: string) => {
+    setData(prev => ({
+      ...prev,
+      reservations: (prev.reservations || []).filter(reservation => reservation.id !== id)
+    }))
+  }
+
+  // Event handlers
+  const handleAddEvent = (event: Omit<Event, 'id' | 'createdAt'>) => {
+    const newEvent: Event = {
+      ...event,
+      id: Date.now().toString(),
+      createdAt: new Date()
+    }
+    setData(prev => ({
+      ...prev,
+      events: [...(prev.events || []), newEvent]
+    }))
+  }
+
+  const handleUpdateEvent = (id: string, updates: Partial<Event>) => {
+    setData(prev => ({
+      ...prev,
+      events: (prev.events || []).map(event =>
+        event.id === id ? { ...event, ...updates } : event
+      )
+    }))
+  }
+
+  const handleDeleteEvent = (id: string) => {
+    setData(prev => ({
+      ...prev,
+      events: (prev.events || []).filter(event => event.id !== id)
+    }))
+  }
+
+  // Content handlers
+  const handleUpdateJobPositions = (positions: JobPosition[]) => {
+    const newData = {
+      ...data,
+      jobPositions: positions
+    }
+    setData(newData)
+    // Save to localStorage for live updates
+    localStorage.setItem('adminData', JSON.stringify(newData))
+  }
+
+  const handleUpdatePageContent = (content: PageContent[]) => {
+    setData(prev => ({
+      ...prev,
+      pageContent: content
+    }))
+  }
+
+  const handleUpdateFooterSettings = (settings: FooterSettings) => {
+    setFooterSettings(settings)
+    // Save to localStorage for live updates
+    localStorage.setItem('footerSettings', JSON.stringify(settings))
+  }
+
+  const handleUpdateLegalPages = (pages: LegalPageContent[]) => {
+    setLegalPages(pages)
+    // Save to localStorage
+    localStorage.setItem('legalPages', JSON.stringify(pages))
   }
 
   // Verify authentication on load
@@ -65,6 +171,29 @@ export default function AdminPage() {
     }
     
     checkAuth()
+  }, [])
+
+  // Load footer settings and legal pages from localStorage
+  useEffect(() => {
+    try {
+      const savedFooter = localStorage.getItem('footerSettings')
+      if (savedFooter) {
+        setFooterSettings(JSON.parse(savedFooter))
+      }
+
+      const savedLegal = localStorage.getItem('legalPages')
+      if (savedLegal) {
+        setLegalPages(JSON.parse(savedLegal))
+      }
+
+      const savedJobs = localStorage.getItem('jobPositions')
+      if (savedJobs) {
+        const jobs = JSON.parse(savedJobs)
+        setData(prev => ({ ...prev, jobPositions: jobs }))
+      }
+    } catch (error) {
+      console.error('Error loading settings from localStorage:', error)
+    }
   }, [])
 
   // Show loading while verifying
@@ -95,6 +224,22 @@ export default function AdminPage() {
 
     if (hasPermission(currentUser?.role || 'guest', 'manage_categories')) {
       items.push({ id: 'categories', label: 'Categories', icon: Users, permission: 'manage_categories' });
+    }
+
+    if (hasPermission(currentUser?.role || 'guest', 'manage_reservations')) {
+      items.push({ id: 'reservations', label: t('reservationManager'), icon: CalendarCheck, permission: 'manage_reservations' });
+    }
+
+    if (hasPermission(currentUser?.role || 'guest', 'manage_events')) {
+      items.push({ id: 'events', label: t('eventManager'), icon: Calendar, permission: 'manage_events' });
+    }
+
+    if (hasPermission(currentUser?.role || 'guest', 'manage_content')) {
+      items.push({ id: 'content', label: t('contentManager'), icon: FileText, permission: 'manage_content' });
+    }
+
+    if (hasPermission(currentUser?.role || 'guest', 'view_analytics')) {
+      items.push({ id: 'analytics', label: 'Analytics Dashboard', icon: BarChart3, permission: 'view_analytics' });
     }
 
     if (hasPermission(currentUser?.role || 'guest', 'manage_settings')) {
@@ -218,7 +363,10 @@ export default function AdminPage() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <AdManager data={data} onDataChange={setData} />
+                  <TargetedAdManager 
+                    ads={data.ads || []} 
+                    onUpdateAds={(ads) => setData(prev => ({ ...prev, ads }))} 
+                  />
                 </motion.div>
               )}
 
@@ -255,6 +403,73 @@ export default function AdminPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <PaymentSettings />
+                </motion.div>
+              )}
+
+              {currentView === 'reservations' && (
+                <motion.div
+                  key="reservations"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ReservationManager
+                    reservations={data.reservations || []}
+                    onAddReservation={handleAddReservation}
+                    onUpdateReservation={handleUpdateReservation}
+                    onDeleteReservation={handleDeleteReservation}
+                  />
+                </motion.div>
+              )}
+
+              {currentView === 'events' && (
+                <motion.div
+                  key="events"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <EventManager
+                    events={data.events || []}
+                    onAddEvent={handleAddEvent}
+                    onUpdateEvent={handleUpdateEvent}
+                    onDeleteEvent={handleDeleteEvent}
+                  />
+                </motion.div>
+              )}
+
+              {currentView === 'content' && (
+                <motion.div
+                  key="content"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ContentManager
+                    jobPositions={data.jobPositions || []}
+                    pageContent={data.pageContent || []}
+                    footerSettings={footerSettings}
+                    legalPages={legalPages}
+                    onUpdateJobPositions={handleUpdateJobPositions}
+                    onUpdatePageContent={handleUpdatePageContent}
+                    onUpdateFooterSettings={handleUpdateFooterSettings}
+                    onUpdateLegalPages={handleUpdateLegalPages}
+                  />
+                </motion.div>
+              )}
+
+              {currentView === 'analytics' && (
+                <motion.div
+                  key="analytics"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <AnalyticsDashboard />
                 </motion.div>
               )}
 

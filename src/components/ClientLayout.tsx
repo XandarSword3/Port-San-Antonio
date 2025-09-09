@@ -19,6 +19,8 @@ import SandParticles from '@/components/SandParticles'
 import SubtlePageTransition from '@/components/SubtlePageTransition'
 import WaveLoader from '@/components/WaveLoader'
 import OfflineNotification from '@/components/OfflineNotification'
+import CookieConsentBanner from '@/components/CookieConsentBanner'
+import { useAnalyticsInit } from '@/hooks/useAnalytics'
 
 const ClientLayoutContent = ({
   children,
@@ -27,6 +29,9 @@ const ClientLayoutContent = ({
 }) => {
   const { clickFeedback, addClickFeedback, clearClickFeedback } = useClickFeedback()
   const { isInitialLoading, setInitialLoadingComplete } = useLoading()
+  
+  // Initialize analytics system
+  useAnalyticsInit()
 
   const handleClick = (event: React.MouseEvent) => {
     addClickFeedback(event)
@@ -57,6 +62,7 @@ const ClientLayoutContent = ({
         </main>
       </SubtlePageTransition>
       <Footer />
+      <CookieConsentBanner />
       {clickFeedback && (
         <ClickFeedback
           x={clickFeedback.x}

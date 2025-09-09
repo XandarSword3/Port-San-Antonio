@@ -18,17 +18,25 @@ export const useLoading = () => {
 }
 
 export const LoadingProvider = ({ children }: { children: ReactNode }) => {
+  // Always start with loading true to avoid hydration mismatch
   const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const [hasCheckedVisit, setHasCheckedVisit] = useState(false)
 
-  // Always show loading animation on homepage visit - no sessionStorage check
   useEffect(() => {
-    // Always start with loading true for homepage
-    setIsInitialLoading(true)
+    // Check if user has visited before - client-side only
+    const hasVisited = sessionStorage.getItem('hasVisited')
+    if (hasVisited) {
+      // User has visited before, skip loading animation
+      setIsInitialLoading(false)
+    } else {
+      // First visit, mark as visited
+      sessionStorage.setItem('hasVisited', 'true')
+    }
+    setHasCheckedVisit(true)
   }, [])
 
   const setInitialLoadingComplete = () => {
     setIsInitialLoading(false)
-    // Removed sessionStorage persistence so it shows every time
   }
 
   return (

@@ -29,19 +29,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Check for existing auth on mount
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      // Verify token is still valid
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.exp * 1000 > Date.now()) {
-          setIsLoggedIn(true);
-          setUserRole(payload.role);
-        } else {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        // Verify token is still valid
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          if (payload.exp * 1000 > Date.now()) {
+            setIsLoggedIn(true);
+            setUserRole(payload.role);
+          } else {
+            localStorage.removeItem('adminToken');
+          }
+        } catch (error) {
           localStorage.removeItem('adminToken');
         }
-      } catch (error) {
-        localStorage.removeItem('adminToken');
       }
     }
   }, []);

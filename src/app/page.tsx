@@ -9,12 +9,16 @@ import GlobalHeader from '@/components/GlobalHeader';
 import Sidebar from '@/components/Sidebar';
 import { useTransitionRouter } from '@/hooks/useTransitionRouter';
 import { TransitionOverlay } from '@/components/PageTransition';
+import { usePageView } from '@/hooks/useAnalytics';
 
 export default function Home() {
   const { isDark } = useTheme();
   const { t } = useLanguage();
   const { isTransitioning, transitionType, navigateWithTransition } = useTransitionRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Analytics tracking
+  usePageView('/');
 
   const handleCTAClick = () => {
     navigateWithTransition('/menu', 'menu');

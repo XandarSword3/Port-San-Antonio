@@ -12,6 +12,7 @@ import { EASING, DURATION } from '@/lib/animation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { useCart } from '@/contexts/CartContext'
+import { useItemView, useClickTracking, useLongPress, useCartTracking } from '@/hooks/useAnalytics'
 
 interface DishCardProps {
   dish: Dish
@@ -31,6 +32,21 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
   const longPressTimerRef = useRef<NodeJS.Timeout | null>(null)
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+
+  // Analytics hooks
+  const itemViewRef = useItemView(dish.id, dish.name)
+  const trackClick = useClickTracking()
+  const { trackAddToCart } = useCartTracking()
+  
+  // Long press analytics tracking
+  const longPressAnalytics = useLongPress(
+    () => {
+      console.log('Long press completed for:', dish.name)
+    },
+    dish.id,
+    dish.name,
+    1500
+  )
 
   // Translate the dish data
   const translatedDish = translateDish(dish, language)
@@ -99,8 +115,12 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
     handlePointerUp()
   }, [handlePointerUp])
 
-  const handleDetailsClick = () => {
+  const handleDetailsClick = (e?: React.MouseEvent) => {
     console.log('modal: open', dish.id)
+    
+    // Track click analytics
+    trackClick(dish.id, dish.name, e?.nativeEvent)
+    
     setIsModalOpen(true)
   }
 
@@ -112,6 +132,9 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
     e.stopPropagation()
     e.preventDefault()
     if (dish.available) {
+      // Track add to cart analytics
+      trackAddToCart(dish.id, dish.name, 1)
+      
       addItem(dish, 1)
       // Remove the modal opening call to prevent blur effect
       // onQuickOrder?.(dish)
@@ -201,6 +224,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
   return (
     <>
       <motion.article
+        ref={itemViewRef}
         className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-all duration-500 will-change-transform border border-gray-200 dark:border-gray-700 card-responsive hover:border-resort-500 dark:hover:border-beach-dark-accent backdrop-blur-sm"
         transition={{ 
           duration: DURATION.medium, 
@@ -214,16 +238,31 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
           transition: { duration: 0.3, ease: "easeOut" }
         }}
         viewport={{ once: true }}
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerCancel}
-        onPointerLeave={handlePointerLeave}
+        onPointerDown={(e) => {
+          handlePointerDown(e)
+          longPressAnalytics.onMouseDown(e)
+        }}
+        onPointerUp={(e) => {
+          handlePointerUp()
+          longPressAnalytics.onMouseUp(e)
+        }}
+        onPointerCancel={(e) => {
+          handlePointerCancel()
+          longPressAnalytics.onMouseLeave(e)
+        }}
+        onPointerLeave={(e) => {
+          handlePointerLeave()
+          longPressAnalytics.onMouseLeave(e)
+        }}
+        onTouchStart={longPressAnalytics.onTouchStart}
+        onTouchEnd={longPressAnalytics.onTouchEnd}
         style={{ touchAction: 'manipulation' }}
         data-testid="dish-card"
         role="article"
         aria-labelledby={`dish-title-${dish.id}`}
         aria-describedby={`dish-desc-${dish.id}`}
         tabIndex={0}
+        onClick={(e) => handleDetailsClick(e)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()

@@ -38,13 +38,64 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Authentication successful for user:', authResult.payload.username)
 
-    // Get menu data from request
-    const { menuData } = await request.json()
-    console.log('📊 Menu data received, size:', JSON.stringify(menuData).length, 'bytes')
-
-    if (!menuData) {
-      return NextResponse.json({ error: 'Menu data is required' }, { status: 400 })
+    // Parse request body to support different content types
+    const body = await request.json()
+    let contentData: any
+    let contentType: string
+    let filePath: string
+    let commitMessage: string
+    
+    // Handle both legacy menuData and new commitData format
+    if (body.menuData) {
+      // Legacy menu data format
+      contentData = body.menuData
+      contentType = 'menu'
+      filePath = 'data/dishes.json'
+      commitMessage = `🍽️ Admin: Update menu data - ${new Date().toLocaleString()}`
+      
+      if (!contentData) {
+        return NextResponse.json({ error: 'Menu data is required' }, { status: 400 })
+      }
+    } else if (body.commitData) {
+      // New unified commit format
+      const { commitData } = body
+      contentType = commitData.type
+      contentData = commitData.data
+      
+      // Determine file path and commit message based on content type
+      switch (contentType) {
+        case 'menu':
+          filePath = 'data/dishes.json'
+          commitMessage = commitData.message || `🍽️ Admin: Update menu data - ${new Date().toLocaleString()}`
+          break
+        case 'footer':
+          filePath = 'data/footer-settings.json'
+          commitMessage = commitData.message || `🦶 Admin: Update footer settings - ${new Date().toLocaleString()}`
+          break
+        case 'jobs':
+          filePath = 'data/job-positions.json'
+          commitMessage = commitData.message || `💼 Admin: Update job positions - ${new Date().toLocaleString()}`
+          break
+        case 'legal':
+          filePath = 'data/legal-pages.json'
+          commitMessage = commitData.message || `📋 Admin: Update legal pages - ${new Date().toLocaleString()}`
+          break
+        case 'content':
+          filePath = 'data/general-content.json'
+          commitMessage = commitData.message || `📝 Admin: Update general content - ${new Date().toLocaleString()}`
+          break
+        default:
+          return NextResponse.json({ error: `Unsupported content type: ${contentType}` }, { status: 400 })
+      }
+    } else {
+      return NextResponse.json({ error: 'Either menuData or commitData is required' }, { status: 400 })
     }
+    
+    console.log('📊 Content data received:', { 
+      contentType,
+      filePath,
+      dataSize: JSON.stringify(contentData).length 
+    })
 
     // GitHub configuration
     const githubToken = process.env.GITHUB_TOKEN
@@ -70,7 +121,6 @@ export async function POST(request: NextRequest) {
     console.log('🔗 Octokit initialized, attempting commit...')
 
     // Get current file to get its SHA
-    const filePath = 'data/dishes.json'
     let fileSha: string | undefined
 
     try {
@@ -90,8 +140,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create or update the file
-    const commitMessage = `🍽️ Admin: Update menu data - ${new Date().toLocaleString()}`
-    const contentBase64 = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64')
+    const contentBase64 = Buffer.from(JSON.stringify(contentData, null, 2)).toString('base64')
 
     console.log('💾 Committing to GitHub...')
     console.log('📝 Commit message:', commitMessage)

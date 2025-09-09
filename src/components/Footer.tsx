@@ -1,15 +1,42 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Globe } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTheme } from '@/contexts/ThemeContext'
+import { FooterSettings } from '@/types'
 
 export default function Footer() {
   const { t, language } = useLanguage()
   const { isDark } = useTheme()
+  const [footerSettings, setFooterSettings] = useState<FooterSettings>({
+    id: 'default',
+    companyName: 'Port Antonio Resort',
+    description: 'Luxury beachfront resort with world-class dining',
+    address: 'Port Antonio, Mastita, Lebanon',
+    phone: '+1 (876) 555-0123',
+    email: 'info@portantonio.com',
+    diningHours: 'Dining Available 24/7',
+    diningLocation: 'Main Restaurant & Beachside',
+    socialLinks: {},
+    lastUpdated: new Date(),
+    updatedBy: 'system'
+  })
 
   const currentYear = new Date().getFullYear()
+
+  // Load footer settings from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('footerSettings')
+      if (saved) {
+        setFooterSettings(JSON.parse(saved))
+      }
+    } catch (error) {
+      console.error('Error loading footer settings:', error)
+    }
+  }, [])
 
   return (
     <footer className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} ${isDark ? 'text-white' : 'text-gray-900'} wave-separator transition-colors duration-300`}>
@@ -25,19 +52,14 @@ export default function Footer() {
           <div>
             <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'} flex items-center gap-2`}>
               <span>⚓</span>
-              {t('siteTitle')}
+              {footerSettings.companyName}
             </h3>
             <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'} mb-4`}>
-              {language === 'ar' 
-                ? 'منتجع فاخر على شاطئ البحر مع مطعم عالمي المستوى'
-                : language === 'fr'
-                ? 'Resort de luxe en bord de mer avec restaurant de niveau mondial'
-                : 'Luxury beachfront resort with world-class dining'
-              }
+              {footerSettings.description}
             </p>
             <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               <MapPin className="w-4 h-4" />
-              <span>Port Antonio, Mastita, Lebanon</span>
+              <span>{footerSettings.address}</span>
             </div>
           </div>
 
@@ -50,15 +72,21 @@ export default function Footer() {
             <div className="space-y-3">
               <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <Phone className="w-4 h-4" />
-                <span>+1 (876) 555-0123</span>
+                <span>{footerSettings.phone}</span>
               </div>
               <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <Mail className="w-4 h-4" />
-                <span>info@portantonio.com</span>
+                <span>{footerSettings.email}</span>
               </div>
               <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <Clock className="w-4 h-4" />
-                <span>{t('diningAvailable24')}</span>
+                <span>{footerSettings.diningHours}</span>
+                {footerSettings.diningLocation && (
+                  <>
+                    <span className="mx-2">•</span>
+                    <span className="text-sm">{footerSettings.diningLocation}</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -76,13 +104,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/spa" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
-                  {t('spa')}
-                </a>
-              </li>
-              <li>
-                <a href="/reservations" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
-                  {t('reservations')}
+                <a href={`tel:${footerSettings.phone.replace(/\s+/g, '')}`} className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors flex items-center gap-2`}>
+                  <Phone className="w-4 h-4" />
+                  {t('callUs')} - {t('reservations')}
                 </a>
               </li>
               <li>
@@ -133,7 +157,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className={`${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              © {currentYear} Port Antonio Resort. {t('copyright')} — {t('relaxOnSands')}
+              © {currentYear} {footerSettings.companyName}. {t('copyright')} — {t('relaxOnSands')}
             </p>
             <div className={`flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               <Globe className="w-4 h-4" />
