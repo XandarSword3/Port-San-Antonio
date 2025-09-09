@@ -743,7 +743,9 @@
         }
       ],
       "currency": "USD",
-      "image": "/seed/tequila-jose-white.jpg"
+      "image": "/seed/tequila-jose-white.jpg",
+      "available": true,
+      "price": 12
     },
     {
       "id": "1757426881730",
@@ -982,5 +984,5 @@
       "order": 12
     }
   ],
-  "lastUpdated": "2025-09-09T14:14:59.616Z"
+  "lastUpdated": "2025-09-09T14:15:21.236Z"
 }
