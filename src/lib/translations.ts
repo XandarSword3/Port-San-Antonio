@@ -221,6 +221,35 @@ export type TranslationKeys =
   | 'mozzarellaChickenMelt'
   | 'mozzarellaBeefMelt'
   | 'crispyChicken'
+  
+  // New Food Items from Analysis
+  | 'chickenWings'
+  | 'pepperoniPizza'
+  | 'cheesePizza'
+  | 'veggiePizza'
+  | 'greekFusion'
+  | 'crabSalad'
+  | 'caesarSalad'
+  | 'tunaPasta'
+  | 'seasonalMix'
+  
+  // Additional UI Elements
+  | 'stock'
+  | 'addToCart'
+  | 'subtotal'
+  | 'deliveryFee'
+  | 'shellfish'
+  | 'allergenShellfish'
+  | 'priceUnder20'
+  | 'price20to50'
+  | 'priceOver50'
+  | 'languageCode'
+  | 'available'
+  | 'goldenChickenNuggetsDesc'
+  | 'iceCucumbersDesc'
+  | 'breadedChickenDesc'
+  | 'beefPattyDesc'
+  | 'skewersColeslawDesc'
 
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
@@ -442,6 +471,32 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     mozzarellaChickenMelt: 'Mozzarella Chicken Melt',
     mozzarellaBeefMelt: 'Mozzarella Beef Melt',
     crispyChicken: 'Crispy Chicken',
+    
+    // New Food Items from Analysis
+    chickenWings: 'Chicken Wings',
+    pepperoniPizza: 'Pepperoni Pizza',
+    cheesePizza: 'Cheese Pizza',
+    veggiePizza: 'Veggie Pizza',
+    greekFusion: 'Greek Fusion',
+    crabSalad: 'Crab Salad',
+    caesarSalad: 'Caesar Salad',
+    tunaPasta: 'Tuna Pasta',
+    seasonalMix: 'Seasonal Mix',
+    
+    // New required keys
+    stock: 'Stock',
+    deliveryFee: 'Delivery Fee',
+    shellfish: 'Shellfish',
+    allergenShellfish: 'Shellfish',
+    priceUnder20: 'Under $20',
+    price20to50: '$20-$50',
+    priceOver50: 'Over $50',
+    languageCode: 'EN',
+    goldenChickenNuggetsDesc: 'Golden chicken nuggets',
+    iceCucumbersDesc: 'Ice, Cucumbers, Cherry Rocca, Tomatoes, Lemon Oil',
+    breadedChickenDesc: 'Breaded Chicken / Honey Mustard / BBQ, Lettuce, Chips',
+    beefPattyDesc: 'Beef Patty, Mozzarella Beef Melt',
+    skewersColeslawDesc: 'Skewers, Coleslaw, Fries, Garlic, 2 Hummus, Pickles, Lebanese Bread',
   },
   
   ar: {
@@ -663,6 +718,32 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     mozzarellaChickenMelt: 'ذوبان دجاج بالموزاريلا',
     mozzarellaBeefMelt: 'ذوبان لحم بالموزاريلا',
     crispyChicken: 'دجاج مقرمش',
+    
+    // New Food Items from Analysis
+    chickenWings: 'أجنحة الدجاج المقرمشة',
+    pepperoniPizza: 'بيتزا البيبروني',
+    cheesePizza: 'بيتزا الجبن',
+    veggiePizza: 'بيتزا الخضار',
+    greekFusion: 'الخلطة اليونانية',
+    crabSalad: 'سلطة السلطعون',
+    caesarSalad: 'سلطة قيصر',
+    tunaPasta: 'معكرونة التونة',
+    seasonalMix: 'الخلطة الموسمية',
+    
+    // New required keys
+    stock: 'المخزون',
+    deliveryFee: 'رسوم التوصيل',
+    shellfish: 'قشريات',
+    allergenShellfish: 'قشريات',
+    priceUnder20: 'أقل من ٢٠ دولار',
+    price20to50: '٢٠-٥٠ دولار',
+    priceOver50: 'أكثر من ٥٠ دولار',
+    languageCode: 'ع',
+    goldenChickenNuggetsDesc: 'قطع دجاج ذهبية',
+    iceCucumbersDesc: 'ثلج، خيار، جرجير كرزي، طماطم، زيت ليمون',
+    breadedChickenDesc: 'دجاج مغطى / خردل بالعسل / باربكيو، خس، رقائق',
+    beefPattyDesc: 'قرص لحم، ذوبان لحم بالموزاريلا',
+    skewersColeslawDesc: 'أسياخ، سلطة كرنب، بطاطا مقلية، ثوم، ٢ حمُص، مخلل، خبز لبناني',
   },
   
   fr: {
@@ -884,6 +965,32 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     mozzarellaChickenMelt: 'Fondu Poulet Mozzarella',
     mozzarellaBeefMelt: 'Fondu Bœuf Mozzarella',
     crispyChicken: 'Poulet Croustillant',
+    
+    // New Food Items from Analysis
+    chickenWings: 'Ailes de Poulet',
+    pepperoniPizza: 'Pizza Pepperoni',
+    cheesePizza: 'Pizza Fromage',
+    veggiePizza: 'Pizza Végétarienne',
+    greekFusion: 'Fusion Grecque',
+    crabSalad: 'Salade de Crabe',
+    caesarSalad: 'Salade César',
+    tunaPasta: 'Pâtes au Thon',
+    seasonalMix: 'Mélange Saisonnier',
+    
+    // New required keys
+    stock: 'Stock',
+    deliveryFee: 'Frais de Livraison',
+    shellfish: 'Fruits de Mer',
+    allergenShellfish: 'Fruits de Mer',
+    priceUnder20: 'Moins de 20$',
+    price20to50: '20$-50$',
+    priceOver50: 'Plus de 50$',
+    languageCode: 'FR',
+    goldenChickenNuggetsDesc: 'Nuggets de poulet dorés',
+    iceCucumbersDesc: 'Glace, Concombres, Roquette Cerises, Tomates, Huile de Citron',
+    breadedChickenDesc: 'Poulet Pané / Moutarde au Miel / BBQ, Laitue, Chips',
+    beefPattyDesc: 'Galette de Bœuf, Fondu Bœuf Mozzarella',
+    skewersColeslawDesc: 'Brochettes, Salade de Chou, Frites, Ail, 2 Houmous, Cornichons, Pain Libanais',
   }
 }
 

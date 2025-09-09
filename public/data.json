@@ -30,14 +30,15 @@
     ]
   },
   "contact": {
-    "phone": "+961 1 234 567",
-    "email": "info@portsanantonio.com",
-    "address": "123 Mediterranean Street, Beirut, Lebanon",
-    "website": "https://www.portsanantonio.com",
+    "phone": "03 201 682",
+    "phoneSecondary": "81 201 682",
+    "email": "info@portantonio.com",
+    "address": "Jbeil Mastita, Lebanon",
+    "website": "https://www.portantonio.com",
     "socialMedia": {
-      "facebook": "https://facebook.com/portsanantonio",
-      "instagram": "https://instagram.com/portsanantonio",
-      "twitter": "https://twitter.com/portsanantonio"
+      "facebook": "https://facebook.com/portantonio",
+      "instagram": "https://instagram.com/portantonio",
+      "twitter": "https://twitter.com/portantonio"
     }
   }
 }
