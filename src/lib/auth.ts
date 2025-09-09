@@ -235,5 +235,15 @@ export const hasPermission = (role: UserRole, permission: string): boolean => {
   return AuthService.hasPermission(role, permission);
 };
 
+// Export verifyToken function for API routes
+export const verifyToken = (token: string) => {
+  const payload = AuthService.verifyToken(token);
+  return {
+    success: !!payload,
+    payload: payload,
+    error: payload ? null : 'Invalid token'
+  };
+};
+
 // Default password is "admin123" - change this!
 export const DEFAULT_PASSWORD = 'admin123'
