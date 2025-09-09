@@ -14,7 +14,7 @@ export default function HeroBackground() {
       >
         <img
           src="/seed/resort-hero.jpg"
-          alt="Port San Antonio Resort"
+          alt="Port Antonio Resort"
           className="h-full w-full object-cover"
           style={{ transform: 'scale(1.1)' }}
         />

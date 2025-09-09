@@ -14,7 +14,7 @@ This Lebanese Mediterranean resort website is ready for deployment to various pl
 1. Connect your GitHub repository to Netlify
 2. Build settings:
    - Build command: `npm run build`
-   - Publish directory: `.next`
+   - Publish directory: `.next` (configured in netlify.toml)
    - Node version: 18
 3. Deploy automatically on every push to main branch
 4. Admin panel available at: `yoursite.com/admin`
@@ -70,6 +70,16 @@ src/
 
 ## Environment Variables
 No environment variables required for basic deployment.
+
+## Netlify Configuration Notes
+- The `netlify.toml` file is configured for @netlify/plugin-nextjs
+- **Important**: Publish directory is set to `.next` in netlify.toml
+- The plugin automatically handles routing and server-side rendering
+- If you encounter 404 errors, ensure:
+  1. Publish directory is set to `.next` in netlify.toml
+  2. Build command is `npm run build`
+  3. Node version is set to 18
+  4. @netlify/plugin-nextjs is properly installed
 
 ## Security Notes
 - Admin credentials are stored in plain text (suitable for demo)

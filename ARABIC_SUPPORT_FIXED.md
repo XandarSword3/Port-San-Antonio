@@ -1,7 +1,7 @@
 # Arabic Language Support - Fixed! ✅
 
 ## Summary
-Successfully fixed Arabic language support for the Port San Antonio Resort website.
+Successfully fixed Arabic language support for the Port Antonio Resort website.
 
 ## Issues Identified & Fixed:
 

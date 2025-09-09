@@ -1,8 +1,5 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
 import { Metadata } from 'next'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Port San Antonio Resort - Menu',
@@ -33,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html className="h-full">
-      <body className={`${inter.className} h-full overflow-x-hidden`}>
+      <body className="h-full overflow-x-hidden font-sans">
         <ClientLayout>
           {children}
         </ClientLayout>

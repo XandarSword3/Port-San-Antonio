@@ -120,7 +120,7 @@ export default function AdminPage() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-4">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-yellow-400">Admin Panel</h1>
-              <span className="text-sm text-gray-500 dark:text-gray-300">Port San Antonio Resort</span>
+              <span className="text-sm text-gray-500 dark:text-gray-300">Port Antonio Resort</span>
             </div>
             
             <div className="flex items-center gap-4">

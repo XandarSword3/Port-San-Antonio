@@ -19,7 +19,7 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
-  trailingSlash: true,
+  // Removed output: 'export' to enable API routes for Netlify Functions
   images: {
     domains: ['localhost', 'port-san-antonio.vercel.app'],
     formats: ['image/webp', 'image/avif'],

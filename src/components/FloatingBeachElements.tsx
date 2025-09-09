@@ -38,7 +38,7 @@ const FloatingBeachElements = () => {
           className="absolute"
         >
           <Icon 
-            className="w-6 h-6 text-blue-300/40 drop-shadow-lg" 
+            className="w-4 h-4 sm:w-6 sm:h-6 text-blue-300/40 drop-shadow-lg" 
             style={{
               filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.3))'
             }}
@@ -46,21 +46,21 @@ const FloatingBeachElements = () => {
         </motion.div>
       ))}
       
-      {/* Floating bubbles - reduced amount */}
+      {/* Floating bubbles - reduced amount and mobile responsive */}
       {Array.from({ length: 6 }).map((_, i) => (
         <motion.div
           key={`bubble-${i}`}
           initial={{
             opacity: 0,
             scale: 0,
-            x: Math.random() * 1400, // Fixed width instead of window.innerWidth
-            y: 900 // Fixed height instead of window.innerHeight + 100
+            x: `${Math.random() * 100}vw`, // Responsive width using viewport units
+            y: '100vh' // Responsive height using viewport units
           }}
           animate={{
             opacity: [0, 0.2, 0],
             scale: [0, 0.8, 0],
-            y: -100,
-            x: Math.random() * 1400 // Fixed width instead of window.innerWidth
+            y: '-10vh',
+            x: `${Math.random() * 100}vw` // Responsive width using viewport units
           }}
           transition={{
             duration: 8 + Math.random() * 4,
@@ -68,7 +68,7 @@ const FloatingBeachElements = () => {
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute w-2 h-2 bg-blue-200/30 rounded-full backdrop-blur-sm"
+          className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-blue-200/30 rounded-full backdrop-blur-sm mobile-hide-decorative"
           style={{
             boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)'
           }}

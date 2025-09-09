@@ -63,7 +63,7 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
             key={i}
             initial={{ x: -200, opacity: 0 }}
             animate={{ 
-              x: 1400, // Fixed width instead of window.innerWidth
+              x: '120vw', // Responsive width using viewport units
               opacity: [0, 1, 1, 0]
             }}
             transition={{
@@ -106,8 +106,8 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
               >
                 <img 
                   src="/Photos/Logo.jpg" 
-                  alt="Port San Antonio Resort" 
-                  className="w-24 h-24 mx-auto rounded-full shadow-2xl border-4 border-white/30"
+                  alt="Port Antonio Resort" 
+                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto rounded-full shadow-2xl border-4 border-white/30"
                 />
               </motion.div>
 
@@ -116,9 +116,9 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-4xl font-serif font-bold mb-4 drop-shadow-lg"
+                className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 sm:mb-4 drop-shadow-lg"
               >
-                Port San Antonio Resort
+                Port Antonio Resort
               </motion.h1>
 
               {/* Loading text */}
@@ -126,13 +126,13 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.4 }}
-                className="text-lg font-light drop-shadow-md"
+                className="text-sm sm:text-base md:text-lg font-light drop-shadow-md"
               >
                 Welcome to Mediterranean Paradise
               </motion.p>
 
               {/* Floating icons */}
-              <div className="mt-8 flex justify-center gap-6">
+              <div className="mt-6 sm:mt-8 flex justify-center gap-4 sm:gap-6">
                 {[Sun, Waves, Anchor, Ship].map((Icon, i) => (
                   <motion.div
                     key={i}
