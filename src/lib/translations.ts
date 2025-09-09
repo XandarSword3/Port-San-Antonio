@@ -117,6 +117,37 @@ export type TranslationKeys =
   | 'items'
   | 'copiedToClipboard'
   | 'shareText'
+  | 'staffLogin'
+  | 'viewFullCart'
+  | 'cartTotal'
+  | 'proceedToCheckout'
+  | 'payNow'
+  | 'removeItem'
+  | 'updateQuantity'
+  | 'orderSummary'
+  | 'subtotal'
+  | 'tax'
+  | 'totalAmount'
+  | 'continueShopping'
+  | 'checkoutSuccess'
+  | 'paymentProcessing'
+  | 'paymentError'
+  | 'pleaseTryAgain'
+  | 'orderConfirmation'
+  | 'thankYou'
+  | 'emailSent'
+  | 'orderNumber'
+  | 'estimatedDelivery'
+  | 'trackOrder'
+  | 'makeReservation'
+  | 'clearCart'
+  | 'username'
+  | 'password'
+  | 'login'
+  | 'invalidCredentials'
+  | 'loggingIn'
+  | 'guestInfo'
+  | 'staffRoles'
 
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
@@ -234,6 +265,37 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     copyright: 'All rights reserved',
     copiedToClipboard: 'Copied to clipboard!',
     shareText: 'Share this item',
+    staffLogin: 'Staff Login',
+    viewFullCart: 'View Full Cart',
+    cartTotal: 'Cart Total',
+    proceedToCheckout: 'Proceed to Checkout',
+    payNow: 'Pay Now',
+    removeItem: 'Remove Item',
+    updateQuantity: 'Update Quantity',
+    orderSummary: 'Order Summary',
+    subtotal: 'Subtotal',
+    tax: 'Tax',
+    totalAmount: 'Total Amount',
+    continueShopping: 'Continue Shopping',
+    checkoutSuccess: 'Checkout Successful',
+    paymentProcessing: 'Processing Payment...',
+    paymentError: 'Payment Error',
+    pleaseTryAgain: 'Please try again',
+    orderConfirmation: 'Order Confirmation',
+    thankYou: 'Thank You!',
+    emailSent: 'Confirmation email sent',
+    orderNumber: 'Order Number',
+    estimatedDelivery: 'Estimated Delivery',
+    trackOrder: 'Track Order',
+    makeReservation: 'Make Reservation',
+    clearCart: 'Clear Cart',
+    username: 'Username',
+    password: 'Password',
+    login: 'Login',
+    invalidCredentials: 'Invalid username or password',
+    loggingIn: 'Logging in...',
+    guestInfo: 'Guests can browse without logging in',
+    staffRoles: 'Staff Roles: Worker • Admin • Owner',
   },
   
   ar: {
@@ -351,6 +413,37 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     copyright: 'جميع الحقوق محفوظة',
     copiedToClipboard: 'تم النسخ إلى الحافظة!',
     shareText: 'شارك هذا العنصر',
+    staffLogin: 'تسجيل دخول الموظفين',
+    viewFullCart: 'عرض السلة كاملة',
+    cartTotal: 'إجمالي السلة',
+    proceedToCheckout: 'المتابعة للدفع',
+    payNow: 'ادفع الآن',
+    removeItem: 'إزالة العنصر',
+    updateQuantity: 'تحديث الكمية',
+    orderSummary: 'ملخص الطلب',
+    subtotal: 'المجموع الفرعي',
+    tax: 'الضريبة',
+    totalAmount: 'المبلغ الإجمالي',
+    continueShopping: 'متابعة التسوق',
+    checkoutSuccess: 'تم الدفع بنجاح',
+    paymentProcessing: 'جاري معالجة الدفع...',
+    paymentError: 'خطأ في الدفع',
+    pleaseTryAgain: 'الرجاء المحاولة مرة أخرى',
+    orderConfirmation: 'تأكيد الطلب',
+    thankYou: 'شكراً لك!',
+    emailSent: 'تم إرسال بريد التأكيد',
+    orderNumber: 'رقم الطلب',
+    estimatedDelivery: 'التسليم المقدر',
+    trackOrder: 'تتبع الطلب',
+    makeReservation: 'احجز طاولة',
+    clearCart: 'إفراغ السلة',
+    username: 'اسم المستخدم',
+    password: 'كلمة المرور',
+    login: 'تسجيل الدخول',
+    invalidCredentials: 'اسم المستخدم أو كلمة المرور غير صحيحة',
+    loggingIn: 'جاري تسجيل الدخول...',
+    guestInfo: 'يمكن للضيوف التصفح بدون تسجيل دخول',
+    staffRoles: 'أدوار الموظفين: عامل • مدير • مالك',
   },
   
   fr: {
@@ -468,6 +561,37 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     copyright: 'Tous droits réservés',
     copiedToClipboard: 'Copié dans le presse-papiers!',
     shareText: 'Partager cet article',
+    staffLogin: 'Connexion Personnel',
+    viewFullCart: 'Voir le Panier Complet',
+    cartTotal: 'Total du Panier',
+    proceedToCheckout: 'Procéder au Paiement',
+    payNow: 'Payer Maintenant',
+    removeItem: 'Retirer l\'Article',
+    updateQuantity: 'Mettre à Jour la Quantité',
+    orderSummary: 'Résumé de la Commande',
+    subtotal: 'Sous-total',
+    tax: 'Taxe',
+    totalAmount: 'Montant Total',
+    continueShopping: 'Continuer les Achats',
+    checkoutSuccess: 'Paiement Réussi',
+    paymentProcessing: 'Traitement du Paiement...',
+    paymentError: 'Erreur de Paiement',
+    pleaseTryAgain: 'Veuillez réessayer',
+    orderConfirmation: 'Confirmation de Commande',
+    thankYou: 'Merci!',
+    emailSent: 'Email de confirmation envoyé',
+    orderNumber: 'Numéro de Commande',
+    estimatedDelivery: 'Livraison Estimée',
+    trackOrder: 'Suivre la Commande',
+    makeReservation: 'Réserver une Table',
+    clearCart: 'Vider le Panier',
+    username: 'Nom d\'utilisateur',
+    password: 'Mot de passe',
+    login: 'Connexion',
+    invalidCredentials: 'Nom d\'utilisateur ou mot de passe invalide',
+    loggingIn: 'Connexion en cours...',
+    guestInfo: 'Les invités peuvent naviguer sans se connecter',
+    staffRoles: 'Rôles du Personnel: Employé • Admin • Propriétaire',
   }
 }
 

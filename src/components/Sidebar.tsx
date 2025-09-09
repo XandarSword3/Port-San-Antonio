@@ -135,7 +135,7 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/30 text-amber-700 dark:text-amber-400 transition-all duration-300 hover:scale-105 hover:shadow-md border-2 border-amber-200 dark:border-amber-800 animate-pulse"
                   >
                     <Lock className="w-5 h-5" />
-                    <span>Staff Login</span>
+                    <span>{t('staffLogin')}</span>
                   </button>
                 )}
                 <Link

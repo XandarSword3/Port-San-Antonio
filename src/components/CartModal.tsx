@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { useCurrency } from '@/contexts/CurrencyContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface CartModalProps {
   isOpen: boolean
@@ -15,6 +16,7 @@ interface CartModalProps {
 export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModalProps) {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCart()
   const { formatPrice } = useCurrency()
+  const { t } = useLanguage()
 
   const handleQuantityChange = (dishId: string, newQuantity: number, variant?: any) => {
     updateQuantity(dishId, newQuantity, variant)
@@ -46,10 +48,10 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
               <div className="flex items-center gap-3">
                 <ShoppingBag className="h-6 w-6 text-yellow-600" />
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Your Order
+                  {t('cart')}
                 </h2>
                 <span className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded-full text-sm font-medium">
-                  {items.length} items
+                  {items.length} {t('items')}
                 </span>
               </div>
               <button
@@ -66,10 +68,10 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                 <div className="text-center py-12">
                   <ShoppingBag className="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                   <p className="text-gray-500 dark:text-gray-400 text-lg">
-                    Your cart is empty
+                    {t('cartEmpty')}
                   </p>
                   <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">
-                    Add some delicious Lebanese dishes to get started!
+                    {t('exploreMenu')}
                   </p>
                 </div>
               ) : (
@@ -159,7 +161,7 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
               <div className="border-t border-gray-200 dark:border-gray-600 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Total:
+                    {t('total')}:
                   </span>
                   <span className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
                     {formatPrice(totalPrice)}
@@ -171,7 +173,7 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                     onClick={clearCart}
                     className="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                   >
-                    Clear Cart
+                    {t('clearAll')}
                   </button>
                   <button
                     onClick={() => {
@@ -180,7 +182,7 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                     }}
                     className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors font-medium"
                   >
-                    View Full Cart
+                    {t('viewFullCart')}
                   </button>
                 </div>
               </div>

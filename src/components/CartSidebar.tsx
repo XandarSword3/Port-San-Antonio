@@ -16,42 +16,9 @@ interface CartSidebarProps {
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
   const { items, updateQuantity, removeItem, clearCart, getTotalPrice, getTotalItems } = useCart();
-  const { language } = useLanguage();
+  const { t } = useLanguage();
   const [showPayment, setShowPayment] = useState(false);
   const [showReservation, setShowReservation] = useState(false);
-
-  const text = {
-    en: {
-      cart: 'Your Cart',
-      empty: 'Your cart is empty',
-      emptyMessage: 'Add some delicious items to your cart!',
-      remove: 'Remove',
-      quantity: 'Quantity',
-      total: 'Total',
-      clear: 'Clear Cart',
-      payNow: 'Pay Now',
-      makeReservation: 'Make Reservation',
-      paymentSuccess: 'Payment completed successfully!',
-      items: 'items',
-      item: 'item',
-    },
-    ar: {
-      cart: 'سلة التسوق',
-      empty: 'سلة التسوق فارغة',
-      emptyMessage: 'أضف بعض الأطباق اللذيذة إلى سلتك!',
-      remove: 'إزالة',
-      quantity: 'الكمية',
-      total: 'المجموع',
-      clear: 'إفراغ السلة',
-      payNow: 'ادفع الآن',
-      makeReservation: 'احجز طاولة',
-      paymentSuccess: 'تم الدفع بنجاح!',
-      items: 'عناصر',
-      item: 'عنصر',
-    }
-  };
-
-  const t = text[language as keyof typeof text] || text.en;
 
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
@@ -100,7 +67,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
               <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600">
                 <h2 className="text-xl font-bold flex items-center">
                   <ShoppingCart className="w-6 h-6 mr-2" />
-                  {t.cart}
+                  {t('cart')}
                   {totalItems > 0 && (
                     <span className="ml-2 bg-blue-500 text-white text-sm rounded-full px-2 py-1">
                       {totalItems}
@@ -121,9 +88,9 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                   <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                     <ShoppingCart className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
                     <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">
-                      {t.empty}
+                      {t('cartEmpty')}
                     </h3>
-                    <p className="text-gray-500 dark:text-gray-400">{t.emptyMessage}</p>
+                    <p className="text-gray-500 dark:text-gray-400">{t('exploreMenu')}</p>
                   </div>
                 ) : (
                   <div className="p-4 space-y-4">
@@ -148,7 +115,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                           <button
                             onClick={() => removeItem(item.dish.id, item.selectedVariant)}
                             className="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
-                            title={t.remove}
+                            title={t('removeItem')}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -187,7 +154,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                 <div className="border-t border-gray-200 dark:border-gray-600 p-6 space-y-4">
                   {/* Total */}
                   <div className="flex justify-between items-center text-lg font-bold">
-                    <span>{t.total}:</span>
+                    <span>{t('total')}:</span>
                     <span>{formatCurrency(totalPrice)}</span>
                   </div>
 
@@ -200,7 +167,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
                     >
                       <CreditCard className="w-5 h-5 mr-2" />
-                      {t.payNow}
+                      {t('payNow')}
                     </motion.button>
 
                     <motion.button
@@ -209,14 +176,14 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                       whileTap={{ scale: 0.98 }}
                       className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
                     >
-                      {t.makeReservation}
+                      {t('makeReservation')}
                     </motion.button>
 
                     <button
                       onClick={clearCart}
                       className="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
                     >
-                      {t.clear}
+                      {t('clearCart')}
                     </button>
                   </div>
                 </div>

@@ -13,38 +13,11 @@ interface LoginModalProps {
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   const { login } = useAuth();
-  const { language } = useLanguage();
+  const { t } = useLanguage();
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const text = {
-    en: {
-      title: 'Staff Login',
-      username: 'Username',
-      password: 'Password',
-      login: 'Login',
-      cancel: 'Cancel',
-      error: 'Invalid username or password',
-      loading: 'Logging in...',
-      guestInfo: 'Guests can browse without logging in',
-      roles: 'Staff Roles: Worker • Admin • Owner',
-    },
-    ar: {
-      title: 'تسجيل دخول الموظفين',
-      username: 'اسم المستخدم',
-      password: 'كلمة المرور',
-      login: 'تسجيل الدخول',
-      cancel: 'إلغاء',
-      error: 'اسم المستخدم أو كلمة المرور غير صحيحة',
-      loading: 'جاري تسجيل الدخول...',
-      guestInfo: 'يمكن للضيوف التصفح بدون تسجيل دخول',
-      roles: 'أدوار الموظفين: عامل • مدير • مالك',
-    }
-  };
-
-  const t = text[language as keyof typeof text] || text.en;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +30,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       onClose();
       setCredentials({ username: '', password: '' });
     } else {
-      setError(t.error);
+              setError(t('invalidCredentials'));
     }
     
     setLoading(false);
@@ -90,7 +63,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600">
               <h2 className="text-xl font-bold flex items-center">
                 <Lock className="w-6 h-6 mr-2 text-blue-600" />
-                {t.title}
+                {t('staffLogin')}
               </h2>
               <button
                 onClick={handleClose}
@@ -105,7 +78,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               {/* Username */}
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  {t.username}
+                  {t('username')}
                 </label>
                 <div className="relative">
                   <input
@@ -123,7 +96,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               {/* Password */}
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  {t.password}
+                  {t('password')}
                 </label>
                 <div className="relative">
                   <input
@@ -158,8 +131,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
               {/* Info */}
               <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm">
-                <p className="text-blue-700 dark:text-blue-400 mb-1">{t.guestInfo}</p>
-                <p className="text-blue-600 dark:text-blue-300 text-xs">{t.roles}</p>
+                <p className="text-blue-700 dark:text-blue-400 mb-1">{t('guestInfo')}</p>
+                <p className="text-blue-600 dark:text-blue-300 text-xs">{t('staffRoles')}</p>
               </div>
 
               {/* Buttons */}
@@ -169,7 +142,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                   onClick={handleClose}
                   className="flex-1 px-4 py-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                 >
-                  {t.cancel}
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
@@ -179,10 +152,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                   {loading ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
-                      {t.loading}
+                      {t('loggingIn')}
                     </>
                   ) : (
-                    t.login
+                    t('login')
                   )}
                 </button>
               </div>
