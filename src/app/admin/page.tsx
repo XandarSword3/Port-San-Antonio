@@ -26,7 +26,7 @@ export default function AdminPage() {
   const [isAuth, setIsAuth] = useState(false)
   const [isVerifying, setIsVerifying] = useState(true)
   const [currentView, setCurrentView] = useState<AdminView>('dashboard')
-  const [data, setData] = useState<AppData>(mockData as AppData)
+  const [data, setData] = useState<AppData>({ ...mockData, ads: [] } as AppData)
   const [currentUser, setCurrentUser] = useState<User | null>(null)
 
   const handleLogin = (user: User) => {
