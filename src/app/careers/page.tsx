@@ -34,7 +34,7 @@ export default function CareersPage() {
       id: "1",
       title: "Head Chef",
       department: "Kitchen",
-      type: "Full-time",
+      type: "full-time",
       location: "Port Antonio, Lebanon",
       description: "Lead our culinary team in creating exceptional Mediterranean and international cuisine. Oversee kitchen operations, menu development, and staff management.",
       requirements: [
@@ -50,13 +50,15 @@ export default function CareersPage() {
         "Staff meals and accommodation",
         "Professional development opportunities",
         "Performance bonuses"
-      ]
+      ],
+      active: true,
+      createdAt: new Date()
     },
     {
       id: "2", 
       title: "Server",
       department: "Front of House",
-      type: "Full-time / Part-time",
+      type: "full-time",
       location: "Port Antonio, Lebanon",
       description: "Provide exceptional dining service to our guests. Take orders, serve food and beverages, and ensure customer satisfaction in our beautiful beachfront setting.",
       requirements: [
@@ -72,13 +74,15 @@ export default function CareersPage() {
         "Staff meal benefits",
         "Training and development",
         "Friendly work environment"
-      ]
+      ],
+      active: true,
+      createdAt: new Date()
     },
     {
       id: "3",
       title: "Sous Chef",
       department: "Kitchen", 
-      type: "Full-time",
+      type: "full-time",
       location: "Port Antonio, Lebanon",
       description: "Support the head chef in daily kitchen operations, food preparation, and staff supervision. Help maintain our high culinary standards.",
       requirements: [
@@ -94,16 +98,13 @@ export default function CareersPage() {
         "Health benefits",
         "Staff accommodation available",
         "Continuing education support"
-      ]
+      ],
+      active: true,
+      createdAt: new Date()
     }
   ]
 
-    setJobPositions(defaultPositions.map(job => ({ 
-      ...job, 
-      active: true, 
-      createdAt: new Date(),
-      salary: job.benefits[0] // Map first benefit as salary placeholder
-    })))
+    setJobPositions(defaultPositions)
   }, [])
 
   return (

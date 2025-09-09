@@ -244,15 +244,15 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
         }}
         onPointerUp={(e) => {
           handlePointerUp()
-          longPressAnalytics.onMouseUp(e)
+          longPressAnalytics.onMouseUp()
         }}
         onPointerCancel={(e) => {
           handlePointerCancel()
-          longPressAnalytics.onMouseLeave(e)
+          longPressAnalytics.onMouseLeave()
         }}
         onPointerLeave={(e) => {
           handlePointerLeave()
-          longPressAnalytics.onMouseLeave(e)
+          longPressAnalytics.onMouseLeave()
         }}
         onTouchStart={longPressAnalytics.onTouchStart}
         onTouchEnd={longPressAnalytics.onTouchEnd}
