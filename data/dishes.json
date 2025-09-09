@@ -433,9 +433,7 @@
         }
       ],
       "currency": "USD",
-      "image": "/seed/gin-gordons.jpg",
-      "available": true,
-      "price": 69
+      "image": "/seed/gin-gordons.jpg"
     },
     {
       "id": "greek-fusion",
@@ -898,6 +896,26 @@
       "currency": "USD",
       "image": "/seed/white-chardonnay.jpg",
       "available": true
+    },
+    {
+      "id": "1757426881730",
+      "name": "test",
+      "shortDesc": "test",
+      "fullDesc": "test",
+      "price": 1332.98,
+      "categoryId": "starters",
+      "available": true,
+      "image": "",
+      "dietTags": [],
+      "allergens": [],
+      "currency": "USD",
+      "imageVariants": {
+        "src": ""
+      },
+      "rating": 0,
+      "reviewCount": 0,
+      "ingredients": [],
+      "sponsored": false
     }
   ],
   "categories": [
@@ -962,5 +980,5 @@
       "order": 12
     }
   ],
-  "lastUpdated": "2025-09-09T14:04:15.200Z"
+  "lastUpdated": "2025-09-09T14:08:01.730Z"
 }
