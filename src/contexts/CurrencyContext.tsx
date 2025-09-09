@@ -1,6 +1,13 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useLanguage } from './LanguageContext'
+
+// Helper function to convert Western numerals to Eastern Arabic numerals
+const convertToArabicNumerals = (text: string): string => {
+  const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']
+  return text.replace(/[0-9]/g, (digit) => arabicNumerals[parseInt(digit)])
+}
 
 export type Currency = 'USD' | 'LBP'
 
@@ -21,6 +28,7 @@ interface CurrencyProviderProps {
 export function CurrencyProvider({ children }: CurrencyProviderProps) {
   const [currency, setCurrencyState] = useState<Currency>('LBP')
   const [exchangeRate, setExchangeRateState] = useState<number>(90000) // USD to LBP rate
+  const { language } = useLanguage()
 
   useEffect(() => {
     // Load currency preference from localStorage
@@ -53,22 +61,26 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
   }
 
   const formatPrice = (price: number, originalCurrency: string = 'USD'): string => {
+    let formattedPrice = ''
+    
     if (currency === 'LBP' && originalCurrency === 'USD') {
       const lbpPrice = Math.round(price * exchangeRate)
-      return `${lbpPrice.toLocaleString()} LBP`
-    }
-    
-    if (currency === 'USD' && originalCurrency === 'LBP') {
+      formattedPrice = `${lbpPrice.toLocaleString()} ل.ل.`
+    } else if (currency === 'USD' && originalCurrency === 'LBP') {
       const usdPrice = (price / exchangeRate).toFixed(2)
-      return `$${usdPrice} USD`
-    }
-
-    // Same currency or USD display
-    if (currency === 'USD') {
-      return `$${price.toFixed(2)} USD`
+      formattedPrice = `$${usdPrice}`
+    } else if (currency === 'USD') {
+      formattedPrice = `$${price.toFixed(2)}`
+    } else {
+      formattedPrice = `${price.toLocaleString()} ${originalCurrency}`
     }
     
-    return `${price.toLocaleString()} ${originalCurrency}`
+    // Convert to Arabic numerals if language is Arabic
+    if (language === 'ar') {
+      formattedPrice = convertToArabicNumerals(formattedPrice)
+    }
+    
+    return formattedPrice
   }
 
   return (
