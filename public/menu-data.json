@@ -433,7 +433,8 @@
         }
       ],
       "currency": "USD",
-      "image": "/seed/gin-gordons.jpg"
+      "image": "/seed/gin-gordons.jpg",
+      "available": true
     },
     {
       "id": "greek-fusion",
