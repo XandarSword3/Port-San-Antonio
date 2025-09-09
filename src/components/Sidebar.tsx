@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { X, Facebook, Instagram, Youtube, Home, Menu, Settings, Mail, Lock } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -11,15 +11,31 @@ import { useTransitionRouter } from '@/hooks/useTransitionRouter'
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
-  showStaffLogin?: boolean
   onStaffLoginClick?: () => void
 }
 
-export default function Sidebar({ isOpen, onClose, showStaffLogin = false, onStaffLoginClick }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarProps) {
   const sidebarRef = useRef<HTMLDivElement>(null)
   const { t } = useLanguage()
   const { isLoggedIn } = useAuth()
   const { navigateWithTransition } = useTransitionRouter()
+  const [nameClickCount, setNameClickCount] = useState(0)
+  const [showStaffLogin, setShowStaffLogin] = useState(false)
+
+  const handleNameClick = () => {
+    const newCount = nameClickCount + 1
+    setNameClickCount(newCount)
+    
+    if (newCount === 5) {
+      setShowStaffLogin(true)
+      onStaffLoginClick?.()
+    }
+    
+    // Reset counter after 3 seconds of inactivity
+    setTimeout(() => {
+      setNameClickCount(0)
+    }, 3000)
+  }
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -179,14 +195,12 @@ export default function Sidebar({ isOpen, onClose, showStaffLogin = false, onSta
                 {/* Attribution */}
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Site made by{' '}
-                  <a
-                    href="https://github.com/alessandroabisaf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-resort-500 dark:text-resort-300 hover:underline"
+                  <button
+                    onClick={handleNameClick}
+                    className="text-resort-500 dark:text-resort-300 hover:underline focus:outline-none"
                   >
                     Alessandro Abi Safi
-                  </a>
+                  </button>
                 </p>
               </div>
             </div>

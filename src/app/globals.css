@@ -693,12 +693,7 @@
   }
 
   .lebanese-btn::before {
-    content: '🌿';
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    font-size: 14px;
-    opacity: 0.7;
+    content: '';
   }
 
   .lebanese-btn:hover {

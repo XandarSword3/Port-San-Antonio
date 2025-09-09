@@ -24,8 +24,6 @@ export default function GlobalHeader() {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isFullCartOpen, setIsFullCartOpen] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const [nameClickCount, setNameClickCount] = useState(0)
-  const [showStaffLogin, setShowStaffLogin] = useState(false)
   const pathname = usePathname()
 
   const toggleLanguage = () => {
@@ -51,45 +49,22 @@ export default function GlobalHeader() {
     })
   }
 
-  const handleNameClick = () => {
-    const newCount = nameClickCount + 1
-    setNameClickCount(newCount)
-    
-    if (newCount === 5) {
-      setShowStaffLogin(true)
-      setShowLoginModal(true)
-      setNameClickCount(0) // Reset counter
-    }
-    
-    // Reset counter after 3 seconds of no clicks
-    setTimeout(() => {
-      if (nameClickCount === newCount) {
-        setNameClickCount(0)
-      }
-    }, 3000)
-  }
+
 
   return (
     <>
       <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-4 py-3 bg-white/90 dark:bg-beach-dark-bg/95 backdrop-blur-md z-[110] border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-lg">
         <div className="flex items-center gap-2 flex-1 min-w-0">
-          {/* Site Logo & Owner Name */}
-          <Link href="/" className="flex items-center gap-2">
+          {/* Site Logo & Resort Name */}
+          <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-beach-dark-text hover:text-resort-500 dark:hover:text-beach-dark-accent transition-colors accent-element">
             <img 
               src="/Photos/Logo.jpg" 
               alt="Port San Antonio Resort Logo" 
               className="w-10 h-10 rounded-lg object-cover shadow-sm flex-shrink-0"
             />
+            <span className="hidden sm:block">Port San Antonio Resort</span>
+            <Waves className="w-5 h-5 text-blue-500 animate-pulse" />
           </Link>
-          
-          {/* Stylish Owner Name - clickable */}
-          <button 
-            onClick={handleNameClick}
-            className="owner-name flex-shrink-0 min-w-0 px-2 py-1 rounded-md"
-            title="Alessandro Abi Safi"
-          >
-            Alessandro Abi Safi
-          </button>
         </div>
 
         <div className="flex items-center gap-1">
@@ -158,7 +133,6 @@ export default function GlobalHeader() {
       <Sidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)}
-        showStaffLogin={showStaffLogin}
         onStaffLoginClick={() => setShowLoginModal(true)}
       />
       
