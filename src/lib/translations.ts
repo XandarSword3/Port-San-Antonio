@@ -16,6 +16,10 @@ export type TranslationKeys =
   | 'expand'
   | 'collapse'
   | 'noResults'
+  | 'categories'
+  | 'active'
+  | 'under'
+  | 'over'
   | 'contactUs'
   | 'followUs'
   | 'search'
@@ -312,6 +316,10 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     expand: 'Expand',
     collapse: 'Collapse',
     noResults: 'No results match your filters',
+    categories: 'Categories',
+    active: 'active',
+    under: 'Under',
+    over: 'Over',
     contactUs: 'Contact Us',
     followUs: 'Follow Us',
     search: 'Search',
@@ -602,6 +610,10 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     expand: 'توسيع',
     collapse: 'طي',
     noResults: 'لا توجد نتائج تطابق تصفيتك',
+    categories: 'الفئات',
+    active: 'نشط',
+    under: 'تحت',
+    over: 'فوق',
     contactUs: 'تواصل معنا',
     followUs: 'تابعنا',
     search: 'بحث',
@@ -892,6 +904,10 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     expand: 'Développer',
     collapse: 'Réduire',
     noResults: 'Aucun résultat ne correspond à vos filtres',
+    categories: 'Catégories',
+    active: 'actif',
+    under: 'Moins de',
+    over: 'Plus de',
     contactUs: 'Contactez-nous',
     followUs: 'Suivez-nous',
     search: 'Rechercher',

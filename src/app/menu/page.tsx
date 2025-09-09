@@ -17,6 +17,7 @@ import BeachLoading from '@/components/BeachLoading'
 import SearchInput from '@/components/SearchInput'
 import ExpandableSearchBar from '@/components/ExpandableSearchBar'
 import ExpandableMenuHeader from '@/components/ExpandableMenuHeader'
+import UnifiedFilterBox from '@/components/UnifiedFilterBox'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -396,23 +397,18 @@ export default function MenuPage() {
         }}
       />
 
-      {/* Category Strip */}
-      <CategoryStrip
-        categories={availableCategories}
-        selectedCategory={filters.selectedCategory}
-        onCategorySelect={(categoryId) => 
-          setFilters(prev => ({ ...prev, selectedCategory: categoryId }))
-        }
-      />
-
-      {/* Filter Chips */}
+      {/* Unified Filter Box */}
       <div className="px-3 sm:px-4 mt-4">
-        <FilterChips
+        <UnifiedFilterBox
+          categories={availableCategories}
+          selectedCategory={filters.selectedCategory}
+          onCategorySelect={(categoryId) => 
+            setFilters(prev => ({ ...prev, selectedCategory: categoryId }))
+          }
           filters={dietFilterOptions}
           onFilterToggle={toggleDietFilter}
           onClearAll={clearAllFilters}
           hasActiveFilters={hasActiveFilters}
-          isOpen={true}
           availabilityOnly={filters.availabilityOnly}
           onAvailabilityToggle={() => setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))}
           priceBucket={filters.priceBucket}
