@@ -905,4 +905,51 @@
       font-size: 16px;
     }
   }
+  
+  /* Owner Name Styling */
+  .owner-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    background: linear-gradient(135deg, #d4af37 0%, #ffd700 25%, #ff8c00 50%, #dc143c 75%, #8b0000 100%);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .owner-name:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+  
+  .owner-name:active {
+    transform: scale(0.98);
+  }
+  
+  /* Mobile Header Optimizations */
+  @media (max-width: 640px) {
+    .owner-name {
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+    
+    /* Ensure buttons are touch-friendly on mobile */
+    .touch-target {
+      min-width: 44px;
+      min-height: 44px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .owner-name {
+      font-size: 0.8rem;
+      letter-spacing: 0.2px;
+    }
+  }
 }

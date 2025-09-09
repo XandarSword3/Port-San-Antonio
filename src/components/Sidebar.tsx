@@ -11,9 +11,11 @@ import { useTransitionRouter } from '@/hooks/useTransitionRouter'
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
+  showStaffLogin?: boolean
+  onStaffLoginClick?: () => void
 }
 
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, showStaffLogin = false, onStaffLoginClick }: SidebarProps) {
   const sidebarRef = useRef<HTMLDivElement>(null)
   const { t } = useLanguage()
   const { isLoggedIn } = useAuth()
@@ -109,6 +111,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   >
                     <Settings className="w-5 h-5" />
                     <span>{t('admin')}</span>
+                  </button>
+                )}
+                {showStaffLogin && onStaffLoginClick && (
+                  <button
+                    onClick={onStaffLoginClick}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/30 text-amber-700 dark:text-amber-400 transition-all duration-300 hover:scale-105 hover:shadow-md border-2 border-amber-200 dark:border-amber-800 animate-pulse"
+                  >
+                    <Lock className="w-5 h-5" />
+                    <span>Staff Login</span>
                   </button>
                 )}
                 <Link

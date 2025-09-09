@@ -24,6 +24,8 @@ export default function GlobalHeader() {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isFullCartOpen, setIsFullCartOpen] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [nameClickCount, setNameClickCount] = useState(0)
+  const [showStaffLogin, setShowStaffLogin] = useState(false)
   const pathname = usePathname()
 
   const toggleLanguage = () => {
@@ -49,88 +51,56 @@ export default function GlobalHeader() {
     })
   }
 
+  const handleNameClick = () => {
+    const newCount = nameClickCount + 1
+    setNameClickCount(newCount)
+    
+    if (newCount === 5) {
+      setShowStaffLogin(true)
+      setShowLoginModal(true)
+      setNameClickCount(0) // Reset counter
+    }
+    
+    // Reset counter after 3 seconds of no clicks
+    setTimeout(() => {
+      if (nameClickCount === newCount) {
+        setNameClickCount(0)
+      }
+    }, 3000)
+  }
+
   return (
     <>
-      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-6 py-3 bg-white/90 dark:bg-beach-dark-bg/95 backdrop-blur-md z-[110] border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-lg">
-        <div className="flex items-center gap-4">
-          {/* Hamburger Menu */}
-          <button 
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              toggleSidebar()
-            }}
-            onPointerDown={(e) => e.stopPropagation()}
-            onPointerUp={(e) => e.stopPropagation()}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
-            aria-label="Toggle sidebar menu"
-            data-testid="hamburger"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          
-          {/* Site Logo & Title */}
-          <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-beach-dark-text hover:text-resort-500 dark:hover:text-beach-dark-accent transition-colors accent-element">
+      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-4 py-3 bg-white/90 dark:bg-beach-dark-bg/95 backdrop-blur-md z-[110] border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-lg">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          {/* Site Logo & Owner Name */}
+          <Link href="/" className="flex items-center gap-2">
             <img 
               src="/Photos/Logo.jpg" 
               alt="Port San Antonio Resort Logo" 
-              className="w-10 h-10 rounded-lg object-cover shadow-sm"
+              className="w-10 h-10 rounded-lg object-cover shadow-sm flex-shrink-0"
             />
-            <span>{t('siteTitle')}</span>
-            <Mountain className="w-4 h-4 text-amber-500" />
           </Link>
           
-          {/* Navigation Links */}
-          <nav className="hidden md:flex gap-3 items-center">
-            <Link 
-              href="/menu" 
-              className={`flex items-center gap-2 text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card ${pathname === '/menu' ? 'text-resort-500 dark:text-beach-dark-accent accent-element' : 'text-gray-700 dark:text-beach-dark-muted text-muted'} transition-colors`}
-            >
-              <Anchor className="w-4 h-4" />
-              {t('menu')}
-            </Link>
-            {isLoggedIn ? (
-              <div className="flex items-center gap-2">
-                <Link 
-                  href="/admin" 
-                  className={`text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card ${pathname === '/admin' ? 'text-resort-500 dark:text-beach-dark-accent accent-element' : 'text-gray-700 dark:text-beach-dark-muted text-muted'} transition-colors flex items-center gap-2`}
-                  aria-label="Admin panel"
-                >
-                  <Lock className="w-4 h-4" />
-                  {t('admin')} ({userRole})
-                </Link>
-                <button
-                  onClick={logout}
-                  className="text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors flex items-center gap-2"
-                  aria-label="Logout"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="text-sm px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors flex items-center gap-2"
-                aria-label="Staff login"
-              >
-                <Lock className="w-4 h-4" />
-                Staff Login
-              </button>
-            )}
-          </nav>
+          {/* Stylish Owner Name - clickable */}
+          <button 
+            onClick={handleNameClick}
+            className="owner-name flex-shrink-0 min-w-0 px-2 py-1 rounded-md"
+            title="Alessandro Abi Safi"
+          >
+            Alessandro Abi Safi
+          </button>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Cart Indicator with Lebanese Basket */}
+        <div className="flex items-center gap-1">
+          {/* Cart Indicator - Mobile Optimized */}
           <button 
             onClick={() => setIsCartOpen(true)}
-            className="relative flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors wave-ripple"
+            className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
             aria-label={`${t('cart')} (${getTotalItems()} ${t('items')})`}
             data-testid="cart-indicator"
           >
-            <ShoppingBag className="w-4 h-4 text-amber-600" />
-            <span className="text-sm font-medium">{t('cart')}</span>
+            <ShoppingBag className="w-5 h-5 text-amber-600" />
             {getTotalItems() > 0 && (
               <span className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
                 {getTotalItems()}
@@ -138,43 +108,59 @@ export default function GlobalHeader() {
             )}
           </button>
 
-          {/* Currency Toggle with Lebanese Button */}
+          {/* Currency Toggle - Mobile Optimized */}
           <button 
             onClick={toggleCurrency}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg lebanese-btn text-white transition-colors"
+            className="p-2 rounded-lg lebanese-btn text-white transition-colors touch-target"
             aria-label={`Switch currency. Current: ${currency}`}
             data-testid="currency-toggle"
           >
-            <DollarSign className="w-4 h-4" />
-            <span className="text-sm font-medium">{currency}</span>
+            <span className="text-xs font-bold">{currency}</span>
           </button>
 
-          {/* Language Toggle */}
+          {/* Language Toggle - Mobile Optimized */}
           <button 
             onClick={toggleLanguage}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors touch-target"
             aria-label={`Switch language. Current: ${language.toUpperCase()}`}
             data-testid="language-toggle"
           >
-            <Globe className="w-4 h-4" />
-            <span className="text-sm font-medium">{language.toUpperCase()}</span>
+            <span className="text-xs font-bold">{language.toUpperCase()}</span>
           </button>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle - Mobile Optimized */}
           <button 
             onClick={toggleTheme}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors touch-target"
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             data-testid="theme-toggle"
           >
-            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-            <span className="text-sm font-medium">{theme === 'light' ? 'Dark' : 'Light'}</span>
+            {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+          </button>
+
+          {/* Hamburger Menu - Now on the right */}
+          <button 
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              toggleSidebar()
+            }}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors touch-target"
+            aria-label="Toggle sidebar menu"
+            data-testid="hamburger"
+          >
+            <Menu className="w-5 h-5" />
           </button>
         </div>
       </header>
 
       {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)}
+        showStaffLogin={showStaffLogin}
+        onStaffLoginClick={() => setShowLoginModal(true)}
+      />
       
       {/* Cart Modal */}
       <CartModal 
