@@ -13,6 +13,7 @@ import CurrencySettings from '@/components/CurrencySettings'
 import ContactManager from '@/components/ContactManager'
 import PaymentSettings from '@/components/admin/PaymentSettings'
 import PageTransition from '@/components/PageTransition'
+import { useLanguage } from '@/contexts/LanguageContext'
 import { isAuthenticated, logout, getCurrentUser, hasPermission } from '@/lib/auth'
 
 // Mock data - in real app this would come from API
@@ -21,6 +22,7 @@ import mockData from '../../../data/dishes.json'
 type AdminView = 'dashboard' | 'menu' | 'categories' | 'ads' | 'currency' | 'contact' | 'payments' | 'users'
 
 export default function AdminPage() {
+  const { t } = useLanguage()
   const [isAuth, setIsAuth] = useState(false)
   const [isVerifying, setIsVerifying] = useState(true)
   const [currentView, setCurrentView] = useState<AdminView>('dashboard')
@@ -99,7 +101,7 @@ export default function AdminPage() {
       items.push(
         { id: 'ads', label: 'Ad Manager', icon: Settings, permission: 'manage_settings' },
         { id: 'currency', label: 'Currency Settings', icon: DollarSign, permission: 'manage_settings' },
-        { id: 'contact', label: 'Contact Info', icon: Phone, permission: 'manage_settings' },
+        { id: 'contact', label: t('contactInfo'), icon: Phone, permission: 'manage_settings' },
         { id: 'payments', label: 'Payment Settings', icon: CreditCard, permission: 'manage_settings' }
       );
     }

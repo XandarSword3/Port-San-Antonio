@@ -6,6 +6,7 @@ import { DietFilter } from '@/types'
 import { cn } from '@/lib/utils'
 import { EASING, DURATION } from '@/lib/animation'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useCurrency } from '@/contexts/CurrencyContext'
 
 interface FilterChipsProps {
   filters: DietFilter[]
@@ -43,7 +44,8 @@ export default function FilterChips({
   onPriceBucketChange,
   dietCounts = {}
 }: FilterChipsProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const { currency } = useCurrency()
   const activeFilters = filters.filter(filter => filter.active)
   
   // If panel is explicitly closed and no active filters, don't show anything
@@ -61,7 +63,7 @@ export default function FilterChips({
     >
       <div className="w-full flex justify-between items-center mb-3">
         <span className="text-sm font-medium text-gray-700 dark:text-beach-dark-muted">
-          {t('filters')}: {activeFilters.length} active
+          {t('filters')}: {activeFilters.length} {t('activeLabel')}
         </span>
         {hasActiveFilters && (
           <button 
@@ -91,9 +93,9 @@ export default function FilterChips({
         {/* Price buckets */}
         <div role="group" aria-label="Price">
           {[
-            { id: 'lte10' as const, label: '<= $10' },
-            { id: 'btw11_20' as const, label: '$11–$20' },
-            { id: 'gt20' as const, label: '> $20' },
+            { id: 'lte10' as const, labelKey: 'priceUnder20' as const },
+            { id: 'btw11_20' as const, labelKey: 'price20to50' as const },
+            { id: 'gt20' as const, labelKey: 'priceOver50' as const },
           ].map((b) => (
             <button
               key={b.id}
@@ -104,7 +106,7 @@ export default function FilterChips({
                 priceBucket === b.id ? 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800/30' : 'bg-gray-50 text-gray-500 border-gray-200 dark:bg-beach-dark-bg dark:text-beach-dark-muted dark:border-gray-600'
               )}
             >
-              {b.label}
+              {t(b.labelKey)}
             </button>
           ))}
         </div>

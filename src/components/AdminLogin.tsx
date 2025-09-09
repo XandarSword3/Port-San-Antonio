@@ -5,12 +5,14 @@ import { motion } from 'framer-motion'
 import { Lock, User, Eye, EyeOff } from 'lucide-react'
 import { User as UserType } from '@/types'
 import { loginUser } from '@/lib/auth'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface AdminLoginProps {
   onLogin: (user: UserType) => void
 }
 
 export default function AdminLogin({ onLogin }: AdminLoginProps) {
+  const { t } = useLanguage()
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''
@@ -31,10 +33,10 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
         // Call parent callback with user
         onLogin(user)
       } else {
-        setError('Invalid username or password')
+        setError(t('invalidCredentials'))
       }
     } catch (error) {
-      setError('Connection error. Please try again.')
+      setError(t('connectionError'))
       console.error('Login error:', error)
     } finally {
       setLoading(false)
@@ -67,7 +69,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
           {/* Username */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Username
+              {t('username')}
             </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -76,7 +78,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                 value={credentials.username}
                 onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
-                placeholder="Enter username"
+                placeholder={t('enterUsername')}
                 required
               />
             </div>
@@ -85,7 +87,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
           {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Password
+              {t('password')}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -94,7 +96,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                 value={credentials.password}
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-black dark:text-white bg-white dark:bg-gray-700"
-                placeholder="Enter password"
+                placeholder={t('enterPassword')}
                 required
               />
               <button
@@ -126,15 +128,15 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('signingIn') : t('signIn')}
           </motion.button>
         </form>
 
         {/* Security Notice */}
         <div className="mt-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
           <p className="text-sm text-red-700 dark:text-red-300 text-center">
-            <strong>🔒 Secure Access Required</strong><br/>
-            Contact your administrator for credentials
+            <strong>🔒 {t('secureAccessRequired')}</strong><br/>
+            {t('contactAdministrator')}
           </p>
         </div>
       </motion.div>

@@ -241,15 +241,15 @@ export default function MenuPage() {
 
   // Create dietary filter options
   const dietFilterOptions = useMemo(() => [
-    { id: 'vegetarian', label: 'Vegetarian', active: filters.activeDietFilters.includes('vegetarian') },
-    { id: 'vegan', label: 'Vegan', active: filters.activeDietFilters.includes('vegan') },
-    { id: 'gluten-free', label: 'Gluten Free', active: filters.activeDietFilters.includes('gluten-free') },
-    { id: 'nuts-free', label: 'Nuts Free', active: filters.activeDietFilters.includes('nuts-free') },
-    { id: 'sugar-free', label: 'Sugar Free', active: filters.activeDietFilters.includes('sugar-free') },
-    { id: 'dairy-free', label: 'Dairy Free', active: filters.activeDietFilters.includes('dairy-free') },
-    { id: 'keto', label: 'Keto', active: filters.activeDietFilters.includes('keto') },
-    { id: 'paleo', label: 'Paleo', active: filters.activeDietFilters.includes('paleo') }
-  ], [filters.activeDietFilters])
+    { id: 'vegetarian', label: t('vegetarian') || 'Vegetarian', active: filters.activeDietFilters.includes('vegetarian') },
+    { id: 'vegan', label: t('vegan') || 'Vegan', active: filters.activeDietFilters.includes('vegan') },
+    { id: 'gluten-free', label: t('glutenFree') || 'Gluten Free', active: filters.activeDietFilters.includes('gluten-free') },
+    { id: 'nuts-free', label: t('nutsFree') || 'Nuts Free', active: filters.activeDietFilters.includes('nuts-free') },
+    { id: 'sugar-free', label: t('sugarFree') || 'Sugar Free', active: filters.activeDietFilters.includes('sugar-free') },
+    { id: 'dairy-free', label: t('dairyFree') || 'Dairy Free', active: filters.activeDietFilters.includes('dairy-free') },
+    { id: 'keto', label: t('keto') || 'Keto', active: filters.activeDietFilters.includes('keto') },
+    { id: 'paleo', label: t('paleo') || 'Paleo', active: filters.activeDietFilters.includes('paleo') }
+  ], [filters.activeDietFilters, t])
 
   // Handle diet filter toggle
   const toggleDietFilter = (filterId: string) => {
@@ -370,7 +370,7 @@ export default function MenuPage() {
   }, [filteredDishes, categories])
 
   if (isLoading) {
-    return <BeachLoading isLoading={true} message="Loading delicious menu..." />
+    return <BeachLoading isLoading={true} message={t('loadingMenu')} />
   }
 
   return (

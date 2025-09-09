@@ -58,7 +58,7 @@ export default function Footer() {
               </div>
               <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <Clock className="w-4 h-4" />
-                <span>24/7 Dining Available</span>
+                <span>{t('diningAvailable24')}</span>
               </div>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function Footer() {
           <div>
             <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'} flex items-center gap-2`}>
               🏖️
-              Quick Links
+              {t('quickLinks')}
             </h3>
             <ul className="space-y-2">
               <li>
@@ -82,12 +82,12 @@ export default function Footer() {
               </li>
               <li>
                 <a href="/reservations" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
-                  Reservations
+                  {t('reservations')}
                 </a>
               </li>
               <li>
                 <a href="/events" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
-                  Events
+                  {t('events')}
                 </a>
               </li>
             </ul>
@@ -112,12 +112,12 @@ export default function Footer() {
               </li>
               <li>
                 <a href="/accessibility" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
-                  Accessibility
+                  {t('accessibility')}
                 </a>
               </li>
               <li>
                 <a href="/careers" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
-                  Careers
+                  {t('careers')}
                 </a>
               </li>
             </ul>
@@ -133,7 +133,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className={`${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              © {currentYear} Port Antonio Resort. {t('copyright')} — Relax on our Lebanese sands
+              © {currentYear} Port Antonio Resort. {t('copyright')} — {t('relaxOnSands')}
             </p>
             <div className={`flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               <Globe className="w-4 h-4" />

@@ -35,6 +35,19 @@ export default function QuickOrderModal({
     dish.variants && dish.variants.length > 0 ? dish.variants[0].label : null
   )
 
+  const translateVariantLabel = (label: string): string => {
+    switch (label?.toLowerCase()) {
+      case 'small':
+        return t('sizeSmall')
+      case 'large':
+        return t('sizeLarge')
+      case 'medium':
+        return t('sizeMedium')
+      default:
+        return label
+    }
+  }
+
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity >= 1 && newQuantity <= 10) {
       setQuantity(newQuantity)
@@ -150,7 +163,7 @@ export default function QuickOrderModal({
                         {dish.name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                        {dish.shortDesc || 'Delicious dish'}
+                        {dish.shortDesc || t('deliciousDish')}
                       </p>
                       <div className="flex items-center gap-4 mt-2">
                         <div className="text-lg font-bold text-green-600 dark:text-green-400">
@@ -165,7 +178,7 @@ export default function QuickOrderModal({
                   {dish.variants && dish.variants.length > 0 && (
                     <div className="space-y-3">
                       <h4 className="font-medium text-gray-900 dark:text-white">
-                        Select Option
+                        {t('selectOption')}
                       </h4>
                       <div className="grid gap-2">
                         {dish.variants.map((variant) => (
@@ -179,7 +192,7 @@ export default function QuickOrderModal({
                             }`}
                           >
                             <div className="flex items-center justify-between">
-                              <span className="font-medium">{variant.label}</span>
+                              <span className="font-medium">{translateVariantLabel(variant.label)}</span>
                               <span className="text-sm font-semibold">
                                 {formatPrice(variant.price, dish.currency)}
                               </span>

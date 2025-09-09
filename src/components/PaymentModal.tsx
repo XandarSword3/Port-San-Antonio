@@ -39,6 +39,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
       successMessage: 'Your order has been processed successfully.',
       close: 'Close',
       securePayment: 'Secure payment powered by Stripe',
+      total: 'Total',
+      paymentFailed: 'Payment failed',
     },
     ar: {
       title: 'إكمال الدفع',
@@ -50,10 +52,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
       successMessage: 'تم معالجة طلبك بنجاح.',
       close: 'إغلاق',
       securePayment: 'دفع آمن بواسطة Stripe',
+      total: 'المجموع',
+      paymentFailed: 'فشل في الدفع',
     }
   };
 
-  const t = text[language as keyof typeof text] || text.en;
+  const localText = text[language as keyof typeof text] || text.en;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -84,7 +88,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
       });
 
       if (error) {
-        setError(error.message || 'Payment failed');
+        setError(error.message || localText.paymentFailed);
       } else if (paymentIntent && paymentIntent.status === 'succeeded') {
         setSuccess(true);
         setTimeout(() => {
@@ -92,7 +96,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
         }, 2000);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Payment failed');
+      setError(err instanceof Error ? err.message : localText.paymentFailed);
     }
 
     setIsLoading(false);
@@ -106,8 +110,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
         className="text-center py-8"
       >
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-green-600 mb-2">{t.successTitle}</h3>
-        <p className="text-gray-600 dark:text-gray-300">{t.successMessage}</p>
+        <h3 className="text-xl font-bold text-green-600 mb-2">{localText.successTitle}</h3>
+        <p className="text-gray-600 dark:text-gray-300">{localText.successMessage}</p>
       </motion.div>
     );
   }
@@ -118,7 +122,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold mb-3 flex items-center">
           <CreditCard className="w-5 h-5 mr-2" />
-          {t.orderSummary}
+          {localText.orderSummary}
         </h3>
         
         <div className="space-y-2 mb-4">
@@ -132,7 +136,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
         
         <div className="border-t border-gray-200 dark:border-gray-600 pt-2">
           <div className="flex justify-between font-bold">
-            <span>Total</span>
+            <span>{localText.total}</span>
             <span>{formatCurrency(amount)}</span>
           </div>
         </div>
@@ -141,7 +145,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
       {/* Card Details */}
       <div>
         <label className="block text-sm font-medium mb-2">
-          {t.cardDetails}
+          {localText.cardDetails}
         </label>
         <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-white dark:bg-gray-700">
           <CardElement
@@ -186,12 +190,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
         {isLoading ? (
           <>
             <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
-            {t.processing}
+            {localText.processing}
           </>
         ) : (
           <>
             <Lock className="w-5 h-5 mr-2" />
-            {t.payNow} {formatCurrency(amount)}
+            {localText.payNow} {formatCurrency(amount)}
           </>
         )}
       </motion.button>
@@ -199,7 +203,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, items, onSuccess, o
       {/* Security Notice */}
       <p className="text-xs text-gray-500 dark:text-gray-400 text-center flex items-center justify-center">
         <Lock className="w-3 h-3 mr-1" />
-        {t.securePayment}
+        {localText.securePayment}
       </p>
     </form>
   );

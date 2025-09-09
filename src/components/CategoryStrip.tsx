@@ -44,7 +44,7 @@ export default function CategoryStrip({
             }}
             data-testid="category-chip"
           >
-            {t('allDishes') || 'All Dishes'}
+            {t('allDishes')}
           </motion.button>
 
           {/* Category Chips */}

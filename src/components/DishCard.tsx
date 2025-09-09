@@ -122,8 +122,8 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
   const getAltText = () => {
     const category = translatedDish.categoryId.charAt(0).toUpperCase() + translatedDish.categoryId.slice(1)
     const price = getPriceDisplay()
-    const availability = dish.available ? 'Available' : 'Currently unavailable'
-    return `${translatedDish.name} — ${translatedDish.shortDesc || 'Delicious dish'} (${category}). Price: ${price}. ${availability}.`
+    const availability = dish.available ? t('available') : t('unavailable')
+    return `${translatedDish.name} — ${translatedDish.shortDesc || t('deliciousDish')} (${category}). Price: ${price}. ${availability}.`
   }
 
   // Get appropriate food image
@@ -135,7 +135,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
   // Get error message for unavailable items
   const getErrorMessage = () => {
     if (!dish.available) {
-      return t('unavailable') || 'Currently unavailable'
+      return t('unavailable')
     }
     return null
   }
@@ -391,7 +391,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
               id={`dish-desc-${dish.id}`}
               className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed"
             >
-              {translatedDish.shortDesc || 'Delicious dish'}
+              {translatedDish.shortDesc || t('deliciousDish')}
             </p>
             
             {/* Rating */}

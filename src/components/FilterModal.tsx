@@ -76,17 +76,17 @@ export default function FilterModal({
   }
 
   const getDietFilterLabel = (tag: string) => {
-    const labels: Record<string, string> = {
-      'vegetarian': 'Vegetarian',
-      'vegan': 'Vegan',
-      'gluten-free': 'Gluten-Free',
-      'nuts-free': 'Nuts-Free',
-      'sugar-free': 'Sugar-Free',
-      'dairy-free': 'Dairy-Free',
-      'keto': 'Keto',
-      'paleo': 'Paleo'
+    const translationKeys: Record<string, string> = {
+      'vegetarian': t('vegetarian'),
+      'vegan': t('vegan'),
+      'gluten-free': t('glutenFree'),
+      'nuts-free': t('nutsFree'),
+      'sugar-free': t('sugarFree'),
+      'dairy-free': t('dairyFree'),
+      'keto': t('keto'),
+      'paleo': t('paleo')
     }
-    return labels[tag] || tag.charAt(0).toUpperCase() + tag.slice(1).replace(/-/g, ' ')
+    return translationKeys[tag] || tag.charAt(0).toUpperCase() + tag.slice(1).replace(/-/g, ' ')
   }
 
   return (
@@ -155,7 +155,7 @@ export default function FilterModal({
                         {t('filters')}
                       </h2>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Refine your menu search
+                        {t('refineMenuSearch')}
                       </p>
                     </div>
                   </div>
@@ -175,7 +175,7 @@ export default function FilterModal({
                     <div className="flex items-center gap-3">
                       <DollarSign className="w-5 h-5 text-green-600" />
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        Price Range
+                        {t('priceRange')}
                       </h3>
                     </div>
                     <div className="grid grid-cols-3 gap-3">
@@ -204,7 +204,7 @@ export default function FilterModal({
                     <div className="flex items-center gap-3">
                       <Clock className="w-5 h-5 text-blue-600" />
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        Availability
+                        {t('availability')}
                       </h3>
                     </div>
                     <button
@@ -216,7 +216,7 @@ export default function FilterModal({
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-medium">Available Items Only</span>
+                        <span className="font-medium">{t('availableItemsOnly')}</span>
                         <div className={`w-5 h-5 rounded-full border-2 transition-colors duration-200 ${
                           filters.availabilityOnly
                             ? 'border-blue-500 bg-blue-500'
@@ -235,7 +235,7 @@ export default function FilterModal({
                     <div className="flex items-center gap-3">
                       <Leaf className="w-5 h-5 text-green-600" />
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        Dietary Preferences
+                        {t('dietaryPreferences')}
                       </h3>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -269,20 +269,20 @@ export default function FilterModal({
                     onClick={handleResetFilters}
                     className="px-6 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors duration-200"
                   >
-                    Reset All
+                    {t('resetAll')}
                   </button>
                   <div className="flex gap-3">
                     <button
                       onClick={onClose}
                       className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                     >
-                      Cancel
+                      {t('cancel')}
                     </button>
                     <button
                       onClick={handleApplyFilters}
                       className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
                     >
-                      Apply Filters
+                      {t('applyFilters')}
                     </button>
                   </div>
                 </div>

@@ -21,6 +21,15 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
   const dialogRef = useRef<HTMLDivElement | null>(null)
   const previouslyFocused = useRef<HTMLElement | null>(null)
 
+  const translateVariantLabel = (label: string) => {
+    switch (label.toLowerCase()) {
+      case 'small': return t('sizeSmall')
+      case 'large': return t('sizeLarge')
+      case 'medium': return t('sizeMedium')
+      default: return label
+    }
+  }
+
   useEffect(() => {
     if (isOpen) {
       previouslyFocused.current = document.activeElement as HTMLElement
@@ -107,7 +116,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
           <div className="grid grid-cols-1 gap-2">
             {dish.variants.map((variant, index) => (
               <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">{variant.label}</span>
+                <span className="font-medium text-gray-700">{translateVariantLabel(variant.label)}</span>
                 <span className="text-lg font-bold text-resort-500 dark:text-beach-dark-accent accent-element">
                   {formatPrice(variant.price, dish.currency)}
                 </span>

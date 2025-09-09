@@ -24,23 +24,23 @@ export default function Home() {
   const features = [
     { 
       icon: Utensils, 
-      title: isDark ? "Lebanese Cuisine" : "Gourmet Cuisine", 
-      desc: isDark ? "Authentic flavors" : "International flavors" 
+      title: isDark ? t('lebaneseCuisine') : t('gourmetCuisine'), 
+      desc: isDark ? t('authenticFlavors') : t('internationalFlavors') 
     },
     { 
       icon: MapPin, 
-      title: isDark ? "Mediterranean Views" : "Ocean Views", 
-      desc: isDark ? "Sea-front dining" : "Beachfront dining" 
+      title: isDark ? t('mediterraneanViews') : t('oceanViews'), 
+      desc: isDark ? t('seafrontDining') : t('beachfrontDining') 
     },
     { 
       icon: Clock, 
-      title: isDark ? "Beautiful Sun" : "Tropical Vibes", 
-      desc: isDark ? "Relax in nature, and get a tan" : "Island atmosphere" 
+      title: isDark ? t('beautifulSun') : t('tropicalVibes'), 
+      desc: isDark ? t('relaxInNature') : t('islandAtmosphere') 
     },
     { 
       icon: Star, 
-      title: isDark ? "Fresh Mediterranean" : "Fresh Seafood", 
-      desc: isDark ? "Daily catches" : "Daily catches" 
+      title: isDark ? t('freshMediterranean') : t('freshSeafood'), 
+      desc: isDark ? t('dailyCatches') : t('dailyCatches') 
     }
   ];
 
@@ -158,7 +158,7 @@ export default function Home() {
                 >
                   <Utensils className="h-5 w-5" />
                 </motion.div>
-                View Menu
+                {t('viewMenu')}
                 <motion.div
                   whileHover={{ 
                     x: 8,

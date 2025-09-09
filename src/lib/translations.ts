@@ -93,6 +93,13 @@ export type TranslationKeys =
   | 'delete'
   | 'edit'
   | 'viewMenu'
+  | 'refineMenuSearch'
+  | 'priceRange'
+  | 'availability'
+  | 'availableItemsOnly'
+  | 'dietaryPreferences'
+  | 'resetAll'
+  | 'applyFilters'
   | 'toMenu'
   | 'cart'
   | 'items'
@@ -240,11 +247,46 @@ export type TranslationKeys =
   | 'deliveryFee'
   | 'shellfish'
   | 'allergenShellfish'
+  | 'allergenGluten'
+  | 'allergenDairy'
+  | 'allergenNuts'
+  | 'allergenSugar'
+  | 'allergenFish'
   | 'priceUnder20'
   | 'price20to50'
   | 'priceOver50'
   | 'languageCode'
   | 'available'
+  | 'activeLabel'
+  | 'loadingMenu'
+  | 'contactInfo'
+  | 'sizeSmall'
+  | 'sizeLarge'
+  | 'sizeMedium'
+  | 'signIn'
+  | 'signingIn'
+  | 'enterUsername'
+  | 'invalidCredentials'
+  | 'connectionError'
+  | 'enterPassword'
+  | 'secureAccessRequired'
+  | 'contactAdministrator'
+  | 'categoryName'
+  | 'lebaneseCuisine'
+  | 'gourmetCuisine'
+  | 'authenticFlavors'
+  | 'internationalFlavors'
+  | 'mediterraneanViews'
+  | 'oceanViews'
+  | 'seafrontDining'
+  | 'beachfrontDining'
+  | 'beautifulSun'
+  | 'tropicalVibes'
+  | 'relaxInNature'
+  | 'islandAtmosphere'
+  | 'freshMediterranean'
+  | 'freshSeafood'
+  | 'dailyCatches'
   | 'goldenChickenNuggetsDesc'
   | 'iceCucumbersDesc'
   | 'breadedChickenDesc'
@@ -345,6 +387,13 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     delete: 'Delete',
     edit: 'Edit',
     viewMenu: 'View Menu',
+    refineMenuSearch: 'Refine your menu search',
+    priceRange: 'Price Range',
+    availability: 'Availability',
+    availableItemsOnly: 'Available Items Only',
+    dietaryPreferences: 'Dietary Preferences',
+    resetAll: 'Reset All',
+    applyFilters: 'Apply Filters',
     toMenu: 'To Menu',
     cart: 'Cart',
     items: 'items',
@@ -488,15 +537,49 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     deliveryFee: 'Delivery Fee',
     shellfish: 'Shellfish',
     allergenShellfish: 'Shellfish',
+    allergenGluten: 'Gluten',
+    allergenDairy: 'Dairy',
+    allergenNuts: 'Nuts',
+    allergenSugar: 'Sugar',
+    allergenFish: 'Fish',
     priceUnder20: 'Under $20',
     price20to50: '$20-$50',
     priceOver50: 'Over $50',
     languageCode: 'EN',
+    activeLabel: 'active',
+    loadingMenu: 'Loading delicious menu...',
+    contactInfo: 'Contact Information',
+    sizeSmall: 'Small',
+    sizeLarge: 'Large',
+    sizeMedium: 'Medium',
+    signIn: 'Sign In',
+    signingIn: 'Signing in...',
+    enterUsername: 'Enter username',
+    enterPassword: 'Enter password',
+    secureAccessRequired: 'Secure Access Required',
+    contactAdministrator: 'Contact your administrator for credentials',
+    categoryName: 'Category name',
+    lebaneseCuisine: 'Lebanese Cuisine',
+    gourmetCuisine: 'Gourmet Cuisine', 
+    authenticFlavors: 'Authentic flavors',
+    internationalFlavors: 'International flavors',
+    mediterraneanViews: 'Mediterranean Views',
+    oceanViews: 'Ocean Views',
+    seafrontDining: 'Sea-front dining',
+    beachfrontDining: 'Beachfront dining',
+    beautifulSun: 'Beautiful Sun',
+    tropicalVibes: 'Tropical Vibes',
+    relaxInNature: 'Relax in nature, and get a tan',
+    islandAtmosphere: 'Island atmosphere',
+    freshMediterranean: 'Fresh Mediterranean',
+    freshSeafood: 'Fresh Seafood',
+    dailyCatches: 'Daily catches',
     goldenChickenNuggetsDesc: 'Golden chicken nuggets',
     iceCucumbersDesc: 'Ice, Cucumbers, Cherry Rocca, Tomatoes, Lemon Oil',
     breadedChickenDesc: 'Breaded Chicken / Honey Mustard / BBQ, Lettuce, Chips',
     beefPattyDesc: 'Beef Patty, Mozzarella Beef Melt',
     skewersColeslawDesc: 'Skewers, Coleslaw, Fries, Garlic, 2 Hummus, Pickles, Lebanese Bread',
+    connectionError: 'Connection error. Please try again.',
   },
   
   ar: {
@@ -593,6 +676,13 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     delete: 'حذف',
     edit: 'تعديل',
     viewMenu: 'عرض القائمة',
+    refineMenuSearch: 'صقل بحث القائمة',
+    priceRange: 'نطاق السعر',
+    availability: 'التوفر',
+    availableItemsOnly: 'العناصر المتوفرة فقط',
+    dietaryPreferences: 'التفضيلات الغذائية',
+    resetAll: 'إعادة تعيين الكل',
+    applyFilters: 'تطبيق المرشحات',
     toMenu: 'إلى القائمة',
     cart: 'السلة',
     items: 'عناصر',
@@ -735,15 +825,49 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     deliveryFee: 'رسوم التوصيل',
     shellfish: 'قشريات',
     allergenShellfish: 'قشريات',
+    allergenGluten: 'جلوتين',
+    allergenDairy: 'ألبان',
+    allergenNuts: 'مكسرات',
+    allergenSugar: 'سكر',
+    allergenFish: 'سمك',
     priceUnder20: 'أقل من ٢٠ دولار',
     price20to50: '٢٠-٥٠ دولار',
     priceOver50: 'أكثر من ٥٠ دولار',
     languageCode: 'ع',
+    activeLabel: 'نشط',
+    loadingMenu: 'جاري تحميل القائمة اللذيذة...',
+    contactInfo: 'معلومات الاتصال',
+    sizeSmall: 'صغير',
+    sizeLarge: 'كبير',
+    sizeMedium: 'متوسط',
+    signIn: 'تسجيل الدخول',
+    signingIn: 'جاري تسجيل الدخول...',
+    enterUsername: 'أدخل اسم المستخدم',
+    enterPassword: 'أدخل كلمة المرور',
+    secureAccessRequired: 'مطلوب وصول آمن',
+    contactAdministrator: 'اتصل بالمدير للحصول على بيانات الاعتماد',
+    categoryName: 'اسم الفئة',
+    lebaneseCuisine: 'المطبخ اللبناني',
+    gourmetCuisine: 'المطبخ الفاخر',
+    authenticFlavors: 'نكهات أصيلة',
+    internationalFlavors: 'نكهات عالمية',
+    mediterraneanViews: 'إطلالات البحر الأبيض المتوسط',
+    oceanViews: 'إطلالات المحيط',
+    seafrontDining: 'تناول الطعام على الواجهة البحرية',
+    beachfrontDining: 'تناول الطعام على الشاطئ',
+    beautifulSun: 'شمس جميلة',
+    tropicalVibes: 'أجواء استوائية',
+    relaxInNature: 'استرخي في الطبيعة واحصلي على دباغة',
+    islandAtmosphere: 'أجواء الجزيرة',
+    freshMediterranean: 'البحر الأبيض المتوسط الطازج',
+    freshSeafood: 'المأكولات البحرية الطازجة',
+    dailyCatches: 'مصيد يومي',
     goldenChickenNuggetsDesc: 'قطع دجاج ذهبية',
     iceCucumbersDesc: 'ثلج، خيار، جرجير كرزي، طماطم، زيت ليمون',
     breadedChickenDesc: 'دجاج مغطى / خردل بالعسل / باربكيو، خس، رقائق',
     beefPattyDesc: 'قرص لحم، ذوبان لحم بالموزاريلا',
     skewersColeslawDesc: 'أسياخ، سلطة كرنب، بطاطا مقلية، ثوم، ٢ حمُص، مخلل، خبز لبناني',
+    connectionError: 'خطأ في الاتصال. يرجى المحاولة مرة أخرى.',
   },
   
   fr: {
@@ -840,6 +964,13 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     delete: 'Supprimer',
     edit: 'Modifier',
     viewMenu: 'Voir le Menu',
+    refineMenuSearch: 'Affinez votre recherche de menu',
+    priceRange: 'Gamme de Prix',
+    availability: 'Disponibilité',
+    availableItemsOnly: 'Articles Disponibles Seulement',
+    dietaryPreferences: 'Préférences Alimentaires',
+    resetAll: 'Tout Réinitialiser',
+    applyFilters: 'Appliquer les Filtres',
     toMenu: 'Au Menu',
     cart: 'Panier',
     items: 'articles',
@@ -982,15 +1113,49 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     deliveryFee: 'Frais de Livraison',
     shellfish: 'Fruits de Mer',
     allergenShellfish: 'Fruits de Mer',
+    allergenGluten: 'Gluten',
+    allergenDairy: 'Produits Laitiers',
+    allergenNuts: 'Noix',
+    allergenSugar: 'Sucre',
+    allergenFish: 'Poisson',
     priceUnder20: 'Moins de 20$',
     price20to50: '20$-50$',
     priceOver50: 'Plus de 50$',
     languageCode: 'FR',
+    activeLabel: 'actif',
+    loadingMenu: 'Chargement du menu délicieux...',
+    contactInfo: 'Informations de Contact',
+    sizeSmall: 'Petit',
+    sizeLarge: 'Grand',
+    sizeMedium: 'Moyen',
+    signIn: 'Se connecter',
+    signingIn: 'Connexion en cours...',
+    enterUsername: 'Entrez le nom d\'utilisateur',
+    enterPassword: 'Entrez le mot de passe',
+    secureAccessRequired: 'Accès sécurisé requis',
+    contactAdministrator: 'Contactez votre administrateur pour les identifiants',
+    categoryName: 'Nom de catégorie',
+    lebaneseCuisine: 'Cuisine libanaise',
+    gourmetCuisine: 'Cuisine gastronomique',
+    authenticFlavors: 'Saveurs authentiques',
+    internationalFlavors: 'Saveurs internationales',
+    mediterraneanViews: 'Vues méditerranéennes',
+    oceanViews: 'Vues sur l\'océan',
+    seafrontDining: 'Repas en bord de mer',
+    beachfrontDining: 'Repas en bord de plage',
+    beautifulSun: 'Beau soleil',
+    tropicalVibes: 'Ambiance tropicale',
+    relaxInNature: 'Détendez-vous dans la nature et bronzez',
+    islandAtmosphere: 'Ambiance d\'île',
+    freshMediterranean: 'Méditerranéen frais',
+    freshSeafood: 'Fruits de mer frais',
+    dailyCatches: 'Prises quotidiennes',
     goldenChickenNuggetsDesc: 'Nuggets de poulet dorés',
     iceCucumbersDesc: 'Glace, Concombres, Roquette Cerises, Tomates, Huile de Citron',
     breadedChickenDesc: 'Poulet Pané / Moutarde au Miel / BBQ, Laitue, Chips',
     beefPattyDesc: 'Galette de Bœuf, Fondu Bœuf Mozzarella',
     skewersColeslawDesc: 'Brochettes, Salade de Chou, Frites, Ail, 2 Houmous, Cornichons, Pain Libanais',
+    connectionError: 'Erreur de connexion. Veuillez réessayer.',
   }
 }
 

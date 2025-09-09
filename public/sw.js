@@ -1,1 +1,100 @@
-if(!self.define){let e,a={};const s=(s,i)=>(s=new URL(s+".js",i).href,a[s]||new Promise(a=>{if("document"in self){const e=document.createElement("script");e.src=s,e.onload=a,document.head.appendChild(e)}else e=s,importScripts(s),a()}).then(()=>{let e=a[s];if(!e)throw new Error(`Module ${s} didn’t register its module`);return e}));self.define=(i,c)=>{const o=e||("document"in self?document.currentScript.src:"")||location.href;if(a[o])return;let f={};const t=e=>s(e,o),r={module:{uri:o},exports:f,require:t};a[o]=Promise.all(i.map(e=>r[e]||t(e))).then(e=>(c(...e),f))}}define(["./workbox-8e5392e7"],function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/Photos/Logo.jpg",revision:"6ceaed13f04c2fa1ee03097e55f54bc2"},{url:"/Photos/istockphoto-1067176032-1024x1024.jpg",revision:"f33cee9bcbf2fe43b4a0ba4a6ef69d82"},{url:"/Photos/istockphoto-1255689280-1024x1024.jpg",revision:"0ec8b11d3f17981fa669a6618592bf5e"},{url:"/Photos/istockphoto-1264220374-1024x1024.jpg",revision:"dd3c7bd2181d5cef5bcb05643a36d10b"},{url:"/Photos/istockphoto-1289369736-1024x1024.jpg",revision:"0c298cd7f90656106fa9e55d2b0fcf5f"},{url:"/Photos/istockphoto-1446068510-1024x1024.jpg",revision:"a8eb44eb2d8cefe9bf45a4d27a39f777"},{url:"/Photos/istockphoto-1620675037-1024x1024.jpg",revision:"a5280717ba6f95dcfde488a1e4dcd67d"},{url:"/Photos/istockphoto-1732017455-1024x1024.jpg",revision:"84bcd6c43214b7bbe8f6b02c47fb630e"},{url:"/Photos/istockphoto-173954093-1024x1024.jpg",revision:"f2bf9afe33ff26710e5d650d6831c5af"},{url:"/Photos/istockphoto-175189651-1024x1024.jpg",revision:"bbf6d410695e699772aee4f5686474f5"},{url:"/Photos/istockphoto-177504304-1024x1024.jpg",revision:"6d663874fa1feec018ec6e1d8410f83f"},{url:"/Photos/istockphoto-177560837-1024x1024.jpg",revision:"a6f12545296041b34b1abd796c7f868d"},{url:"/Photos/istockphoto-182203453-1024x1024.jpg",revision:"476ac6250a1fededc377564b155dbeee"},{url:"/Photos/istockphoto-2150863964-1024x1024.jpg",revision:"74f86e2c7c16c7a48f91c09d1fe829a4"},{url:"/Photos/istockphoto-2152801960-1024x1024.jpg",revision:"4e44f1caeb75f752edd0224191de9a5f"},{url:"/Photos/istockphoto-2177980341-1024x1024.jpg",revision:"6a0fa94d61cac7f0113e15162f35137b"},{url:"/Photos/istockphoto-2215153205-1024x1024.jpg",revision:"3601e49e51c48478a1840cad712a9c60"},{url:"/Photos/istockphoto-455607403-1024x1024.jpg",revision:"aad74fb4cba7b23e34d6d73636a4367e"},{url:"/Photos/istockphoto-456908239-1024x1024.jpg",revision:"9a809a70bb21e62e15d465a6a1b29450"},{url:"/Photos/istockphoto-465616663-1024x1024.jpg",revision:"37e15ed95e22d379f7e6e4945cf8ac4a"},{url:"/Photos/istockphoto-475515721-1024x1024.jpg",revision:"1827bd57df9255eacb3518402d59e8ae"},{url:"/Photos/istockphoto-483503423-1024x1024.jpg",revision:"b6e057467a9454f789e415e1a5c3109e"},{url:"/Photos/istockphoto-486716218-1024x1024.jpg",revision:"64a9a6f7314e764633766a8c3513aa8a"},{url:"/Photos/istockphoto-512574329-1024x1024.jpg",revision:"2f2a8898681facd4f056ff9c6d28dd46"},{url:"/Photos/istockphoto-515832310-1024x1024.jpg",revision:"3053777239320a314d13cad43337f3fc"},{url:"/Photos/istockphoto-516586569-1024x1024.jpg",revision:"f4fe8607ba93f1d8e960cf37ef4dc1ee"},{url:"/Photos/istockphoto-537339958-1024x1024.jpg",revision:"ffaada079bb02a47655a139bd40948e3"},{url:"/Photos/istockphoto-611992522-1024x1024.jpg",revision:"83355afb64a61bd63543abbc8919391f"},{url:"/Photos/istockphoto-619407688-1024x1024.jpg",revision:"bc33f7496d931fd4741b91e8eaf56078"},{url:"/Photos/istockphoto-621116118-1024x1024.jpg",revision:"d49e153fd12bb7c3160289c880bb37a3"},{url:"/Photos/istockphoto-644990154-1024x1024.jpg",revision:"eb6eccebdff74513aa02a5224b128e20"},{url:"/Photos/istockphoto-840151510-1024x1024.jpg",revision:"8d5d54d39fb18d6a7d97b37ef9528f3d"},{url:"/Photos/istockphoto-96777275-1024x1024.jpg",revision:"387c1adc7a13ccaba0eea16407ebe638"},{url:"/Photos/jenish-ghaadiya-z2KhpFU97n0-unsplash.jpg",revision:"da21ca8ed141040874280857c5f8848b"},{url:"/_next/app-build-manifest.json",revision:"6a59f6de853efe57ea58859fe986fa62"},{url:"/_next/static/3cZdUjBEE2fGXeCe9nCq5/_buildManifest.js",revision:"e451bcf1400db9701c84cd24afeb68e2"},{url:"/_next/static/3cZdUjBEE2fGXeCe9nCq5/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/_next/static/chunks/117-3ce93a4bef4ae1b8.js",revision:"3ce93a4bef4ae1b8"},{url:"/_next/static/chunks/139.7a5a8e93a21948c1.js",revision:"7a5a8e93a21948c1"},{url:"/_next/static/chunks/255-e3bf15caf1f1e0f9.js",revision:"e3bf15caf1f1e0f9"},{url:"/_next/static/chunks/383-4cc5999aa5c4cd87.js",revision:"4cc5999aa5c4cd87"},{url:"/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",revision:"c023c6e3521b1417"},{url:"/_next/static/chunks/550-6db8035461dacdf2.js",revision:"6db8035461dacdf2"},{url:"/_next/static/chunks/590-67362b1ed0a5aaf5.js",revision:"67362b1ed0a5aaf5"},{url:"/_next/static/chunks/619-ba102abea3e3d0e4.js",revision:"ba102abea3e3d0e4"},{url:"/_next/static/chunks/646.f342b7cffc01feb0.js",revision:"f342b7cffc01feb0"},{url:"/_next/static/chunks/708-45c1d6189c99a026.js",revision:"45c1d6189c99a026"},{url:"/_next/static/chunks/744-0d5a9c6285ae8abf.js",revision:"0d5a9c6285ae8abf"},{url:"/_next/static/chunks/768-efde821b19ae634e.js",revision:"efde821b19ae634e"},{url:"/_next/static/chunks/796-420e5b2541fd40ed.js",revision:"420e5b2541fd40ed"},{url:"/_next/static/chunks/aaea2bcf-c75572144f8295b1.js",revision:"c75572144f8295b1"},{url:"/_next/static/chunks/app/_not-found/page-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/admin/page-38e94228c037bc57.js",revision:"38e94228c037bc57"},{url:"/_next/static/chunks/app/api/auth/login/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/api/auth/verify/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/api/auto-commit/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/api/create-payment-intent/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/api/debug/env/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/api/menu/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/cart/page-776c19f907d01f17.js",revision:"776c19f907d01f17"},{url:"/_next/static/chunks/app/debug/data/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/debug/page-077cac4d66a40609.js",revision:"077cac4d66a40609"},{url:"/_next/static/chunks/app/health/route-0fe168839a9f88b6.js",revision:"0fe168839a9f88b6"},{url:"/_next/static/chunks/app/layout-2d5a5e5e66136484.js",revision:"2d5a5e5e66136484"},{url:"/_next/static/chunks/app/menu/page-2634647f11494d9d.js",revision:"2634647f11494d9d"},{url:"/_next/static/chunks/app/not-found-6680b2f5c27050ed.js",revision:"6680b2f5c27050ed"},{url:"/_next/static/chunks/app/page-cee04ce9093ac4f4.js",revision:"cee04ce9093ac4f4"},{url:"/_next/static/chunks/framework-a6e0b7e30f98059a.js",revision:"a6e0b7e30f98059a"},{url:"/_next/static/chunks/main-18876b7c4118916a.js",revision:"18876b7c4118916a"},{url:"/_next/static/chunks/main-app-b02a3b0e5e25f1ff.js",revision:"b02a3b0e5e25f1ff"},{url:"/_next/static/chunks/pages/_app-82835f42865034fa.js",revision:"82835f42865034fa"},{url:"/_next/static/chunks/pages/_error-013f4188946cdd04.js",revision:"013f4188946cdd04"},{url:"/_next/static/chunks/polyfills-42372ed130431b0a.js",revision:"846118c33b2c0e922d7b3a7676f81f6f"},{url:"/_next/static/chunks/webpack-4772d34723bd25e0.js",revision:"4772d34723bd25e0"},{url:"/_next/static/css/3dbfe8b84fc45304.css",revision:"3dbfe8b84fc45304"},{url:"/auth.json",revision:"e9b25f6a7b2290112f7b7f329f69d492"},{url:"/config.json",revision:"c4dde8a104cab40be0b42ab5f81aacd1"},{url:"/data.json",revision:"6c2df48d70e289defa37d8f237ee3ae6"},{url:"/favicon.svg",revision:"91f3483a403aab30afa9a02a812536a4"},{url:"/images/logo.svg",revision:"90ce07ec1c43da50faa84755434f3db9"},{url:"/manifest.json",revision:"220a743c0ec7a58959364fc26da5260d"},{url:"/menu-data.json",revision:"11431ebe69575c1c79a3cd704d58696f"},{url:"/seed/beef-burger-platter.jpg",revision:"74f86e2c7c16c7a48f91c09d1fe829a4"},{url:"/seed/cheese-burger.jpg",revision:"476ac6250a1fededc377564b155dbeee"},{url:"/seed/chicken-burger-platter.jpg",revision:"74f86e2c7c16c7a48f91c09d1fe829a4"},{url:"/seed/chicken-caesar.jpg",revision:"8d5d54d39fb18d6a7d97b37ef9528f3d"},{url:"/seed/chicken-delight.jpg",revision:"74f86e2c7c16c7a48f91c09d1fe829a4"},{url:"/seed/chicken-melt.jpg",revision:"6d663874fa1feec018ec6e1d8410f83f"},{url:"/seed/chicken-strips.jpg",revision:"f2bf9afe33ff26710e5d650d6831c5af"},{url:"/seed/chicken-sub.jpg",revision:"37e15ed95e22d379f7e6e4945cf8ac4a"},{url:"/seed/classic-burger.jpg",revision:"a6f12545296041b34b1abd796c7f868d"},{url:"/seed/crab-salad.jpg",revision:"f4fe8607ba93f1d8e960cf37ef4dc1ee"},{url:"/seed/crispy-chicken.jpg",revision:"a6f12545296041b34b1abd796c7f868d"},{url:"/seed/curly-fries.jpg",revision:"b6e057467a9454f789e415e1a5c3109e"},{url:"/seed/edamame.jpg",revision:"3601e49e51c48478a1840cad712a9c60"},{url:"/seed/fajita-fusion.jpg",revision:"a5280717ba6f95dcfde488a1e4dcd67d"},{url:"/seed/fresh-orange.jpg",revision:"9a809a70bb21e62e15d465a6a1b29450"},{url:"/seed/fries.jpg",revision:"f33cee9bcbf2fe43b4a0ba4a6ef69d82"},{url:"/seed/greek-fusion.jpg",revision:"ffaada079bb02a47655a139bd40948e3"},{url:"/seed/ice-tea.jpg",revision:"0c298cd7f90656106fa9e55d2b0fcf5f"},{url:"/seed/large-water.jpg",revision:"83355afb64a61bd63543abbc8919391f"},{url:"/seed/lemonade.jpg",revision:"4e44f1caeb75f752edd0224191de9a5f"},{url:"/seed/mozz-beef-melt.jpg",revision:"bbf6d410695e699772aee4f5686474f5"},{url:"/seed/mozz-chicken-melt.jpg",revision:"476ac6250a1fededc377564b155dbeee"},{url:"/seed/mozz-sticks.jpg",revision:"bc33f7496d931fd4741b91e8eaf56078"},{url:"/seed/nuggets.jpg",revision:"64a9a6f7314e764633766a8c3513aa8a"},{url:"/seed/perrier.jpg",revision:"eb6eccebdff74513aa02a5224b128e20"},{url:"/seed/pizza-cheese.jpg",revision:"2f2a8898681facd4f056ff9c6d28dd46"},{url:"/seed/pizza-ham.jpg",revision:"3053777239320a314d13cad43337f3fc"},{url:"/seed/pizza-pepperoni.jpg",revision:"a8eb44eb2d8cefe9bf45a4d27a39f777"},{url:"/seed/pizza-veg.jpg",revision:"1827bd57df9255eacb3518402d59e8ae"},{url:"/seed/seasonal-mix.jpg",revision:"dd3c7bd2181d5cef5bcb05643a36d10b"},{url:"/seed/small-water.jpg",revision:"6a0fa94d61cac7f0113e15162f35137b"},{url:"/seed/taouk-platter.jpg",revision:"0ec8b11d3f17981fa669a6618592bf5e"},{url:"/seed/taouk.jpg",revision:"a5280717ba6f95dcfde488a1e4dcd67d"},{url:"/seed/tuna-pasta.jpg",revision:"d49e153fd12bb7c3160289c880bb37a3"},{url:"/seed/tuna-sub.jpg",revision:"84bcd6c43214b7bbe8f6b02c47fb630e"}],{ignoreURLParametersMatching:[]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({request:e,response:a,event:s,state:i})=>a&&"opaqueredirect"===a.type?new Response(a.body,{status:200,statusText:"OK",headers:a.headers}):a}]}),"GET"),e.registerRoute(/^https?.*/,new e.NetworkFirst({cacheName:"offlineCache",plugins:[new e.ExpirationPlugin({maxEntries:200,maxAgeSeconds:86400})]}),"GET")});
+/**
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// If the loader is already loaded, just stop.
+if (!self.define) {
+  let registry = {};
+
+  // Used for `eval` and `importScripts` where we can't get script URL by other means.
+  // In both cases, it's safe to use a global var because those functions are synchronous.
+  let nextDefineUri;
+
+  const singleRequire = (uri, parentUri) => {
+    uri = new URL(uri + ".js", parentUri).href;
+    return registry[uri] || (
+      
+        new Promise(resolve => {
+          if ("document" in self) {
+            const script = document.createElement("script");
+            script.src = uri;
+            script.onload = resolve;
+            document.head.appendChild(script);
+          } else {
+            nextDefineUri = uri;
+            importScripts(uri);
+            resolve();
+          }
+        })
+      
+      .then(() => {
+        let promise = registry[uri];
+        if (!promise) {
+          throw new Error(`Module ${uri} didn’t register its module`);
+        }
+        return promise;
+      })
+    );
+  };
+
+  self.define = (depsNames, factory) => {
+    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
+    if (registry[uri]) {
+      // Module is already loading or loaded.
+      return;
+    }
+    let exports = {};
+    const require = depUri => singleRequire(depUri, uri);
+    const specialDeps = {
+      module: { uri },
+      exports,
+      require
+    };
+    registry[uri] = Promise.all(depsNames.map(
+      depName => specialDeps[depName] || require(depName)
+    )).then(deps => {
+      factory(...deps);
+      return exports;
+    });
+  };
+}
+define(['./workbox-e639beba'], (function (workbox) { 'use strict';
+
+  importScripts();
+  self.skipWaiting();
+  workbox.clientsClaim();
+  workbox.registerRoute("/", new workbox.NetworkFirst({
+    "cacheName": "start-url",
+    plugins: [{
+      cacheWillUpdate: async ({
+        request,
+        response,
+        event,
+        state
+      }) => {
+        if (response && response.type === 'opaqueredirect') {
+          return new Response(response.body, {
+            status: 200,
+            statusText: 'OK',
+            headers: response.headers
+          });
+        }
+        return response;
+      }
+    }]
+  }), 'GET');
+  workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
+    "cacheName": "dev",
+    plugins: []
+  }), 'GET');
+
+}));

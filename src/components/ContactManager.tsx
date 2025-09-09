@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Save, Phone, Mail, MapPin, Globe } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface ContactInfo {
   phone: string
@@ -17,6 +18,7 @@ interface ContactInfo {
 }
 
 export default function ContactManager() {
+  const { t } = useLanguage()
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     phone: '',
     email: '',
@@ -88,7 +90,7 @@ export default function ContactManager() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Contact Information</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('contactInfo')}</h2>
         <motion.button
           onClick={handleSave}
           disabled={saving}

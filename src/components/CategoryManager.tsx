@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Edit2, Save, X, Trash2, GripVertical } from 'lucide-react'
 import { AppData, Category } from '@/types'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface CategoryManagerProps {
   data: AppData
@@ -11,6 +12,7 @@ interface CategoryManagerProps {
 }
 
 export default function CategoryManager({ data, onDataChange }: CategoryManagerProps) {
+  const { t } = useLanguage()
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [editingData, setEditingData] = useState<Partial<Category>>({})
   const [newCategory, setNewCategory] = useState({ name: '', order: (data.categories ? data.categories.length : 0) + 1 })
@@ -99,7 +101,7 @@ export default function CategoryManager({ data, onDataChange }: CategoryManagerP
             type="text"
             value={newCategory.name}
             onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
-            placeholder="Category name"
+            placeholder={t('categoryName')}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           <input
