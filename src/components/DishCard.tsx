@@ -113,8 +113,9 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
     e.preventDefault()
     if (dish.available) {
       addItem(dish, 1)
+      // Remove the modal opening call to prevent blur effect
+      // onQuickOrder?.(dish)
     }
-    onQuickOrder?.(dish)
   }
 
   // Generate descriptive alt text

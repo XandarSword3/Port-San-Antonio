@@ -115,6 +115,11 @@ export interface AuditLog {
 
 export const ROLE_PERMISSIONS = {
   guest: {
+    view_dashboard: false,
+    manage_menu: false,
+    manage_categories: false,
+    manage_settings: false,
+    manage_users: false,
     canView: true,
     canEdit: false,
     canDelete: false,
@@ -123,6 +128,11 @@ export const ROLE_PERMISSIONS = {
     canManageSettings: false
   },
   worker: {
+    view_dashboard: true,
+    manage_menu: true,
+    manage_categories: false,
+    manage_settings: false,
+    manage_users: false,
     canView: true,
     canEdit: true,
     canDelete: false,
@@ -131,6 +141,11 @@ export const ROLE_PERMISSIONS = {
     canManageSettings: false
   },
   admin: {
+    view_dashboard: true,
+    manage_menu: true,
+    manage_categories: true,
+    manage_settings: true,
+    manage_users: false,
     canView: true,
     canEdit: true,
     canDelete: true,
@@ -139,6 +154,11 @@ export const ROLE_PERMISSIONS = {
     canManageSettings: true
   },
   owner: {
+    view_dashboard: true,
+    manage_menu: true,
+    manage_categories: true,
+    manage_settings: true,
+    manage_users: true,
     canView: true,
     canEdit: true,
     canDelete: true,

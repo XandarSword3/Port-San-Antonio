@@ -9,7 +9,7 @@ import CategoryStrip from '@/components/CategoryStrip'
 import CategoryAccordion from '@/components/CategoryAccordion'
 import FilterChips from '@/components/FilterChips'
 import FilterModal from '@/components/FilterModal'
-import QuickOrderModal from '@/components/QuickOrderModal'
+
 import SideRail from '@/components/SideRail'
 import MobileBanner from '@/components/MobileBanner'
 import MenuSkeleton from '@/components/MenuSkeleton'
@@ -39,8 +39,6 @@ export default function MenuPage() {
   })
   const [filterPanelOpen, setFilterPanelOpen] = useState(false)
   const [filterModalOpen, setFilterModalOpen] = useState(false)
-  const [quickOrderModalOpen, setQuickOrderModalOpen] = useState(false)
-  const [selectedDishForOrder, setSelectedDishForOrder] = useState<Dish | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   // Scroll to top when component mounts
@@ -234,10 +232,7 @@ export default function MenuPage() {
     sessionStorage.setItem('menuFilters', JSON.stringify(filters))
   }, [filters])
 
-  const handleQuickOrder = (dish: Dish) => {
-    setSelectedDishForOrder(dish)
-    setQuickOrderModalOpen(true)
-  }
+
 
   const handleLongPress = (dish: Dish) => {
     // Long press functionality can be implemented here
@@ -497,7 +492,7 @@ export default function MenuPage() {
                         key={category.id}
                         category={category}
                         dishes={categoryDishes}
-                        onQuickOrder={handleQuickOrder}
+
                         onLongPress={handleLongPress}
                       />
                     )
@@ -519,13 +514,7 @@ export default function MenuPage() {
         dietCounts={dietCounts}
       />
 
-      {selectedDishForOrder && (
-        <QuickOrderModal
-          isOpen={quickOrderModalOpen}
-          onClose={() => setQuickOrderModalOpen(false)}
-          dish={selectedDishForOrder}
-        />
-      )}
+
       </div>
     </PageTransition>
   )

@@ -11,6 +11,7 @@ import { useCart } from '@/contexts/CartContext'
 import { useAuth } from '@/contexts/AuthContext'
 import Sidebar from '@/components/Sidebar'
 import CartModal from '@/components/CartModal'
+import CartSidebar from '@/components/CartSidebar'
 import LoginModal from '@/components/LoginModal'
 
 export default function GlobalHeader() {
@@ -21,6 +22,7 @@ export default function GlobalHeader() {
   const { isLoggedIn, userRole, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isFullCartOpen, setIsFullCartOpen] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const pathname = usePathname()
 
@@ -175,7 +177,17 @@ export default function GlobalHeader() {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Cart Modal */}
-      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartModal 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+        onOpenFullCart={() => {
+          setIsCartOpen(false);
+          setIsFullCartOpen(true);
+        }}
+      />
+
+      {/* Full Cart Sidebar */}
+      <CartSidebar isOpen={isFullCartOpen} onClose={() => setIsFullCartOpen(false)} />
 
       {/* Login Modal */}
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />

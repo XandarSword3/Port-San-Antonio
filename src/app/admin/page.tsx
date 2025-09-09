@@ -13,7 +13,7 @@ import CurrencySettings from '@/components/CurrencySettings'
 import ContactManager from '@/components/ContactManager'
 import PaymentSettings from '@/components/admin/PaymentSettings'
 import PageTransition from '@/components/PageTransition'
-import { isAuthenticated, verifyAuthentication, logout, getCurrentUser, hasPermission } from '@/lib/auth'
+import { isAuthenticated, logout, getCurrentUser, hasPermission } from '@/lib/auth'
 
 // Mock data - in real app this would come from API
 import mockData from '../../../data/dishes.json'
@@ -84,28 +84,28 @@ export default function AdminPage() {
   // Role-based navigation items
   const getNavigationItems = () => {
     const items = [
-      { id: 'dashboard', label: 'Dashboard', icon: BarChart3, permission: 'view_dashboard' as const },
+      { id: 'dashboard', label: 'Dashboard', icon: BarChart3, permission: 'view_dashboard' },
     ];
 
     if (hasPermission(currentUser?.role || 'guest', 'manage_menu')) {
-      items.push({ id: 'menu', label: 'Menu Manager', icon: Utensils, permission: 'manage_menu' as const });
+      items.push({ id: 'menu', label: 'Menu Manager', icon: Utensils, permission: 'manage_menu' });
     }
 
     if (hasPermission(currentUser?.role || 'guest', 'manage_categories')) {
-      items.push({ id: 'categories', label: 'Categories', icon: Users, permission: 'manage_categories' as const });
+      items.push({ id: 'categories', label: 'Categories', icon: Users, permission: 'manage_categories' });
     }
 
     if (hasPermission(currentUser?.role || 'guest', 'manage_settings')) {
       items.push(
-        { id: 'ads', label: 'Ad Manager', icon: Settings, permission: 'manage_settings' as const },
-        { id: 'currency', label: 'Currency Settings', icon: DollarSign, permission: 'manage_settings' as const },
-        { id: 'contact', label: 'Contact Info', icon: Phone, permission: 'manage_settings' as const },
-        { id: 'payments', label: 'Payment Settings', icon: CreditCard, permission: 'manage_settings' as const }
+        { id: 'ads', label: 'Ad Manager', icon: Settings, permission: 'manage_settings' },
+        { id: 'currency', label: 'Currency Settings', icon: DollarSign, permission: 'manage_settings' },
+        { id: 'contact', label: 'Contact Info', icon: Phone, permission: 'manage_settings' },
+        { id: 'payments', label: 'Payment Settings', icon: CreditCard, permission: 'manage_settings' }
       );
     }
 
     if (hasPermission(currentUser?.role || 'guest', 'manage_users')) {
-      items.push({ id: 'users', label: 'User Management', icon: UserCog, permission: 'manage_users' as const });
+      items.push({ id: 'users', label: 'User Management', icon: UserCog, permission: 'manage_users' });
     }
 
     return items;

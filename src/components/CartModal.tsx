@@ -9,9 +9,10 @@ import { useCurrency } from '@/contexts/CurrencyContext'
 interface CartModalProps {
   isOpen: boolean
   onClose: () => void
+  onOpenFullCart?: () => void
 }
 
-export default function CartModal({ isOpen, onClose }: CartModalProps) {
+export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModalProps) {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCart()
   const { formatPrice } = useCurrency()
 
@@ -175,7 +176,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                   <button
                     onClick={() => {
                       onClose();
-                      // User should open the cart sidebar for full checkout functionality
+                      onOpenFullCart?.();
                     }}
                     className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors font-medium"
                   >
