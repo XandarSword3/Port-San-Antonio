@@ -148,6 +148,79 @@ export type TranslationKeys =
   | 'loggingIn'
   | 'guestInfo'
   | 'staffRoles'
+  
+  // Additional UI Elements
+  | 'searchMenu'
+  | 'quickLinks'
+  | 'accessibility'
+  | 'careers'
+  | 'reservations'
+  | 'events'
+  | 'diningAvailable24'
+  | 'coastalParadise'
+  | 'coastalParadiseDesc'
+  | 'relaxOnSands'
+  | 'availableInEnglish'
+  | 'francais'
+  | 'arabic'
+  | 'experienceSerenity'
+  | 'beachfrontLocation'
+  | 'stunningOceanViews'
+  | 'deliciousDish'
+  | 'glutenTag'
+  | 'dairyTag'
+  | 'fishTag'
+  | 'block'
+  | 'goldenChickenNuggets'
+  | 'crispyBatteredMozzarella'
+  | 'curlyFries'
+  | 'regularFries'
+  | 'mozzarellaSticks'
+  | 'chickenNuggets'
+  
+  // Beverages
+  | 'signatureMargarita'
+  | 'passionFruitMartini'
+  | 'lemonDrop'
+  | 'whiteChardonnay'
+  | 'kasraReserve'
+  | 'lebaneseWhiteWine'
+  | 'proseccoWine'
+  | 'couventWine' 
+  | 'arakNA'
+  | 'beirutBeer'
+  | 'espresso'
+  | 'arakBas'
+  | 'arabicMuscat'
+  | 'freshOrangeJuice'
+  | 'freshLemonade'
+  | 'largeWater'
+  | 'smallWater'
+  | 'perrierWater'
+  | 'margaritaPitcher'
+  | 'lebaneseCoffe'
+  | 'softDrinks'
+  | 'sangriaPitcher'
+  | 'vodkaGreyGoose'
+  | 'vodkaAbsolut'
+  | 'vodkaRussianStandard'
+  | 'tequilaJoseCuervo'
+  | 'vodkaGeneric'
+  
+  // Food Items
+  | 'chickenDelight'
+  | 'chickenBurgerPlatter'
+  | 'beefBurgerPlatter'
+  | 'taoukPlatter'
+  | 'seasonedChickenFajita'
+  | 'chickenMelt'
+  | 'tunaSub'
+  | 'taoukSandwich'
+  | 'classicBurger'
+  | 'chickenBurger'
+  | 'mozzarellaChickenMelt'
+  | 'mozzarellaBeefMelt'
+  | 'crispyChicken'
 
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
@@ -296,6 +369,79 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     loggingIn: 'Logging in...',
     guestInfo: 'Guests can browse without logging in',
     staffRoles: 'Staff Roles: Worker • Admin • Owner',
+    
+    // Additional UI Elements
+    searchMenu: 'Search menu...',
+    quickLinks: 'Quick Links',
+    accessibility: 'Accessibility',
+    careers: 'Careers',
+    reservations: 'Reservations',
+    events: 'Events',
+    diningAvailable24: 'Dining Available 24/7',
+    coastalParadise: 'Coastal Paradise',
+    coastalParadiseDesc: 'Experience the serenity of our beachfront location with stunning ocean views',
+    relaxOnSands: 'Relax on our Lebanese sands',
+    availableInEnglish: 'Available in English',
+    francais: 'Français',
+    arabic: 'عربي',
+    experienceSerenity: 'Experience the serenity',
+    beachfrontLocation: 'beachfront location',
+    stunningOceanViews: 'stunning ocean views',
+    deliciousDish: 'Delicious dish',
+    glutenTag: 'Gluten',
+    dairyTag: 'Dairy',
+    fishTag: 'Fish',
+    block: 'Available',
+    goldenChickenNuggets: 'Golden chicken nuggets',
+    crispyBatteredMozzarella: 'Crispy battered mozzarella',
+    curlyFries: 'Curly Fries',
+    regularFries: 'Fries',
+    mozzarellaSticks: 'Mozzarella Sticks',
+    chickenNuggets: 'Chicken Nuggets',
+    
+    // Beverages
+    signatureMargarita: 'Signature Margarita',
+    passionFruitMartini: 'Passion Fruit Martini',
+    lemonDrop: 'Lemon Drop',
+    whiteChardonnay: 'White Chardonnay',
+    kasraReserve: 'Kasra Reserve',
+    lebaneseWhiteWine: 'Lebanese white wine',
+    proseccoWine: 'Prosecco',
+    couventWine: 'Couvent',
+    arakNA: 'Arak (NA)',
+    beirutBeer: 'Beirut Beer',
+    espresso: 'Espresso',
+    arakBas: 'Arak - Bas',
+    arabicMuscat: 'Arabic Coffee - Muscat',
+    freshOrangeJuice: 'Fresh Orange Juice',
+    freshLemonade: 'Fresh Lemonade',
+    largeWater: 'Large Water',
+    smallWater: 'Small Water',
+    perrierWater: 'Perrier Water',
+    margaritaPitcher: 'Margarita (Pitcher)',
+    lebaneseCoffe: 'Lebanese Coffee',
+    softDrinks: 'Soft Drinks',
+    sangriaPitcher: 'Sangria (Pitcher)',
+    vodkaGreyGoose: 'Vodka - Grey Goose',
+    vodkaAbsolut: 'Vodka - Absolut',
+    vodkaRussianStandard: 'Vodka - Russian Standard',
+    tequilaJoseCuervo: 'Tequila - Jose Cuervo',
+    vodkaGeneric: 'Vodka',
+    
+    // Food Items
+    chickenDelight: 'Chicken Delight',
+    chickenBurgerPlatter: 'Chicken Burger Platter',
+    beefBurgerPlatter: 'Beef Burger Platter',
+    taoukPlatter: 'Taouk Platter',
+    seasonedChickenFajita: 'Seasoned Chicken Fajita Fusion',
+    chickenMelt: 'Chicken Melt',
+    tunaSub: 'Tuna Sub',
+    taoukSandwich: 'Taouk',
+    classicBurger: 'Classic Burger',
+    chickenBurger: 'Chicken Burger',
+    mozzarellaChickenMelt: 'Mozzarella Chicken Melt',
+    mozzarellaBeefMelt: 'Mozzarella Beef Melt',
+    crispyChicken: 'Crispy Chicken',
   },
   
   ar: {
@@ -444,6 +590,79 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     loggingIn: 'جاري تسجيل الدخول...',
     guestInfo: 'يمكن للضيوف التصفح بدون تسجيل دخول',
     staffRoles: 'أدوار الموظفين: عامل • مدير • مالك',
+    
+    // Additional UI Elements
+    searchMenu: 'البحث في القائمة...',
+    quickLinks: 'روابط سريعة',
+    accessibility: 'إمكانية الوصول',
+    careers: 'الوظائف',
+    reservations: 'الحجوزات',
+    events: 'الفعاليات',
+    diningAvailable24: 'الطعام متوفر ٢٤/٧',
+    coastalParadise: 'جنة الساحل',
+    coastalParadiseDesc: 'استمتع بهدوء موقعنا على الشاطئ مع إطلالات رائعة على المحيط',
+    relaxOnSands: 'استرخ على رمالنا اللبنانية',
+    availableInEnglish: 'متوفر باللغة الإنجليزية',
+    francais: 'الفرنسية',
+    arabic: 'العربية',
+    experienceSerenity: 'استمتع بالهدوء',
+    beachfrontLocation: 'موقع على الشاطئ',
+    stunningOceanViews: 'إطلالات رائعة على المحيط',
+    deliciousDish: 'طبق لذيذ',
+    glutenTag: 'جلوتين',
+    dairyTag: 'ألبان',
+    fishTag: 'سمك',
+    block: 'متوفر',
+    goldenChickenNuggets: 'قطع الدجاج الذهبية',
+    crispyBatteredMozzarella: 'موزاريلا مقرمشة',
+    curlyFries: 'البطاطس المجعدة',
+    regularFries: 'البطاطس المقلية',
+    mozzarellaSticks: 'أصابع الموزاريلا',
+    chickenNuggets: 'قطع الدجاج',
+    
+    // Beverages
+    signatureMargarita: 'مارجريتا مميزة',
+    passionFruitMartini: 'مارتيني فاكهة الآلام',
+    lemonDrop: 'قطرة الليمون',
+    whiteChardonnay: 'شاردونيه أبيض',
+    kasraReserve: 'كسرى احتياطي',
+    lebaneseWhiteWine: 'نبيذ أبيض لبناني',
+    proseccoWine: 'بروسيكو',
+    couventWine: 'كوفينت',
+    arakNA: 'عرق (بدون كحول)',
+    beirutBeer: 'بيرة بيروت',
+    espresso: 'إسبريسو',
+    arakBas: 'عرق - باس',
+    arabicMuscat: 'قهوة عربية - مسقط',
+    freshOrangeJuice: 'عصير البرتقال الطازج',
+    freshLemonade: 'عصير الليمون الطازج',
+    largeWater: 'مياه كبيرة',
+    smallWater: 'مياه صغيرة',
+    perrierWater: 'مياه بيرير',
+    margaritaPitcher: 'مارجريتا (إبريق)',
+    lebaneseCoffe: 'قهوة لبنانية',
+    softDrinks: 'مشروبات غازية',
+    sangriaPitcher: 'سانجريا (إبريق)',
+    vodkaGreyGoose: 'فودكا - جراي جوس',
+    vodkaAbsolut: 'فودكا - أبسولوت',
+    vodkaRussianStandard: 'فودكا - المعيار الروسي',
+    tequilaJoseCuervo: 'تيكيلا - خوسيه كويرفو',
+    vodkaGeneric: 'فودكا',
+    
+    // Food Items
+    chickenDelight: 'لذة الدجاج',
+    chickenBurgerPlatter: 'طبق برجر الدجاج',
+    beefBurgerPlatter: 'طبق برجر اللحم',
+    taoukPlatter: 'طبق الطاووق',
+    seasonedChickenFajita: 'فاهيتا الدجاج المتبلة',
+    chickenMelt: 'ذوبان الدجاج',
+    tunaSub: 'ساندويتش التونة',
+    taoukSandwich: 'طاووق',
+    classicBurger: 'البرجر الكلاسيكي',
+    chickenBurger: 'برجر الدجاج',
+    mozzarellaChickenMelt: 'ذوبان دجاج بالموزاريلا',
+    mozzarellaBeefMelt: 'ذوبان لحم بالموزاريلا',
+    crispyChicken: 'دجاج مقرمش',
   },
   
   fr: {
@@ -592,6 +811,79 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     loggingIn: 'Connexion en cours...',
     guestInfo: 'Les invités peuvent naviguer sans se connecter',
     staffRoles: 'Rôles du Personnel: Employé • Admin • Propriétaire',
+    
+    // Additional UI Elements
+    searchMenu: 'Rechercher dans le menu...',
+    quickLinks: 'Liens Rapides',
+    accessibility: 'Accessibilité',
+    careers: 'Carrières',
+    reservations: 'Réservations',
+    events: 'Événements',
+    diningAvailable24: 'Restauration Disponible 24h/7j',
+    coastalParadise: 'Paradis Côtier',
+    coastalParadiseDesc: 'Découvrez la sérénité de notre emplacement en bord de mer avec des vues imprenables sur l\'océan',
+    relaxOnSands: 'Détendez-vous sur nos sables libanais',
+    availableInEnglish: 'Disponible en Anglais',
+    francais: 'Français',
+    arabic: 'Arabe',
+    experienceSerenity: 'Découvrez la sérénité',
+    beachfrontLocation: 'emplacement en bord de mer',
+    stunningOceanViews: 'vues imprenables sur l\'océan',
+    deliciousDish: 'Plat délicieux',
+    glutenTag: 'Gluten',
+    dairyTag: 'Produits laitiers',
+    fishTag: 'Poisson',
+    block: 'Disponible',
+    goldenChickenNuggets: 'Nuggets de poulet dorés',
+    crispyBatteredMozzarella: 'Mozzarella panée croustillante',
+    curlyFries: 'Frites Bouclées',
+    regularFries: 'Frites',
+    mozzarellaSticks: 'Bâtonnets de Mozzarella',
+    chickenNuggets: 'Nuggets de Poulet',
+    
+    // Beverages
+    signatureMargarita: 'Margarita Signature',
+    passionFruitMartini: 'Martini aux Fruits de la Passion',
+    lemonDrop: 'Goutte de Citron',
+    whiteChardonnay: 'Chardonnay Blanc',
+    kasraReserve: 'Réserve Kasra',
+    lebaneseWhiteWine: 'Vin blanc libanais',
+    proseccoWine: 'Prosecco',
+    couventWine: 'Couvent',
+    arakNA: 'Arak (Sans Alcool)',
+    beirutBeer: 'Bière de Beyrouth',
+    espresso: 'Espresso',
+    arakBas: 'Arak - Bas',
+    arabicMuscat: 'Café Arabe - Muscat',
+    freshOrangeJuice: 'Jus d\'Orange Frais',
+    freshLemonade: 'Limonade Fraîche',
+    largeWater: 'Grande Eau',
+    smallWater: 'Petite Eau',
+    perrierWater: 'Eau Perrier',
+    margaritaPitcher: 'Margarita (Pichet)',
+    lebaneseCoffe: 'Café Libanais',
+    softDrinks: 'Boissons Gazeuses',
+    sangriaPitcher: 'Sangria (Pichet)',
+    vodkaGreyGoose: 'Vodka - Grey Goose',
+    vodkaAbsolut: 'Vodka - Absolut',
+    vodkaRussianStandard: 'Vodka - Russian Standard',
+    tequilaJoseCuervo: 'Tequila - Jose Cuervo',
+    vodkaGeneric: 'Vodka',
+    
+    // Food Items
+    chickenDelight: 'Délice de Poulet',
+    chickenBurgerPlatter: 'Plateau Burger au Poulet',
+    beefBurgerPlatter: 'Plateau Burger au Bœuf',
+    taoukPlatter: 'Plateau Taouk',
+    seasonedChickenFajita: 'Fajita de Poulet Assaisonnée',
+    chickenMelt: 'Fondu au Poulet',
+    tunaSub: 'Sandwich au Thon',
+    taoukSandwich: 'Taouk',
+    classicBurger: 'Burger Classique',
+    chickenBurger: 'Burger au Poulet',
+    mozzarellaChickenMelt: 'Fondu Poulet Mozzarella',
+    mozzarellaBeefMelt: 'Fondu Bœuf Mozzarella',
+    crispyChicken: 'Poulet Croustillant',
   }
 }
 

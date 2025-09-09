@@ -918,7 +918,8 @@ const translatedCategories: Record<Language, Record<string, Partial<Category>>> 
     'arak': { name: 'Arak', description: 'Traditional Lebanese aniseed spirit' },
     'prosecco': { name: 'Prosecco & Couvent', description: 'Sparkling wines and champagne' },
     'wine': { name: 'Wine', description: 'Fine wines from around the world' },
-    'signatureCocktails': { name: 'Signature Cocktails', description: 'Our signature mixed drinks' }
+    'signatureCocktails': { name: 'Signature Cocktails', description: 'Our signature mixed drinks' },
+    'cocktails': { name: 'Signature Cocktails', description: 'Our signature mixed drinks' }
   },
   ar: {
     'starters': { name: 'المقبلات', description: 'مقبلات مثالية لبدء وجبتك' },
@@ -936,7 +937,8 @@ const translatedCategories: Record<Language, Record<string, Partial<Category>>> 
     'arak': { name: 'العرق', description: 'عرق لبناني تقليدي باليانسون' },
     'prosecco': { name: 'البروسيكو والكوفنت', description: 'نبيذ فوار وشامبانيا' },
     'wine': { name: 'النبيذ', description: 'نبيذ فاخر من حول العالم' },
-    'signatureCocktails': { name: 'الكوكتيلات المميزة', description: 'مشروبات مختلطة مميزة' }
+    'signatureCocktails': { name: 'الكوكتيلات المميزة', description: 'مشروبات مختلطة مميزة' },
+    'cocktails': { name: 'الكوكتيلات المميزة', description: 'مشروبات مختلطة مميزة' }
   },
   fr: {
     'starters': { name: 'Entrées', description: 'Entrées parfaites pour commencer votre repas' },
@@ -954,7 +956,8 @@ const translatedCategories: Record<Language, Record<string, Partial<Category>>> 
     'arak': { name: 'Arak', description: 'Spiritueux libanais traditionnel à l\'anis' },
     'prosecco': { name: 'Prosecco & Couvent', description: 'Vins effervescents et champagne' },
     'wine': { name: 'Vin', description: 'Vins fins du monde entier' },
-    'signatureCocktails': { name: 'Cocktails Signature', description: 'Nos boissons mélangées signature' }
+    'signatureCocktails': { name: 'Cocktails Signature', description: 'Nos boissons mélangées signature' },
+    'cocktails': { name: 'Cocktails Signature', description: 'Nos boissons mélangées signature' }
   }
 }
 
@@ -981,15 +984,9 @@ export function translateCategory(category: Category, language: Language): Categ
   const translations = translatedCategories[language]?.[category.id]
   if (!translations) return category
   
-  // For bilingual display, show both English and translated text
-  const createBilingualText = (english: string, translated: string, lang: Language) => {
-    if (lang === 'en') return english
-    return `${english} - ${translated}`
-  }
-  
   return {
     ...category,
-    name: translations.name ? createBilingualText(category.name, translations.name, language) : category.name,
+    name: translations.name || category.name,
     description: translations.description || category.description
   }
 }
