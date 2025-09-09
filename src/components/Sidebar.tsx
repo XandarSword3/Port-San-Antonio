@@ -232,25 +232,28 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
                   <Menu className="w-5 h-5" />
                   <span>{t('menu')}</span>
                 </Link>
-                {isLoggedIn && (
+                <button
+                  onClick={() => {
+                    onClose()
+                    // Redirect to staff portal instead of admin page
+                    window.open('http://localhost:3002', '_blank')
+                  }}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-muted transition-all duration-300 hover:scale-105 hover:shadow-md border border-blue-200 dark:border-blue-800"
+                >
+                  <Settings className="w-5 h-5" />
+                  <span>Staff Portal</span>
+                </button>
+                {showStaffLogin && (
                   <button
                     onClick={() => {
                       onClose()
-                      navigateWithTransition('/admin', 'admin')
+                      // Redirect to staff portal instead of internal staff login
+                      window.open('http://localhost:3002', '_blank')
                     }}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted text-muted transition-all duration-300 hover:scale-105 hover:shadow-md"
-                  >
-                    <Settings className="w-5 h-5" />
-                    <span>{t('admin')}</span>
-                  </button>
-                )}
-                {showStaffLogin && onStaffLoginClick && (
-                  <button
-                    onClick={onStaffLoginClick}
                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/30 text-amber-700 dark:text-amber-400 transition-all duration-300 hover:scale-105 hover:shadow-md border-2 border-amber-200 dark:border-amber-800 animate-pulse"
                   >
                     <Lock className="w-5 h-5" />
-                    <span>{t('staffLogin')}</span>
+                    <span>Staff Portal Access</span>
                   </button>
                 )}
                 <Link
