@@ -409,7 +409,7 @@ export default function MenuPage() {
           onFilterToggle={toggleDietFilter}
           onClearAll={clearAllFilters}
           hasActiveFilters={hasActiveFilters}
-          availabilityOnly={filters.availabilityOnly}
+          availabilityOnly={!!filters.availabilityOnly}
           onAvailabilityToggle={() => setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))}
           priceBucket={filters.priceBucket}
           onPriceBucketChange={(bucket) => setFilters(prev => ({ ...prev, priceBucket: bucket }))}
