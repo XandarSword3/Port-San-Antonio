@@ -4,7 +4,7 @@ async function testAdminRoute() {
     console.log('🔍 Testing Admin Route Accessibility...\n');
     
     // Test the main admin page
-    const adminResponse = await fetch('http://localhost:3001/admin');
+    const adminResponse = await fetch('http://localhost:3000/admin');
     console.log('Admin page status:', adminResponse.status);
     
     if (adminResponse.ok) {
@@ -14,7 +14,7 @@ async function testAdminRoute() {
     }
     
     // Test the health check endpoint
-    const healthResponse = await fetch('http://localhost:3001/admin/api/health');
+    const healthResponse = await fetch('http://localhost:3000/admin/api/health');
     console.log('Health check status:', healthResponse.status);
     
     if (healthResponse.ok) {
