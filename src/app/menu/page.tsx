@@ -16,6 +16,7 @@ import MenuSkeleton from '@/components/MenuSkeleton'
 import BeachLoading from '@/components/BeachLoading'
 import SearchInput from '@/components/SearchInput'
 import ExpandableSearchBar from '@/components/ExpandableSearchBar'
+import ExpandableMenuHeader from '@/components/ExpandableMenuHeader'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -380,47 +381,20 @@ export default function MenuPage() {
       {/* Mobile Banner */}
       <MobileBanner ads={ads} />
 
-      {/* Header */}
-      <div className="sticky top-16 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="px-3 sm:px-4 py-3 sm:py-4">
-          {/* Title Row */}
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <BackButton />
-            <div className="text-center flex-1 px-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
-                {t('menu')}
-              </h1>
-              {isAdmin && usingAdminData && (
-                <div className="text-xs text-orange-600 dark:text-orange-400 mt-1 font-medium flex items-center justify-center gap-2">
-                  <span className="hidden sm:inline">⚠️ Showing admin changes (localStorage)</span>
-                  <span className="sm:hidden">⚠️ Admin mode</span>
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem('menuData')
-                      window.location.reload()
-                    }}
-                    className="text-blue-600 hover:text-blue-800 underline"
-                    title="Clear admin changes and reload original data"
-                  >
-                    Reset
-                  </button>
-                </div>
-              )}
-            </div>
-            <div className="w-8" /> {/* Spacer for centering */}
-          </div>
-
-          {/* Search and Filter Row */}
-          <ExpandableSearchBar
-            searchValue={filters.search}
-            onSearchChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
-            onFilterClick={() => setFilterModalOpen(true)}
-            placeholder={t('searchMenu')}
-            hasActiveFilters={hasActiveFilters}
-            filterCount={filters.activeDietFilters.length + (filters.availabilityOnly ? 1 : 0) + (filters.priceBucket ? 1 : 0)}
-          />
-        </div>
-      </div>
+      {/* Expandable Header */}
+      <ExpandableMenuHeader
+        searchValue={filters.search}
+        onSearchChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
+        onFilterClick={() => setFilterModalOpen(true)}
+        hasActiveFilters={hasActiveFilters}
+        filterCount={filters.activeDietFilters.length + (filters.availabilityOnly ? 1 : 0) + (filters.priceBucket ? 1 : 0)}
+        isAdmin={isAdmin}
+        usingAdminData={usingAdminData}
+        onResetAdminData={() => {
+          localStorage.removeItem('menuData')
+          window.location.reload()
+        }}
+      />
 
       {/* Category Strip */}
       <CategoryStrip

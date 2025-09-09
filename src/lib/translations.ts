@@ -13,6 +13,8 @@ export type TranslationKeys =
   | 'back'
   | 'close'
   | 'share'
+  | 'expand'
+  | 'collapse'
   | 'noResults'
   | 'contactUs'
   | 'followUs'
@@ -307,6 +309,8 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     back: 'Back',
     close: 'Close',
     share: 'Share',
+    expand: 'Expand',
+    collapse: 'Collapse',
     noResults: 'No results match your filters',
     contactUs: 'Contact Us',
     followUs: 'Follow Us',
@@ -595,6 +599,8 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     back: 'رجوع',
     close: 'إغلاق',
     share: 'مشاركة',
+    expand: 'توسيع',
+    collapse: 'طي',
     noResults: 'لا توجد نتائج تطابق تصفيتك',
     contactUs: 'تواصل معنا',
     followUs: 'تابعنا',
@@ -883,6 +889,8 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     back: 'Retour',
     close: 'Fermer',
     share: 'Partager',
+    expand: 'Développer',
+    collapse: 'Réduire',
     noResults: 'Aucun résultat ne correspond à vos filtres',
     contactUs: 'Contactez-nous',
     followUs: 'Suivez-nous',
