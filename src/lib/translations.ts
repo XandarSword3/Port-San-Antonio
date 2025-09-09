@@ -298,6 +298,15 @@ export type TranslationKeys =
   | 'breadedChickenDesc'
   | 'beefPattyDesc'
   | 'skewersColeslawDesc'
+  
+  // Settings/Toggles
+  | 'animation'
+  | 'ambientSounds'
+  | 'enableAnimations'
+  | 'disableAnimations'
+  | 'enableAmbientSounds'
+  | 'disableAmbientSounds'
+  | 'settings'
 
 export const translations: Record<Language, Record<TranslationKeys, string>> = {
   en: {
@@ -592,6 +601,15 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     beefPattyDesc: 'Beef Patty, Mozzarella Beef Melt',
     skewersColeslawDesc: 'Skewers, Coleslaw, Fries, Garlic, 2 Hummus, Pickles, Lebanese Bread',
     connectionError: 'Connection error. Please try again.',
+    
+    // Settings/Toggles
+    animation: 'Animation',
+    ambientSounds: 'Ambient Sounds',
+    enableAnimations: 'Enable animations',
+    disableAnimations: 'Disable animations',
+    enableAmbientSounds: 'Enable ambient sounds',
+    disableAmbientSounds: 'Disable ambient sounds',
+    settings: 'Settings',
   },
   
   ar: {
@@ -886,6 +904,15 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     beefPattyDesc: 'قرص لحم، ذوبان لحم بالموزاريلا',
     skewersColeslawDesc: 'أسياخ، سلطة كرنب، بطاطا مقلية، ثوم، ٢ حمُص، مخلل، خبز لبناني',
     connectionError: 'خطأ في الاتصال. يرجى المحاولة مرة أخرى.',
+    
+    // Settings/Toggles
+    animation: 'الرسوم المتحركة',
+    ambientSounds: 'الأصوات المحيطة',
+    enableAnimations: 'تفعيل الرسوم المتحركة',
+    disableAnimations: 'إيقاف الرسوم المتحركة',
+    enableAmbientSounds: 'تفعيل الأصوات المحيطة',
+    disableAmbientSounds: 'إيقاف الأصوات المحيطة',
+    settings: 'الإعدادات',
   },
   
   fr: {
@@ -1180,6 +1207,15 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     beefPattyDesc: 'Galette de Bœuf, Fondu Bœuf Mozzarella',
     skewersColeslawDesc: 'Brochettes, Salade de Chou, Frites, Ail, 2 Houmous, Cornichons, Pain Libanais',
     connectionError: 'Erreur de connexion. Veuillez réessayer.',
+    
+    // Settings/Toggles
+    animation: 'Animation',
+    ambientSounds: 'Sons Ambiants',
+    enableAnimations: 'Activer les animations',
+    disableAnimations: 'Désactiver les animations',
+    enableAmbientSounds: 'Activer les sons ambiants',
+    disableAmbientSounds: 'Désactiver les sons ambiants',
+    settings: 'Paramètres',
   }
 }
 

@@ -12,8 +12,6 @@ import Footer from '@/components/Footer'
 import OceanDecor from '@/components/OceanDecor'
 import SeaweedDecor from '@/components/SeaweedDecor'
 import LebaneseDecor from '@/components/LebaneseDecor'
-import BeachAmbience from '@/components/BeachAmbience'
-import ReducedMotionToggle from '@/components/ReducedMotionToggle'
 import ClickFeedback, { useClickFeedback } from '@/components/ClickFeedback'
 import FloatingBeachElements from '@/components/FloatingBeachElements'
 import EnhancedWaveAnimation from '@/components/EnhancedWaveAnimation'
@@ -21,7 +19,6 @@ import SandParticles from '@/components/SandParticles'
 import SubtlePageTransition from '@/components/SubtlePageTransition'
 import WaveLoader from '@/components/WaveLoader'
 import OfflineNotification from '@/components/OfflineNotification'
-import CartButton from '@/components/CartButton'
 
 const ClientLayoutContent = ({
   children,
@@ -57,12 +54,9 @@ const ClientLayoutContent = ({
           </div>
           <EnhancedWaveAnimation />
           <BackToTop />
-          <CartButton />
         </main>
       </SubtlePageTransition>
       <Footer />
-      <BeachAmbience />
-      <ReducedMotionToggle />
       {clickFeedback && (
         <ClickFeedback
           x={clickFeedback.x}

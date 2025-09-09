@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { X, Facebook, Instagram, Youtube, Home, Menu, Settings, Mail, Lock } from 'lucide-react'
+import { X, Facebook, Instagram, Youtube, Home, Menu, Settings, Mail, Lock, Accessibility, Volume2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useAuth } from '@/contexts/AuthContext'
@@ -21,6 +21,13 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
   const { navigateWithTransition } = useTransitionRouter()
   const [nameClickCount, setNameClickCount] = useState(0)
   const [showStaffLogin, setShowStaffLogin] = useState(false)
+  
+  // Animation toggle state
+  const [reducedMotion, setReducedMotion] = useState(false)
+  
+  // Ambient sounds state
+  const [ambientEnabled, setAmbientEnabled] = useState(false)
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
 
   const handleNameClick = () => {
     const newCount = nameClickCount + 1
@@ -35,6 +42,114 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
     setTimeout(() => {
       setNameClickCount(0)
     }, 3000)
+  }
+
+  // Animation toggle functions
+  useEffect(() => {
+    // Check for user's motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const savedPreference = localStorage.getItem('reducedMotion')
+    
+    if (savedPreference !== null) {
+      setReducedMotion(savedPreference === 'true')
+    } else {
+      setReducedMotion(prefersReducedMotion)
+    }
+
+    // Apply reduced motion styles
+    applyReducedMotion(reducedMotion)
+  }, [reducedMotion])
+
+  const applyReducedMotion = (enabled: boolean) => {
+    const root = document.documentElement
+    if (enabled) {
+      root.style.setProperty('--animation-duration', '0.01ms')
+      root.style.setProperty('--animation-iteration-count', '1')
+      root.classList.add('reduced-motion')
+    } else {
+      root.style.removeProperty('--animation-duration')
+      root.style.removeProperty('--animation-iteration-count')
+      root.classList.remove('reduced-motion')
+    }
+  }
+
+  const toggleReducedMotion = () => {
+    const newValue = !reducedMotion
+    setReducedMotion(newValue)
+    localStorage.setItem('reducedMotion', newValue.toString())
+    applyReducedMotion(newValue)
+  }
+
+  // Ambient sounds functions
+  useEffect(() => {
+    // Only enable on user interaction to avoid autoplay issues
+    const handleUserInteraction = () => {
+      if (!ambientEnabled && !audioContext) {
+        try {
+          const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
+          setAudioContext(ctx)
+          setAmbientEnabled(true)
+        } catch (error) {
+          console.log('Audio not supported')
+        }
+      }
+    }
+
+    // Add event listeners for user interaction if ambient sounds are enabled
+    if (ambientEnabled) {
+      document.addEventListener('click', handleUserInteraction, { once: true })
+      document.addEventListener('touchstart', handleUserInteraction, { once: true })
+    }
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction)
+      document.removeEventListener('touchstart', handleUserInteraction)
+    }
+  }, [ambientEnabled, audioContext])
+
+  useEffect(() => {
+    if (!audioContext || !ambientEnabled) return
+
+    // Create ocean wave sound using Web Audio API
+    const createOceanWave = () => {
+      const oscillator = audioContext.createOscillator()
+      const gainNode = audioContext.createGain()
+      const filter = audioContext.createBiquadFilter()
+
+      // Configure filter for ocean-like sound
+      filter.type = 'lowpass'
+      filter.frequency.setValueAtTime(200, audioContext.currentTime)
+      filter.Q.setValueAtTime(1, audioContext.currentTime)
+
+      // Configure oscillator for wave sound
+      oscillator.type = 'sawtooth'
+      oscillator.frequency.setValueAtTime(0.1, audioContext.currentTime)
+
+      // Configure gain for volume control
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime)
+      gainNode.gain.linearRampToValueAtTime(0.01, audioContext.currentTime + 0.5)
+      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3)
+
+      // Connect nodes
+      oscillator.connect(filter)
+      filter.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+
+      // Start and stop
+      oscillator.start(audioContext.currentTime)
+      oscillator.stop(audioContext.currentTime + 3)
+    }
+
+    // Play ocean wave sound periodically
+    const waveInterval = setInterval(createOceanWave, 8000)
+
+    return () => {
+      clearInterval(waveInterval)
+    }
+  }, [audioContext, ambientEnabled])
+
+  const toggleAmbientSounds = () => {
+    setAmbientEnabled(!ambientEnabled)
   }
 
   useEffect(() => {
@@ -147,6 +262,48 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
                   <span>{t('contact')}</span>
                 </Link>
               </nav>
+
+              {/* Settings Section */}
+              <div className="mb-8">
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">{t('settings')}</h3>
+                <div className="space-y-3">
+                  {/* Animation Toggle */}
+                  <button
+                    onClick={toggleReducedMotion}
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-300 ${
+                      reducedMotion 
+                        ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800' 
+                        : 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Accessibility className="w-5 h-5" />
+                      <span className="text-sm font-medium">{t('animation')}</span>
+                    </div>
+                    <span className="text-xs">
+                      {reducedMotion ? t('enableAnimations') : t('disableAnimations')}
+                    </span>
+                  </button>
+
+                  {/* Ambient Sounds Toggle */}
+                  <button
+                    onClick={toggleAmbientSounds}
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-300 ${
+                      ambientEnabled 
+                        ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800' 
+                        : 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Volume2 className="w-5 h-5" />
+                      <span className="text-sm font-medium">{t('ambientSounds')}</span>
+                    </div>
+                    <span className="text-xs">
+                      {ambientEnabled ? t('disableAmbientSounds') : t('enableAmbientSounds')}
+                    </span>
+                  </button>
+                </div>
+              </div>
 
               {/* Social Links */}
               <div className="mt-auto">
