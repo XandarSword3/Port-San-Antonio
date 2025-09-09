@@ -16,8 +16,7 @@
       ],
       "currency": "USD",
       "image": "/seed/almaza.jpg",
-      "available": true,
-      "price": 5
+      "available": true
     },
     {
       "id": "arak-na",
@@ -84,8 +83,7 @@
       ],
       "currency": "USD",
       "image": "/seed/beirut.jpg",
-      "available": true,
-      "price": 5
+      "available": true
     },
     {
       "id": "pizza-ham",
@@ -435,7 +433,8 @@
         }
       ],
       "currency": "USD",
-      "image": "/seed/gin-gordons.jpg"
+      "image": "/seed/gin-gordons.jpg",
+      "available": true
     },
     {
       "id": "greek-fusion",
