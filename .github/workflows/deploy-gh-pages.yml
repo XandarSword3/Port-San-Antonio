@@ -36,8 +36,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Build with Next.js
-        run: npm run build
+      - name: Build with Next.js for GitHub Pages
+        run: |
+          GITHUB_PAGES=true npm run build
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

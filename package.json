@@ -12,7 +12,8 @@
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
     "test:data": "vitest run tests/unit tests/integration",
-    "test:ui": "playwright test"
+    "test:ui": "playwright test",
+    "check-static": "node scripts/check-static-compatibility.js"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^4.0.0",

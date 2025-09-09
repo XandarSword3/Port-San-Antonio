@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Auth Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Admin Authentication Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Manual Login Test</h2>
+        <div>
+            <input type="text" id="username" placeholder="Username" value="admin">
+            <input type="password" id="password" placeholder="Password" value="admin123">
+            <button onclick="testLogin()">Test Login</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Quick Tests</h2>
+        <button onclick="testAllCredentials()">Test All Credentials</button>
+        <button onclick="testInvalidCredentials()">Test Invalid Credentials</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        function log(message, type = 'info') {
+            const p = document.createElement('p');
+            p.className = type;
+            p.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(p);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        async function testLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            log(`Testing login for: ${username}`, 'info');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Login successful for ${username}: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    const errorData = await response.json();
+                    log(`❌ Login failed for ${username}: ${errorData.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Network error for ${username}: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAllCredentials() {
+            const credentials = [
+                { username: 'admin', password: 'admin123' },
+                { username: 'worker', password: 'worker123' },
+                { username: 'owner', password: 'owner123' }
+            ];
+
+            log('🚀 Testing all valid credentials...', 'info');
+
+            for (const cred of credentials) {
+                await testCredential(cred.username, cred.password);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay
+            }
+        }
+
+        async function testInvalidCredentials() {
+            log('🚀 Testing invalid credentials...', 'info');
+            await testCredential('invalid', 'invalid');
+        }
+
+        async function testCredential(username, password) {
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ ${username}: Authentication successful`, 'success');
+                } else {
+                    const errorData = await response.json();
+                    log(`❌ ${username}: ${errorData.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ ${username}: Network error - ${error.message}`, 'error');
+            }
+        }
+
+        // Test page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🌐 Admin Auth Test Page loaded successfully!', 'success');
+            log('📍 Testing from: ' + window.location.origin, 'info');
+        });
+    </script>
+</body>
+</html>
