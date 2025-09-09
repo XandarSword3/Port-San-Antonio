@@ -106,10 +106,14 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
         ads: [] // Include any additional data
       }
 
+      // Get the auth token from localStorage
+      const authToken = localStorage.getItem('adminToken')
+      
       const response = await fetch('/api/auto-commit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(authToken && { 'Authorization': `Bearer ${authToken}` })
         },
         credentials: 'include', // Include httpOnly cookies
         body: JSON.stringify({ menuData })

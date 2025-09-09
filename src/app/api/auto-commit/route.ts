@@ -3,15 +3,34 @@ import { AuthService } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
+// Auto-commit API for GitHub integration
+
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
-    const authToken = request.cookies.get('auth-token')?.value || 
-                      AuthService.extractTokenFromHeader(request.headers.get('authorization'))
+    // Verify authentication with detailed logging
+    const cookieToken = request.cookies.get('auth-token')?.value
+    const headerToken = AuthService.extractTokenFromHeader(request.headers.get('authorization'))
+    const authToken = cookieToken || headerToken
 
-    if (!authToken || !AuthService.verifyAdminToken(authToken)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    console.log('Auto-commit authentication check:')
+    console.log('  - Cookie token:', cookieToken ? 'present' : 'missing')
+    console.log('  - Header token:', headerToken ? 'present' : 'missing')
+    console.log('  - Final token:', authToken ? 'present' : 'missing')
+
+    if (!authToken) {
+      console.log('  ❌ No authentication token found')
+      return NextResponse.json({ error: 'No authentication token found' }, { status: 401 })
     }
+
+    const isValidAdmin = AuthService.verifyAdminToken(authToken)
+    console.log('  - Token verification:', isValidAdmin ? 'valid' : 'invalid')
+
+    if (!isValidAdmin) {
+      console.log('  ❌ Invalid or non-admin token')
+      return NextResponse.json({ error: 'Invalid or insufficient permissions' }, { status: 401 })
+    }
+
+    console.log('  ✅ Authentication successful')
 
     const { menuData } = await request.json()
 
