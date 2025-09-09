@@ -100,40 +100,53 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
 
   const autoCommitToGitHub = async (updatedDishes: Dish[]) => {
     try {
+      console.log('🔄 Starting auto-commit process...')
+      
       const menuData = {
         dishes: updatedDishes,
         categories: categories,
-        ads: [] // Include any additional data
+        lastUpdated: new Date().toISOString()
       }
 
       // Get the auth token from localStorage
       const authToken = localStorage.getItem('adminToken')
+      console.log('🔐 Auth token available:', !!authToken)
       
+      if (!authToken) {
+        throw new Error('No authentication token available')
+      }
+
       const response = await fetch('/api/auto-commit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(authToken && { 'Authorization': `Bearer ${authToken}` })
+          'Authorization': `Bearer ${authToken}`
         },
-        credentials: 'include', // Include httpOnly cookies
+        credentials: 'include', // Include httpOnly cookies as well
         body: JSON.stringify({ menuData })
       })
 
-      if (response.ok) {
-        const result = await response.json()
-        console.log('✅ Auto-committed to GitHub:', result.message)
-        
-        // Show success notification
-        setTimeout(() => {
-          alert('🚀 Changes committed to GitHub! Netlify will rebuild automatically in 1-2 minutes.')
-        }, 1000)
-      } else {
-        const error = await response.json()
-        console.warn('⚠️ Auto-commit failed:', error.error)
-        alert('⚠️ Local changes saved but auto-commit failed. You may need to deploy manually.')
+      console.log('📡 Auto-commit response status:', response.status)
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('❌ Auto-commit failed:', errorData)
+        throw new Error(`Auto-commit failed: ${errorData.error || 'Unknown error'}`)
       }
-    } catch (error) {
-      console.warn('⚠️ Auto-commit error:', error)
+
+      const result = await response.json()
+      console.log('✅ Auto-commit successful:', result)
+      
+      // Show success notification
+      setTimeout(() => {
+        alert(`🚀 Changes committed to GitHub successfully! Vercel will rebuild automatically.\n\nCommit: ${result.commitUrl || 'View on GitHub'}`)
+      }, 1000)
+      
+      return result
+    } catch (error: any) {
+      console.error('❌ Auto-commit error:', error)
+      alert(`⚠️ Local changes saved but auto-commit failed: ${error.message}\n\nYou may need to check your GitHub token configuration.`)
+      throw error
     }
   }
 

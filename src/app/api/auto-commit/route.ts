@@ -1,120 +1,124 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { AuthService } from '@/lib/auth'
+import { verifyToken } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
-// Auto-commit API for GitHub integration
-
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication with detailed logging
-    const cookieToken = request.cookies.get('auth-token')?.value
-    const headerToken = AuthService.extractTokenFromHeader(request.headers.get('authorization'))
-    const authToken = cookieToken || headerToken
-
-    console.log('Auto-commit authentication check:')
-    console.log('  - Cookie token:', cookieToken ? 'present' : 'missing')
-    console.log('  - Header token:', headerToken ? 'present' : 'missing')
-    console.log('  - Final token:', authToken ? 'present' : 'missing')
-
+    console.log('🔄 Auto-commit request received')
+    
+    // Get authentication token from header or cookie
+    const authHeader = request.headers.get('authorization')
+    const authToken = authHeader?.replace('Bearer ', '') || request.cookies.get('auth-token')?.value
+    
+    console.log('🔐 Auth token present:', !!authToken)
+    
     if (!authToken) {
-      console.log('  ❌ No authentication token found')
-      return NextResponse.json({ error: 'No authentication token found' }, { status: 401 })
+      console.log('❌ No authentication token provided')
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
 
-    const isValidAdmin = AuthService.verifyAdminToken(authToken)
-    console.log('  - Token verification:', isValidAdmin ? 'valid' : 'invalid')
-
-    if (!isValidAdmin) {
-      console.log('  ❌ Invalid or non-admin token')
-      return NextResponse.json({ error: 'Invalid or insufficient permissions' }, { status: 401 })
+    // Verify authentication
+    const authResult = verifyToken(authToken)
+    console.log('🔍 Auth verification result:', authResult.success)
+    
+    if (!authResult.success || !authResult.payload) {
+      console.log('❌ Authentication failed:', authResult.error)
+      return NextResponse.json({ error: 'Invalid authentication' }, { status: 401 })
     }
 
-    console.log('  ✅ Authentication successful')
+    // Check if user has admin or owner permissions
+    const userRole = authResult.payload.role
+    console.log('👤 User role:', userRole)
+    
+    if (!['admin', 'owner'].includes(userRole)) {
+      console.log('❌ Insufficient permissions for role:', userRole)
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
+    }
 
+    console.log('✅ Authentication successful for user:', authResult.payload.username)
+
+    // Get menu data from request
     const { menuData } = await request.json()
+    console.log('📊 Menu data received, size:', JSON.stringify(menuData).length, 'bytes')
 
     if (!menuData) {
       return NextResponse.json({ error: 'Menu data is required' }, { status: 400 })
     }
 
-    // Prepare the GitHub API request
+    // GitHub configuration
     const githubToken = process.env.GITHUB_TOKEN
-    const repo = process.env.GITHUB_REPO || 'XandarSword3/Port-San-Antonio'
-    const branch = process.env.GITHUB_BRANCH || 'main'
-    const path = 'public/menu-data.json'
+    const githubRepo = process.env.GITHUB_REPO || 'XandarSword3/Port-San-Antonio'
+    const githubBranch = process.env.GITHUB_BRANCH || 'main'
+    
+    console.log('🔧 GitHub config - Repo:', githubRepo, 'Branch:', githubBranch, 'Token present:', !!githubToken)
 
     if (!githubToken) {
+      console.log('❌ GitHub token not configured')
       return NextResponse.json({ error: 'GitHub token not configured' }, { status: 500 })
     }
 
-    // Get current file SHA
-    let sha: string | undefined
-    try {
-      const currentFileResponse = await fetch(
-        `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${githubToken}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'Port-San-Antonio-Admin'
-          }
-        }
-      )
-
-      if (currentFileResponse.ok) {
-        const currentFile = await currentFileResponse.json()
-        sha = currentFile.sha
-      }
-    } catch (error) {
-      console.log('File might not exist yet, will create new one')
-    }
-
-    // Update the file
-    const content = JSON.stringify(menuData, null, 2)
-    const message = `🍽️ Admin: Update menu data - ${new Date().toLocaleString()}`
-
-    const updateResponse = await fetch(
-      `https://api.github.com/repos/${repo}/contents/${path}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${githubToken}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
-          'User-Agent': 'Port-San-Antonio-Admin'
-        },
-        body: JSON.stringify({
-          message,
-          content: Buffer.from(content, 'utf-8').toString('base64'),
-          branch: branch,
-          ...(sha && { sha })
-        })
-      }
-    )
-
-    if (!updateResponse.ok) {
-      const error = await updateResponse.text()
-      console.error('GitHub API Error:', error)
-      return NextResponse.json({ 
-        error: 'Failed to update GitHub repository',
-        details: error 
-      }, { status: 500 })
-    }
-
-    const result = await updateResponse.json()
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Menu data committed to GitHub successfully!',
-      commit: result.commit?.html_url
+    // Initialize Octokit
+    const { Octokit } = await import('@octokit/rest')
+    const octokit = new Octokit({
+      auth: githubToken,
     })
 
-  } catch (error) {
-    console.error('Error in auto-commit API:', error)
+    console.log('🔗 Octokit initialized, attempting commit...')
+
+    // Get current file to get its SHA
+    const filePath = 'data/dishes.json'
+    let fileSha: string | undefined
+
+    try {
+      const { data: currentFile } = await octokit.rest.repos.getContent({
+        owner: githubRepo.split('/')[0],
+        repo: githubRepo.split('/')[1],
+        path: filePath,
+        ref: githubBranch,
+      })
+
+      if ('sha' in currentFile) {
+        fileSha = currentFile.sha
+        console.log('📄 Current file SHA:', fileSha)
+      }
+    } catch (error: any) {
+      console.log('⚠️ File might not exist yet, will create new:', error.message)
+    }
+
+    // Create or update the file
+    const commitMessage = `🍽️ Admin: Update menu data - ${new Date().toLocaleString()}`
+    const contentBase64 = Buffer.from(JSON.stringify(menuData, null, 2)).toString('base64')
+
+    console.log('💾 Committing to GitHub...')
+    console.log('📝 Commit message:', commitMessage)
+    console.log('📁 File path:', filePath)
+
+    const commitResponse = await octokit.rest.repos.createOrUpdateFileContents({
+      owner: githubRepo.split('/')[0],
+      repo: githubRepo.split('/')[1],
+      path: filePath,
+      message: commitMessage,
+      content: contentBase64,
+      branch: githubBranch,
+      ...(fileSha && { sha: fileSha }),
+    })
+
+    console.log('✅ Commit successful!')
+    console.log('🔗 Commit URL:', commitResponse.data.commit.html_url)
+
     return NextResponse.json({ 
-      error: 'Internal server error', 
-      details: error instanceof Error ? error.message : 'Unknown error'
+      success: true, 
+      message: 'Menu data committed successfully',
+      commitUrl: commitResponse.data.commit.html_url,
+      sha: commitResponse.data.commit.sha
+    })
+
+  } catch (error: any) {
+    console.error('❌ Auto-commit error:', error)
+    return NextResponse.json({ 
+      error: 'Failed to commit changes', 
+      details: error.message 
     }, { status: 500 })
   }
 }

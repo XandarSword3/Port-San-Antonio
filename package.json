@@ -15,6 +15,7 @@
     "test:ui": "playwright test"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.0",
     "@stripe/react-stripe-js": "^4.0.0",
     "@stripe/stripe-js": "^7.9.0",
     "@types/bcryptjs": "^2.4.6",
