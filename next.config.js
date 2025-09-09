@@ -19,18 +19,14 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
-  output: 'export', // Required for GitHub Pages static deployment
-  trailingSlash: true, // Helps with GitHub Pages routing
+  // Removed output: 'export' to enable API routes for Vercel deployment
   images: {
-    domains: ['localhost', 'port-san-antonio.vercel.app', 'xandarsword3.github.io'],
+    domains: ['localhost', 'port-san-antonio.vercel.app'],
     formats: ['image/webp', 'image/avif'],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; img-src 'self' data: https:; sandbox;",
-    unoptimized: true // Required for static export
+    unoptimized: true
   },
-  // GitHub Pages deployment specific settings
-  basePath: process.env.NODE_ENV === 'production' && process.env.GITHUB_PAGES ? '/Port-San-Antonio' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' && process.env.GITHUB_PAGES ? '/Port-San-Antonio/' : '',
 }
 
 module.exports = withPWA(nextConfig)
