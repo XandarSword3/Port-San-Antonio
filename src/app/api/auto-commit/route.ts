@@ -54,8 +54,11 @@ export async function POST(request: NextRequest) {
     console.log('🔧 GitHub config - Repo:', githubRepo, 'Branch:', githubBranch, 'Token present:', !!githubToken)
 
     if (!githubToken) {
-      console.log('❌ GitHub token not configured')
-      return NextResponse.json({ error: 'GitHub token not configured' }, { status: 500 })
+      console.log('⚠️ GitHub token not configured - auto-commit disabled')
+      return NextResponse.json({ 
+        error: 'GitHub token not configured. Please set GITHUB_TOKEN in your Vercel environment variables.',
+        instructions: 'Go to Vercel Dashboard → Your Project → Settings → Environment Variables → Add GITHUB_TOKEN'
+      }, { status: 503 })
     }
 
     // Initialize Octokit
