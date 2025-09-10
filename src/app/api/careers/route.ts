@@ -7,9 +7,9 @@ export async function GET() {
       return NextResponse.json({ jobPositions: [] }, { status: 200 })
     }
     
-    // Query the jobs table (same as staff portal)
+    // Query the job_positions table (customer database)
     const { data, error } = await supabase
-      .from('jobs')
+      .from('job_positions')
       .select('*')
       .eq('active', true)
       .order('created_at', { ascending: false })
