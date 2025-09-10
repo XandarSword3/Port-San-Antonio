@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
-import { supabase } from '../lib/supabase'
+import { supabase, isSupabaseAvailable } from '../lib/supabase'
 
 // Import the existing types from the main types file
 import type { Category as BaseCategory, Dish as BaseDish } from '../types'
@@ -66,8 +66,13 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('🔄 Loading menu data from Supabase...')
       
+      // Check if Supabase is available
+      if (!isSupabaseAvailable()) {
+        throw new Error('Supabase client unavailable - missing environment variables')
+      }
+      
       // Load categories
-      const { data: categoriesData, error: categoriesError } = await supabase
+      const { data: categoriesData, error: categoriesError } = await supabase!
         .from('categories')
         .select('*')
         .order('order_index')
@@ -87,7 +92,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Load dishes
-      const { data: dishesData, error: dishesError } = await supabase
+      const { data: dishesData, error: dishesError } = await supabase!
         .from('dishes')
         .select('*')
         .eq('available', true)
@@ -124,48 +129,54 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     // Initial load
     loadMenuData()
 
-    // Subscribe to real-time changes
-    console.log('🔔 Setting up real-time subscriptions...')
-    
-    const dishesSubscription = supabase
-      .channel('dishes-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'dishes'
-        },
-        (payload) => {
-          console.log('🔄 Dish change detected:', payload.eventType)
-          // Reload dishes when changes occur
-          loadMenuData()
-        }
-      )
-      .subscribe()
+    // Subscribe to real-time changes only if Supabase is available
+    if (isSupabaseAvailable() && supabase) {
+      console.log('🔔 Setting up real-time subscriptions...')
+      
+      const dishesSubscription = supabase
+        .channel('dishes-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'dishes'
+          },
+          (payload) => {
+            console.log('🔄 Dish change detected:', payload.eventType)
+            // Reload dishes when changes occur
+            loadMenuData()
+          }
+        )
+        .subscribe()
 
-    const categoriesSubscription = supabase
-      .channel('categories-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'categories'
-        },
-        (payload) => {
-          console.log('🔄 Category change detected:', payload.eventType)
-          // Reload categories when changes occur
-          loadMenuData()
-        }
-      )
-      .subscribe()
+      const categoriesSubscription = supabase
+        .channel('categories-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'categories'
+          },
+          (payload) => {
+            console.log('🔄 Category change detected:', payload.eventType)
+            // Reload categories when changes occur
+            loadMenuData()
+          }
+        )
+        .subscribe()
 
-    // Cleanup subscriptions
-    return () => {
-      console.log('🧹 Cleaning up subscriptions...')
-      supabase.removeChannel(dishesSubscription)
-      supabase.removeChannel(categoriesSubscription)
+      // Cleanup subscriptions
+      return () => {
+        console.log('🧹 Cleaning up subscriptions...')
+        if (supabase) {
+          supabase.removeChannel(dishesSubscription)
+          supabase.removeChannel(categoriesSubscription)
+        }
+      }
+    } else {
+      console.warn('⚠️ Real-time subscriptions disabled - Supabase unavailable')
     }
   }, [loadMenuData])
 

@@ -1,15 +1,27 @@
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseAvailable } from '@/lib/supabase'
 
 export async function GET() {
   try {
+    // Check if Supabase is available
+    if (!isSupabaseAvailable()) {
+      return NextResponse.json({
+        ok: false,
+        error: 'Database unavailable - missing Supabase configuration',
+        data: { dishes: [], categories: [] },
+        dishCount: 0,
+        categoryCount: 0,
+        source: 'unavailable'
+      }, { status: 503 })
+    }
+
     // Get data from database instead of file
-    const { data: dishes, error: dishesError } = await supabase
+    const { data: dishes, error: dishesError } = await supabase!
       .from('dishes')
       .select('*')
       .order('name')
 
-    const { data: categories, error: categoriesError } = await supabase
+    const { data: categories, error: categoriesError } = await supabase!
       .from('categories')
       .select('*')
       .order('name')

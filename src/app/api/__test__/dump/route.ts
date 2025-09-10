@@ -10,13 +10,28 @@ export async function GET(request: NextRequest) {
 
   try {
     // Get data from database instead of file
-    const { supabase } = await import('@/lib/supabase')
-    const { data: dishes, error: dishesError } = await supabase
+    const { supabase, isSupabaseAvailable } = await import('@/lib/supabase')
+    
+    if (!isSupabaseAvailable()) {
+      return NextResponse.json({
+        ok: false,
+        error: 'Database unavailable - missing Supabase configuration',
+        timestamp: new Date().toISOString(),
+        env: {
+          NODE_ENV: process.env.NODE_ENV,
+          PORT: process.env.PORT || '3000'
+        },
+        data: { dishes: [], categories: [] },
+        source: 'unavailable'
+      }, { status: 503 })
+    }
+
+    const { data: dishes, error: dishesError } = await supabase!
       .from('dishes')
       .select('*')
       .order('name')
 
-    const { data: categories, error: categoriesError } = await supabase
+    const { data: categories, error: categoriesError } = await supabase!
       .from('categories')  
       .select('*')
       .order('name')

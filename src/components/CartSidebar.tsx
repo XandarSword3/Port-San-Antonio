@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingCart, CreditCard, Trash2, Send } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseAvailable } from '@/lib/supabase';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PaymentModal from './PaymentModal';
@@ -59,13 +59,18 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
     setSubmittingOrder(true);
 
     try {
+      // Check if Supabase is available
+      if (!isSupabaseAvailable()) {
+        throw new Error('Database service unavailable. Please try again later.')
+      }
+
       const orderNumber = generateOrderNumber();
       const subtotal = totalPrice;
       const tax = subtotal * 0.10; // 10% tax
       const total = subtotal + tax;
 
       // Insert order into database
-      const { data: orderData, error: orderError } = await supabase
+      const { data: orderData, error: orderError } = await supabase!
         .from('orders')
         .insert({
           order_number: orderNumber,
@@ -95,7 +100,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
         price: item.selectedVariant?.price || item.dish.price || 0
       }));
 
-      const { error: itemsError } = await supabase
+      const { error: itemsError } = await supabase!
         .from('order_items')
         .insert(orderItems);
 
