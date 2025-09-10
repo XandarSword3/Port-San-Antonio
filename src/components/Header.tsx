@@ -48,7 +48,7 @@ export default function Header() {
           </Link>
           <Link 
             href="/admin" 
-            className="text-sm px-3 py-2 rounded bg-white/10 hover:bg-white/20 text-white transition-colors"
+            className="text-sm px-3 py-2 rounded bg-white/10 hover:bg-white/20 text-white transition-colors hidden"
             aria-label="Admin panel"
           >
             {t('admin')}

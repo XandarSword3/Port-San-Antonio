@@ -2,7 +2,7 @@ export default function AdminPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold">Admin Panel</h1>
-      <p>Access the staff portal at: <a href="https://port-antonio-staff.vercel.app" className="text-blue-600 underline">port-antonio-staff.vercel.app</a></p>
+      <p>This admin page has been deprecated. Please use the dedicated staff portal.</p>
     </div>
   )
 }
