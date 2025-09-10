@@ -64,16 +64,20 @@ ALTER TABLE public.job_positions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.legal_pages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.page_content ENABLE ROW LEVEL SECURITY;
 
--- Create policies for public read access
+-- Create policies for public read access (drop first if they exist)
+DROP POLICY IF EXISTS "Allow public read access to footer settings" ON public.footer_settings;
 CREATE POLICY "Allow public read access to footer settings" ON public.footer_settings
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow public read access to job positions" ON public.job_positions;
 CREATE POLICY "Allow public read access to job positions" ON public.job_positions
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow public read access to legal pages" ON public.legal_pages;
 CREATE POLICY "Allow public read access to legal pages" ON public.legal_pages
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow public read access to page content" ON public.page_content;
 CREATE POLICY "Allow public read access to page content" ON public.page_content
     FOR SELECT USING (true);
 
@@ -243,15 +247,19 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Create triggers to automatically update updated_at
+-- Create triggers to automatically update updated_at (drop first if they exist)
+DROP TRIGGER IF EXISTS update_footer_settings_updated_at ON public.footer_settings;
 CREATE TRIGGER update_footer_settings_updated_at BEFORE UPDATE ON public.footer_settings
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_job_positions_updated_at ON public.job_positions;
 CREATE TRIGGER update_job_positions_updated_at BEFORE UPDATE ON public.job_positions
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_legal_pages_updated_at ON public.legal_pages;
 CREATE TRIGGER update_legal_pages_updated_at BEFORE UPDATE ON public.legal_pages
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_page_content_updated_at ON public.page_content;
 CREATE TRIGGER update_page_content_updated_at BEFORE UPDATE ON public.page_content
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
