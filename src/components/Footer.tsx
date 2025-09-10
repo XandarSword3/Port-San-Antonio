@@ -26,16 +26,33 @@ export default function Footer() {
 
   const currentYear = new Date().getFullYear()
 
-  // Load footer settings from localStorage
+  // Load footer settings from API (Supabase)
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('footerSettings')
-      if (saved) {
-        setFooterSettings(JSON.parse(saved))
-      }
-    } catch (error) {
-      console.error('Error loading footer settings:', error)
+    const load = async () => {
+      try {
+        const res = await fetch('/api/footer', { cache: 'no-store' })
+        if (res.ok) {
+          const json = await res.json()
+          const f = json.footer
+          if (f) {
+            setFooterSettings({
+              id: f.id,
+              companyName: f.company_name,
+              description: f.description,
+              address: f.address,
+              phone: f.phone,
+              email: f.email,
+              diningHours: f.dining_hours,
+              diningLocation: f.dining_location,
+              socialLinks: f.social_links || {},
+              lastUpdated: new Date(f.updated_at || Date.now()),
+              updatedBy: 'admin'
+            })
+          }
+        }
+      } catch (e) {}
     }
+    load()
   }, [])
 
   return (
