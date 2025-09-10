@@ -64,8 +64,6 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   // Load menu data from Supabase
   const loadMenuData = useCallback(async () => {
     try {
-      console.log('🔄 Loading menu data from Supabase...')
-      
       // Check if Supabase is available
       if (!isSupabaseAvailable()) {
         throw new Error('Supabase client unavailable - missing environment variables')

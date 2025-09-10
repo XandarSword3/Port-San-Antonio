@@ -20,7 +20,9 @@ export const supabase = supabaseUrl && supabaseAnonKey
 
 // Helper function to check if Supabase is available
 export const isSupabaseAvailable = () => {
-  return supabase !== null && supabaseUrl && supabaseAnonKey
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  return supabase !== null && !!url && !!key
 }
 
 // Types for our database tables
