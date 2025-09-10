@@ -13,23 +13,38 @@ export default function CareersPage() {
   const [jobPositions, setJobPositions] = useState<JobPosition[]>([])
 
   useEffect(() => {
-    // Try to load job positions from localStorage (admin updates)
-    try {
-      const adminData = localStorage.getItem('adminData')
-      if (adminData) {
-        const data = JSON.parse(adminData)
-        if (data.jobPositions && data.jobPositions.length > 0) {
-          // Only show active positions
-          setJobPositions(data.jobPositions.filter((job: JobPosition) => job.active))
-          return
+    const loadJobPositions = async () => {
+      try {
+        // First try to load from Supabase API
+        const res = await fetch('/api/careers', { cache: 'no-store' })
+        if (res.ok) {
+          const json = await res.json()
+          if (json.jobPositions && json.jobPositions.length > 0) {
+            setJobPositions(json.jobPositions)
+            return
+          }
         }
+      } catch (error) {
+        console.log('Error loading from API, trying localStorage fallback')
       }
-    } catch (error) {
-      console.log('No admin job data found, using default positions')
-    }
 
-    // Fallback to default positions if no admin data
-    const defaultPositions: JobPosition[] = [
+      // Fallback to localStorage (admin updates)
+      try {
+        const adminData = localStorage.getItem('adminData')
+        if (adminData) {
+          const data = JSON.parse(adminData)
+          if (data.jobPositions && data.jobPositions.length > 0) {
+            // Only show active positions
+            setJobPositions(data.jobPositions.filter((job: JobPosition) => job.active))
+            return
+          }
+        }
+      } catch (error) {
+        console.log('No admin job data found, using default positions')
+      }
+
+      // Final fallback to default positions
+      const defaultPositions: JobPosition[] = [
     {
       id: "1",
       title: "Head Chef",
@@ -103,8 +118,10 @@ export default function CareersPage() {
       createdAt: new Date()
     }
   ]
-
-    setJobPositions(defaultPositions)
+      setJobPositions(defaultPositions)
+    }
+    
+    loadJobPositions()
   }, [])
 
   return (

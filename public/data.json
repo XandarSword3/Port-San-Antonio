@@ -1,0 +1,44 @@
+{
+  "menu": {
+    "dishes": [],
+    "categories": [
+      {
+        "id": "starters",
+        "name": "Starters",
+        "description": "Appetizers and small plates"
+      },
+      {
+        "id": "mains",
+        "name": "Main Courses",
+        "description": "Hearty main dishes"
+      },
+      {
+        "id": "desserts",
+        "name": "Desserts",
+        "description": "Sweet endings"
+      },
+      {
+        "id": "beverages",
+        "name": "Beverages",
+        "description": "Drinks and refreshments"
+      },
+      {
+        "id": "spa",
+        "name": "Mediterranean Relaxation",
+        "description": "Spa and wellness services"
+      }
+    ]
+  },
+  "contact": {
+    "phone": "03 201 682",
+    "phoneSecondary": "81 201 682",
+    "email": "info@portantonio.com",
+    "address": "Jbeil Mastita, Lebanon",
+    "website": "https://www.portantonio.com",
+    "socialMedia": {
+      "facebook": "https://facebook.com/portantonio",
+      "instagram": "https://instagram.com/portantonio",
+      "twitter": "https://twitter.com/portantonio"
+    }
+  }
+}

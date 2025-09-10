@@ -1,15 +1,59 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Shield, Eye, Cookie, Database, Mail } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
+import { LegalPageContent } from '@/types'
 
 export default function PrivacyPage() {
   const { t, language } = useLanguage()
+  const [legalContent, setLegalContent] = useState<LegalPageContent | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const lastUpdated = "September 2025"
+  useEffect(() => {
+    const loadLegalContent = async () => {
+      try {
+        // First try to load from Supabase API
+        const res = await fetch('/api/legal', { cache: 'no-store' })
+        if (res.ok) {
+          const json = await res.json()
+          const privacyPage = json.legalPages?.find((page: any) => page.type === 'privacy')
+          if (privacyPage) {
+            setLegalContent(privacyPage)
+            setLoading(false)
+            return
+          }
+        }
+      } catch (error) {
+        console.log('Error loading from API, using default content')
+      }
+
+      // Fallback to default content
+      setLegalContent({
+        id: 'default-privacy',
+        type: 'privacy',
+        title: 'Privacy Policy',
+        sections: [
+          {
+            id: 'intro',
+            title: 'Agreement to Terms',
+            content: 'By using our website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services. Port Antonio Resort reserves the right to update these terms at any time.',
+            order: 1
+          }
+        ],
+        lastUpdated: new Date(),
+        updatedBy: 'system'
+      })
+      setLoading(false)
+    }
+    
+    loadLegalContent()
+  }, [])
+
+  const lastUpdated = legalContent?.lastUpdated ? new Date(legalContent.lastUpdated).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "September 2025"
 
   return (
     <PageTransition>
@@ -34,11 +78,16 @@ export default function PrivacyPage() {
 
         {/* Content */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
-          >
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-8"
+            >
             {/* Introduction */}
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -194,6 +243,7 @@ export default function PrivacyPage() {
               </div>
             </div>
           </motion.div>
+          )}
         </div>
       </div>
     </PageTransition>

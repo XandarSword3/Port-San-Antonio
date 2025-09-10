@@ -1,0 +1,5 @@
+[33m63203e1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m chore(staff): trigger deploy using project settings
+[33m8d3058b[m fix(staff): relax route params typing to match Next 15 handler signature
+[33m43155ef[m fix(staff): update Next.js route handler signatures to use Request for params arg
+[33m96b013d[m[33m ([m[1;31morigin/main[m[33m)[m feat(customer): load footer settings from Supabase via /api/footer
+[33mf6bb842[m feat(staff): add footer/legal/jobs APIs and UIs; switch login to role+PIN; add users manager

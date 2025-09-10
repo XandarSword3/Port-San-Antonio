@@ -157,6 +157,143 @@ export type Database = {
           created_at?: string
         }
       }
+      footer_settings: {
+        Row: {
+          id: string
+          company_name: string
+          description: string
+          address: string
+          phone: string
+          email: string
+          dining_hours: string
+          dining_location: string
+          social_links: any
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          company_name: string
+          description: string
+          address: string
+          phone: string
+          email: string
+          dining_hours: string
+          dining_location: string
+          social_links?: any
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          company_name?: string
+          description?: string
+          address?: string
+          phone?: string
+          email?: string
+          dining_hours?: string
+          dining_location?: string
+          social_links?: any
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      job_positions: {
+        Row: {
+          id: string
+          title: string
+          department: string
+          type: 'full-time' | 'part-time' | 'contract' | 'internship'
+          location: string
+          description: string
+          requirements: string[]
+          benefits: string[]
+          salary: string
+          active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          department: string
+          type: 'full-time' | 'part-time' | 'contract' | 'internship'
+          location: string
+          description: string
+          requirements: string[]
+          benefits: string[]
+          salary: string
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          department?: string
+          type?: 'full-time' | 'part-time' | 'contract' | 'internship'
+          location?: string
+          description?: string
+          requirements?: string[]
+          benefits?: string[]
+          salary?: string
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      legal_pages: {
+        Row: {
+          id: string
+          type: 'privacy' | 'terms' | 'accessibility'
+          title: string
+          sections: any
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          type: 'privacy' | 'terms' | 'accessibility'
+          title: string
+          sections: any
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          type?: 'privacy' | 'terms' | 'accessibility'
+          title?: string
+          sections?: any
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      page_content: {
+        Row: {
+          id: string
+          page_id: 'careers' | 'privacy' | 'terms' | 'accessibility'
+          section: string
+          content: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          page_id: 'careers' | 'privacy' | 'terms' | 'accessibility'
+          section: string
+          content: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          page_id?: 'careers' | 'privacy' | 'terms' | 'accessibility'
+          section?: string
+          content?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

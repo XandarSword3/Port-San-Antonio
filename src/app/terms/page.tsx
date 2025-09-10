@@ -1,15 +1,59 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FileText, AlertTriangle, Scale, CreditCard } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
+import { LegalPageContent } from '@/types'
 
 export default function TermsPage() {
   const { t, language } = useLanguage()
+  const [legalContent, setLegalContent] = useState<LegalPageContent | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const lastUpdated = "September 2025"
+  useEffect(() => {
+    const loadLegalContent = async () => {
+      try {
+        // First try to load from Supabase API
+        const res = await fetch('/api/legal', { cache: 'no-store' })
+        if (res.ok) {
+          const json = await res.json()
+          const termsPage = json.legalPages?.find((page: any) => page.type === 'terms')
+          if (termsPage) {
+            setLegalContent(termsPage)
+            setLoading(false)
+            return
+          }
+        }
+      } catch (error) {
+        console.log('Error loading from API, using default content')
+      }
+
+      // Fallback to default content
+      setLegalContent({
+        id: 'default-terms',
+        type: 'terms',
+        title: 'Terms of Service',
+        sections: [
+          {
+            id: 'intro',
+            title: 'Agreement to Terms',
+            content: 'By using our website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services. Port Antonio Resort reserves the right to update these terms at any time.',
+            order: 1
+          }
+        ],
+        lastUpdated: new Date(),
+        updatedBy: 'system'
+      })
+      setLoading(false)
+    }
+    
+    loadLegalContent()
+  }, [])
+
+  const lastUpdated = legalContent?.lastUpdated ? new Date(legalContent.lastUpdated).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "September 2025"
 
   return (
     <PageTransition>

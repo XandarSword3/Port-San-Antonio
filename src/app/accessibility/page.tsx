@@ -1,13 +1,57 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Accessibility, Eye, Ear, Keyboard, Smartphone, Heart } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import BackButton from '@/components/BackButton'
 import PageTransition from '@/components/PageTransition'
+import { LegalPageContent } from '@/types'
 
 export default function AccessibilityPage() {
   const { t, language } = useLanguage()
+  const [legalContent, setLegalContent] = useState<LegalPageContent | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadLegalContent = async () => {
+      try {
+        // First try to load from Supabase API
+        const res = await fetch('/api/legal', { cache: 'no-store' })
+        if (res.ok) {
+          const json = await res.json()
+          const accessibilityPage = json.legalPages?.find((page: any) => page.type === 'accessibility')
+          if (accessibilityPage) {
+            setLegalContent(accessibilityPage)
+            setLoading(false)
+            return
+          }
+        }
+      } catch (error) {
+        console.log('Error loading from API, using default content')
+      }
+
+      // Fallback to default content
+      setLegalContent({
+        id: 'default-accessibility',
+        type: 'accessibility',
+        title: 'Accessibility Statement',
+        sections: [
+          {
+            id: 'intro',
+            title: 'Our Commitment',
+            content: 'Port Antonio Resort is committed to making our website and services accessible to everyone, including people with disabilities. We strive to provide an inclusive experience for all our guests.',
+            order: 1
+          }
+        ],
+        lastUpdated: new Date(),
+        updatedBy: 'system'
+      })
+      setLoading(false)
+    }
+    
+    loadLegalContent()
+  }, [])
 
   return (
     <PageTransition>
