@@ -10,7 +10,7 @@ export async function GET() {
     const { data, error } = await supabase
       .from('legal_pages')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('updated_at', { ascending: false })
     
     if (error) throw error
     
