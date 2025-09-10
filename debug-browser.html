@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Menu API</title>
+</head>
+<body>
+    <h1>Debug Menu API</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            
+            try {
+                // Test the menu API endpoint
+                console.log('Testing /api/menu endpoint...');
+                const response = await fetch('/api/menu');
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                
+                if (!response.ok) {
+                    results.innerHTML += `<p><strong>API Error:</strong> ${response.status} ${response.statusText}</p>`;
+                    const text = await response.text();
+                    results.innerHTML += `<p><strong>Error Response:</strong> ${text}</p>`;
+                    return;
+                }
+                
+                const data = await response.json();
+                console.log('Menu data received:', data);
+                results.innerHTML += `<p><strong>Menu Items Found:</strong> ${data.length}</p>`;
+                results.innerHTML += `<p><strong>First Item:</strong> ${JSON.stringify(data[0], null, 2)}</p>`;
+                
+                // Test Supabase client directly
+                const supabaseTest = await fetch('/api/__test__/dump');
+                const supabaseData = await supabaseTest.text();
+                results.innerHTML += `<p><strong>Supabase Test:</strong> ${supabaseData}</p>`;
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                results.innerHTML += `<p><strong>JavaScript Error:</strong> ${error.message}</p>`;
+            }
+        }
+        
+        // Run test when page loads
+        testAPI();
+    </script>
+</body>
+</html>
