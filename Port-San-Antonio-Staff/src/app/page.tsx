@@ -1,8 +1,8 @@
 'use client';
 
-import { useAuth } from '@/contexts/AuthContext';
-import LoginPage from '@/components/LoginPage';
-import Dashboard from '@/components/Dashboard';
+import { useAuth } from '../contexts/AuthContext';
+import LoginPage from '../components/LoginPage';
+import Dashboard from '../components/Dashboard';
 
 export default function HomePage() {
   const { user, loading } = useAuth();

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Edit2, Save, X, Trash2, GripVertical } from 'lucide-react'
-import { AppData, Category } from '@/types'
+import { AppData, Category } from '../types'
 
 interface CategoryManagerProps {
   data: AppData

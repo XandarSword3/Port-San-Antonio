@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, Clock, MapPin, Users, DollarSign, Plus, Edit, Trash2, Search, Filter, Tag } from 'lucide-react'
-import { Event } from '@/types'
+import { Event } from '../types'
 
 interface EventManagerProps {
   events: Event[]

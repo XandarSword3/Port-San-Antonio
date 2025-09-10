@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, Plus, ShoppingCart, CreditCard, Trash2 } from 'lucide-react';
+import { X, Minus, Plus, ShoppingCart, CreditCard, Trash2, Send } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PaymentModal from './PaymentModal';
@@ -19,6 +20,12 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
   const { t } = useLanguage();
   const [showPayment, setShowPayment] = useState(false);
   const [showReservation, setShowReservation] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState({
+    name: '',
+    email: ''
+  });
+  const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const [submittingOrder, setSubmittingOrder] = useState(false);
 
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
@@ -32,6 +39,90 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
 
   const handleReservationSubmit = () => {
     setShowReservation(false);
+  };
+
+  const generateOrderNumber = () => {
+    return `ORD-${Date.now()}`;
+  };
+
+  const submitOrder = async () => {
+    if (!customerInfo.name.trim() || !customerInfo.email.trim()) {
+      alert('Please provide your name and email address.');
+      return;
+    }
+
+    if (items.length === 0) {
+      alert('Your cart is empty.');
+      return;
+    }
+
+    setSubmittingOrder(true);
+
+    try {
+      const orderNumber = generateOrderNumber();
+      const subtotal = totalPrice;
+      const tax = subtotal * 0.10; // 10% tax
+      const total = subtotal + tax;
+
+      // Insert order into database
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          order_number: orderNumber,
+          customer_name: customerInfo.name.trim(),
+          customer_email: customerInfo.email.trim(),
+          subtotal: subtotal,
+          tax: tax,
+          total: total,
+          status: 'pending',
+          payment_status: 'pending'
+        })
+        .select('id')
+        .single();
+
+      if (orderError) {
+        console.error('Error creating order:', orderError);
+        alert('Failed to submit order. Please try again.');
+        setSubmittingOrder(false);
+        return;
+      }
+
+      // Insert order items
+      const orderItems = items.map(item => ({
+        order_id: orderData.id,
+        dish_id: item.dish.id,
+        quantity: item.quantity,
+        price: item.selectedVariant?.price || item.dish.price || 0
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) {
+        console.error('Error creating order items:', itemsError);
+        alert('Order created but failed to save items. Please contact support.');
+        setSubmittingOrder(false);
+        return;
+      }
+
+      // Success!
+      alert(`Order ${orderNumber} submitted successfully! You will receive a confirmation email shortly.`);
+      clearCart();
+      setCustomerInfo({ name: '', email: '' });
+      setShowCustomerForm(false);
+      onClose();
+
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      alert('Failed to submit order. Please try again.');
+    } finally {
+      setSubmittingOrder(false);
+    }
+  };
+
+  const handleSubmitOrderClick = () => {
+    setShowCustomerForm(true);
   };
 
   // Convert cart items to payment format
@@ -158,8 +249,68 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                     <span>{formatCurrency(totalPrice)}</span>
                   </div>
 
+                  {/* Customer Info Form */}
+                  {showCustomerForm && (
+                    <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <h3 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Order Information</h3>
+                      <div className="space-y-3">
+                        <input
+                          type="text"
+                          placeholder="Your Name"
+                          value={customerInfo.name}
+                          onChange={(e) => setCustomerInfo({...customerInfo, name: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                        <input
+                          type="email"
+                          placeholder="Your Email"
+                          value={customerInfo.email}
+                          onChange={(e) => setCustomerInfo({...customerInfo, email: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   {/* Action Buttons */}
                   <div className="space-y-2">
+                    {!showCustomerForm ? (
+                      <motion.button
+                        onClick={handleSubmitOrderClick}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                      >
+                        <Send className="w-5 h-5 mr-2" />
+                        Submit Order
+                      </motion.button>
+                    ) : (
+                      <div className="space-y-2">
+                        <motion.button
+                          onClick={submitOrder}
+                          disabled={submittingOrder}
+                          whileHover={{ scale: submittingOrder ? 1 : 1.02 }}
+                          whileTap={{ scale: submittingOrder ? 1 : 0.98 }}
+                          className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                        >
+                          {submittingOrder ? (
+                            <>Submitting...</>
+                          ) : (
+                            <>
+                              <Send className="w-5 h-5 mr-2" />
+                              Confirm Order
+                            </>
+                          )}
+                        </motion.button>
+                        <button
+                          onClick={() => setShowCustomerForm(false)}
+                          className="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+
                     <motion.button
                       onClick={() => setShowPayment(true)}
                       whileHover={{ scale: 1.02 }}

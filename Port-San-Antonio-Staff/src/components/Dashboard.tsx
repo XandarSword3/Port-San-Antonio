@@ -15,7 +15,10 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
+import { Dish } from '../types';
+import { supabase } from '../lib/supabase';
+import { useEffect } from 'react';
 import DashboardOverview from './DashboardOverview';
 import ReservationManager from './ReservationManager';
 import OrderManager from './OrderManager';
@@ -75,28 +78,63 @@ export default function Dashboard() {
     }
   };
 
-  // Menu Manager Wrapper with mock data
+  // Menu Manager Wrapper with real database data
   const MenuManagerWrapper = () => {
-    const [dishes, setDishes] = useState([
-      {
-        id: '1',
-        name: 'Grilled Salmon',
-        shortDesc: 'Fresh Atlantic salmon with herbs',
-        fullDesc: 'Perfectly grilled Atlantic salmon with a blend of fresh herbs and lemon',
-        price: 28.99,
-        categoryId: 'main',
-        available: true,
-        image: '/images/salmon.jpg',
-        dietTags: ['gluten-free'],
-        allergens: ['fish'],
-        currency: 'USD',
-        imageVariants: { src: '/images/salmon.jpg' },
-        rating: 4.5,
-        reviewCount: 23,
-        ingredients: ['salmon', 'herbs', 'lemon'],
-        sponsored: false
+    const [dishes, setDishes] = useState<Dish[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      loadDishesFromDB();
+    }, []);
+
+    const loadDishesFromDB = async () => {
+      try {
+        if (!supabase) {
+          setLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('dishes')
+          .select('*')
+          .order('name');
+
+        if (!error && data) {
+          const transformedDishes = data.map(dish => ({
+            id: dish.id,
+            name: dish.name,
+            shortDesc: dish.short_desc || '',
+            fullDesc: dish.full_desc || '',
+            price: dish.price || 0,
+            categoryId: dish.category_id || 'appetizers',
+            available: dish.available !== false,
+            image: dish.image_url || '/images/placeholder.jpg',
+            dietTags: [],
+            allergens: [],
+            currency: dish.currency || 'USD',
+            imageVariants: { src: dish.image_url || '/images/placeholder.jpg' },
+            rating: 4.5,
+            reviewCount: 0,
+            ingredients: [],
+            sponsored: false
+          }));
+          setDishes(transformedDishes);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error loading dishes:', error);
+        setLoading(false);
       }
-    ]);
+    };
+
+    if (loading) {
+      return (
+        <div className="p-6 flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-staff-600"></div>
+          <span className="ml-3 text-gray-600">Loading real menu data...</span>
+        </div>
+      );
+    }
 
     const categories = [
       { id: 'appetizers', name: 'Appetizers', order: 1 },
@@ -104,12 +142,16 @@ export default function Dashboard() {
       { id: 'desserts', name: 'Desserts', order: 3 }
     ];
 
+    const handleDishUpdate = (updatedDishes: Dish[]) => {
+      setDishes(updatedDishes);
+    };
+
     return (
       <div className="p-6">
         <MenuManager 
           dishes={dishes} 
           categories={categories} 
-          onUpdate={setDishes} 
+          onUpdate={handleDishUpdate} 
         />
       </div>
     );

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, User, Mail, Eye, EyeOff, LogIn } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { toast } from '@/lib/toast';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from '../lib/toast';
 
 export default function LoginPage() {
   const { login, loading } = useAuth();

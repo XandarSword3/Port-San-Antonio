@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Filter } from 'lucide-react'
 import { Dish, Category, FilterState } from '@/types'
+import { useMenu } from '@/contexts/MenuContext'
 import DishCard from '@/components/DishCard'
 import CategoryStrip from '@/components/CategoryStrip'
 import CategoryAccordion from '@/components/CategoryAccordion'
@@ -33,8 +34,9 @@ export default function MenuPage() {
   // Analytics tracking
   usePageView('/menu')
   const trackSearch = useSearchTracking()
-  const [dishes, setDishes] = useState<Dish[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
+  
+  // Get menu data from context (database or fallback)
+  const { dishes, categories, loading: menuLoading, error: menuError, refreshMenu } = useMenu()
   const [ads, setAds] = useState<any[]>([])
   const [usingAdminData, setUsingAdminData] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -75,165 +77,30 @@ export default function MenuPage() {
     }
   }, [])
 
-  // Load data from JSON file and restore session filters
+  // Load ads from static file (dishes and categories come from MenuContext)
   useEffect(() => {
-    const loadData = async () => {
+    const loadAds = async () => {
       try {
-        // If offline, try to load from cache first
-        if (!isOnline) {
-          const cachedData = OfflineStorage.getMenuData()
-          if (cachedData) {
-            console.log('Loading menu data from offline cache')
-            setDishes(cachedData.dishes)
-            setCategories(cachedData.categories)
-            setAds(cachedData.ads)
-            setIsLoading(false)
-            return
-          }
-        }
-
-        // First, check if we have admin-updated data in localStorage
-        const adminMenuData = localStorage.getItem('menuData')
-        if (adminMenuData) {
-          console.log('Loading menu data from localStorage (admin changes)')
-          setUsingAdminData(true)
-          const localDishes = JSON.parse(adminMenuData)
-          const processedDishes: Dish[] = localDishes.map((d: any) => ({
-            id: d.id,
-            categoryId: d.categoryId,
-            name: d.name,
-            shortDesc: d.shortDesc || '',
-            fullDesc: d.fullDesc || '',
-            price: d.price || 0,
-            variants: d.variants || [],
-            currency: d.currency || 'USD',
-            image: d.image || '',
-            imageVariants: d.imageVariants || {},
-            dietTags: d.dietTags || [],
-            allergens: d.allergens || [],
-            calories: d.calories || null,
-            available: d.available !== false,
-            sponsored: d.sponsored || false
-          }))
-          
-          setDishes(processedDishes)
-          
-          // Still load categories and ads from static file
-          const response = await fetch('/menu-data.json')
-          if (response.ok) {
-            const data = await response.json()
-            setCategories(data.categories || [])
-            setAds(data.ads || [])
-            
-            // Cache for offline use
-            OfflineStorage.saveMenuData({
-              dishes: processedDishes,
-              categories: data.categories || [],
-              ads: data.ads || []
-            })
-          }
-          return
-        }
-        
-        // Fallback: load from static file if no localStorage data
-        console.log('Loading menu data from static file')
-        setUsingAdminData(false)
         const response = await fetch('/menu-data.json')
         if (response.ok) {
           const data = await response.json()
-          
-          // Process dishes with proper typing
-          const processedDishes: Dish[] = (data.dishes || []).map((d: any) => ({
-            id: d.id,
-            categoryId: d.categoryId,
-            name: d.name,
-            shortDesc: d.shortDesc || '',
-            fullDesc: d.fullDesc || '',
-            price: d.price || 0,
-            variants: d.variants || [],
-            currency: d.currency || 'USD',
-            image: d.image || '',
-            imageVariants: d.imageVariants || {},
-            dietTags: d.dietTags || [],
-            allergens: d.allergens || [],
-            calories: d.calories || null,
-            available: d.available !== false,
-            sponsored: d.sponsored || false
-          }))
-          
-          setDishes(processedDishes)
-          setCategories(data.categories || [])
           setAds(data.ads || [])
-          
-          // Cache for offline use
-          OfflineStorage.saveMenuData({
-            dishes: processedDishes,
-            categories: data.categories || [],
-            ads: data.ads || []
-          })
         }
       } catch (error) {
-        console.error('Error loading menu data:', error)
-        
-        // If online fetch failed, try offline cache as fallback
-        if (isOnline) {
-          const cachedData = OfflineStorage.getMenuData()
-          if (cachedData) {
-            console.log('Network failed, falling back to cached data')
-            setDishes(cachedData.dishes)
-            setCategories(cachedData.categories)
-            setAds(cachedData.ads)
-          } else {
-            setDishes([])
-            setCategories([])
-            setAds([])
-          }
-        } else {
-          setDishes([])
-          setCategories([])
-          setAds([])
-        }
-      } finally {
-        setIsLoading(false)
+        console.error('Error loading ads:', error)
+        setAds([])
       }
     }
-
-    loadData()
-  }, [isOnline])
-
-  // Listen for admin updates
-  useEffect(() => {
-    const handleAdminUpdate = () => {
-      console.log('Admin update detected, reloading menu data')
-      const adminMenuData = localStorage.getItem('menuData')
-      if (adminMenuData) {
-        setUsingAdminData(true)
-        const data = { dishes: JSON.parse(adminMenuData), categories: [], ads: [] }
-        const processedDishes: Dish[] = (data.dishes || []).map((d: any) => ({
-          id: d.id,
-          categoryId: d.categoryId,
-          name: d.name,
-          shortDesc: d.shortDesc || '',
-          fullDesc: d.fullDesc || '',
-          price: d.price || 0,
-          variants: d.variants || [],
-          currency: d.currency || 'USD',
-          image: d.image || '',
-          imageVariants: d.imageVariants || {},
-          dietTags: d.dietTags || [],
-          allergens: d.allergens || [],
-          calories: d.calories || null,
-          // popularity: d.popularity || 0, // Removed
-          available: d.available || false,
-          sponsored: d.sponsored || false
-        }))
-        setDishes(processedDishes)
-      }
-    }
-
-    window.addEventListener('menuDataUpdated', handleAdminUpdate)
-    return () => window.removeEventListener('menuDataUpdated', handleAdminUpdate)
+    
+    loadAds()
   }, [])
+
+  // Update loading state based on MenuContext
+  useEffect(() => {
+    setIsLoading(menuLoading)
+  }, [menuLoading])
+
+  // MenuContext handles real-time updates automatically
 
   // Save filters to session storage
   useEffect(() => {

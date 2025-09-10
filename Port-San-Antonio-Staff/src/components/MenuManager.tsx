@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Edit, Trash2, Save, X, Upload, Image as ImageIcon } from 'lucide-react'
-import { Dish, Category } from '@/types'
+import { Dish, Category } from '../types'
+import { supabase } from '../lib/supabase'
 
 interface MenuManagerProps {
   dishes: Dish[]
@@ -11,11 +12,69 @@ interface MenuManagerProps {
   onUpdate: (dishes: Dish[]) => void
 }
 
-export default function MenuManager({ dishes, categories, onUpdate }: MenuManagerProps) {
+export default function MenuManager({ dishes: initialDishes, categories, onUpdate }: MenuManagerProps) {
+  const [dishes, setDishes] = useState<Dish[]>(initialDishes)
   const [editingDish, setEditingDish] = useState<Dish | null>(null)
   const [isAddingNew, setIsAddingNew] = useState(false)
   const [formData, setFormData] = useState<Partial<Dish>>({})
   const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  // Load real dishes from database
+  useEffect(() => {
+    loadDishesFromDB()
+  }, [])
+
+  const loadDishesFromDB = async () => {
+    try {
+      if (!supabase) {
+        console.log('Supabase not configured, using props data')
+        setDishes(initialDishes)
+        setLoading(false)
+        return
+      }
+
+      const { data, error } = await supabase
+        .from('dishes')
+        .select('*')
+        .order('name')
+
+      if (error) {
+        console.error('Error loading dishes:', error)
+        setDishes(initialDishes)
+        setLoading(false)
+        return
+      }
+
+      console.log('✅ Loaded real dishes from database:', data?.length)
+      const transformedDishes = data?.map(dish => ({
+        id: dish.id,
+        name: dish.name,
+        shortDesc: dish.short_desc || '',
+        fullDesc: dish.full_desc || '',
+        price: dish.price || 0,
+        categoryId: dish.category_id || 'appetizers',
+        available: dish.available !== false,
+        image: dish.image_url || '/images/placeholder.jpg',
+        dietTags: [],
+        allergens: [],
+        ingredients: [],
+        currency: dish.currency || 'USD',
+        imageVariants: { src: dish.image_url || '/images/placeholder.jpg' },
+        rating: 4.5,
+        reviewCount: 0,
+        sponsored: false
+      })) || []
+
+      setDishes(transformedDishes)
+      onUpdate(transformedDishes)
+      setLoading(false)
+    } catch (error) {
+      console.error('Error in loadDishesFromDB:', error)
+      setDishes(initialDishes)
+      setLoading(false)
+    }
+  }
 
   const handleEdit = (dish: Dish) => {
     setEditingDish(dish)
@@ -33,9 +92,15 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
       price: 0,
       categoryId: '',
       available: true,
-      image: '',
+      image: '/images/placeholder.jpg',
       dietTags: [],
-      allergens: []
+      allergens: [],
+      ingredients: [],
+      currency: 'USD',
+      imageVariants: { src: '/images/placeholder.jpg' },
+      rating: 0,
+      reviewCount: 0,
+      sponsored: false
     })
     setIsAddingNew(true)
   }
@@ -43,53 +108,67 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
   const handleSave = async () => {
     setSaving(true)
     try {
-      let updatedDishes: Dish[]
-      
-      if (isAddingNew) {
-        // Add new dish
-        const newDish: Dish = {
-          id: Date.now().toString(),
-          name: formData.name || '',
-          shortDesc: formData.shortDesc || '',
-          fullDesc: formData.fullDesc || '',
-          price: formData.price || 0,
-          categoryId: formData.categoryId || '',
-          available: formData.available ?? true,
-          image: formData.image || '',
-          dietTags: formData.dietTags || [],
-          allergens: formData.allergens || [],
-          currency: 'USD',
-          imageVariants: { src: formData.image || '' },
-          rating: 0,
-          reviewCount: 0,
-          ingredients: [],
-          sponsored: false
-        }
-        updatedDishes = [...dishes, newDish]
-      } else {
-        // Update existing dish
-        updatedDishes = dishes.map(dish => 
-          dish.id === editingDish?.id 
-            ? { ...dish, ...formData }
-            : dish
-        )
+      if (!supabase) {
+        console.error('Supabase not configured')
+        setSaving(false)
+        return
       }
 
-      // Save to localStorage and dispatch event for live updates
-      localStorage.setItem('menuData', JSON.stringify(updatedDishes))
-      onUpdate(updatedDishes)
-      
-      // Dispatch event to notify other components
-      window.dispatchEvent(new CustomEvent('menuDataUpdated', { detail: updatedDishes }))
-      
-      // Auto-commit to GitHub
-      await autoCommitToGitHub(updatedDishes)
+      if (editingDish) {
+        // Update existing dish
+        const { error } = await supabase
+          .from('dishes')
+          .update({
+            name: formData.name,
+            short_desc: formData.shortDesc,
+            full_desc: formData.fullDesc,
+            price: formData.price,
+            category_id: formData.categoryId,
+            available: formData.available,
+            image_url: formData.image,
+            currency: formData.currency || 'USD'
+          })
+          .eq('id', editingDish.id)
+
+        if (error) {
+          console.error('Error updating dish:', error)
+          alert('Error updating dish. Please try again.')
+          setSaving(false)
+          return
+        }
+        console.log('✅ Dish updated successfully')
+      } else {
+        // Add new dish
+        const { error } = await supabase
+          .from('dishes')
+          .insert({
+            name: formData.name,
+            short_desc: formData.shortDesc,
+            full_desc: formData.fullDesc,
+            price: formData.price,
+            category_id: formData.categoryId,
+            available: formData.available !== false,
+            image_url: formData.image || '/images/placeholder.jpg',
+            currency: formData.currency || 'USD'
+          })
+
+        if (error) {
+          console.error('Error adding dish:', error)
+          alert('Error adding dish. Please try again.')
+          setSaving(false)
+          return
+        }
+        console.log('✅ Dish added successfully')
+      }
+
+      // Reload dishes from database
+      await loadDishesFromDB()
       
       setEditingDish(null)
       setIsAddingNew(false)
       setFormData({})
       
-      alert('Menu item saved successfully! Changes are now live and will be deployed automatically.')
+      alert('Menu item saved successfully! Changes are now in the database.')
     } catch (error) {
       console.error('Error saving dish:', error)
       alert('Error saving menu item. Please try again.')
@@ -182,17 +261,33 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
 
   const handleDelete = async (dishId: string) => {
     if (confirm('Are you sure you want to delete this dish?')) {
-      const updatedDishes = dishes.filter(dish => dish.id !== dishId)
-      localStorage.setItem('menuData', JSON.stringify(updatedDishes))
-      onUpdate(updatedDishes)
-      
-      // Dispatch event to notify other components
-      window.dispatchEvent(new CustomEvent('menuDataUpdated', { detail: updatedDishes }))
-      
-      // Auto-commit to GitHub
-      await autoCommitToGitHub(updatedDishes)
-      
-      alert('Menu item deleted successfully! Changes are now live and will be deployed automatically.')
+      try {
+        if (!supabase) {
+          console.error('Supabase not configured')
+          return
+        }
+
+        const { error } = await supabase
+          .from('dishes')
+          .delete()
+          .eq('id', dishId)
+
+        if (error) {
+          console.error('Error deleting dish:', error)
+          alert('Error deleting dish. Please try again.')
+          return
+        }
+
+        console.log('✅ Dish deleted successfully')
+        
+        // Reload dishes from database
+        await loadDishesFromDB()
+        
+        alert('Menu item deleted successfully!')
+      } catch (error) {
+        console.error('Error in handleDelete:', error)
+        alert('Error deleting menu item. Please try again.')
+      }
     }
   }
 
@@ -200,6 +295,14 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
     setEditingDish(null)
     setIsAddingNew(false)
     setFormData({})
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-lg text-gray-600 dark:text-gray-400">Loading menu items from database...</div>
+      </div>
+    )
   }
 
   return (

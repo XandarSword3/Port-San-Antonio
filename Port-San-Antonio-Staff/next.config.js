@@ -1,13 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
   images: {
     domains: ['localhost'],
   },
+  // Fix for Vercel deployment - ensure correct workspace root
+  output: 'standalone',
+  outputFileTracingRoot: __dirname,
   async headers() {
     return [
       {
