@@ -29,6 +29,8 @@ import MenuManagerReal from './MenuManagerReal';
 import CategoryManager from './CategoryManager';
 import EventManager from './EventManager';
 import AnalyticsDashboard from './AnalyticsDashboard';
+import ContentSettings from './ContentSettings';
+import JobsManager from './JobsManager';
 
 const NAVIGATION_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['worker', 'admin', 'owner'] },
@@ -39,6 +41,8 @@ const NAVIGATION_ITEMS = [
   { id: 'kitchen', label: 'Kitchen', icon: ChefHat, roles: ['admin', 'owner'] },
   { id: 'staff', label: 'Staff', icon: Users, roles: ['admin', 'owner'] },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, roles: ['admin', 'owner'] },
+  { id: 'content', label: 'Content', icon: Settings, roles: ['admin', 'owner'] },
+  { id: 'jobs', label: 'Careers', icon: Settings, roles: ['admin', 'owner'] },
   { id: 'settings', label: 'Settings', icon: Settings, roles: ['owner'] },
 ];
 
@@ -73,6 +77,10 @@ export default function Dashboard() {
         return <AnalyticsDashboard />;
       case 'settings':
         return <div className="p-6">Settings coming soon...</div>;
+      case 'content':
+        return <ContentSettings/>;
+      case 'jobs':
+        return <JobsManager/>;
       default:
         return <DashboardOverview />;
     }

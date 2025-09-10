@@ -2,17 +2,14 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, User, Mail, Eye, EyeOff, LogIn } from 'lucide-react';
+import { Lock, Shield, LogIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from '../lib/toast';
 
 export default function LoginPage() {
   const { login, loading } = useAuth();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState<'worker' | 'admin' | 'owner'>('worker');
+  const [pin, setPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,7 +17,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const success = await login(formData.email, formData.password);
+      const success = await login(role, pin);
       
       if (success) {
         toast.success('Welcome to the Staff Portal!');
@@ -34,12 +31,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
+  const pinDisabled = pin.trim().length === 0;
 
   if (loading) {
     return (
@@ -67,66 +59,49 @@ export default function LoginPage() {
             <p className="mt-2 text-gray-600">Port San Antonio Resort</p>
           </div>
 
-          {/* Demo Credentials */}
+          {/* Security Note */}
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Credentials:</h3>
-            <div className="text-xs text-blue-700 space-y-1">
-              <div><strong>Owner:</strong> owner@portsanantonio.com / owner123</div>
-              <div><strong>Admin:</strong> admin@portsanantonio.com / admin123</div>
-              <div><strong>Worker:</strong> worker@portsanantonio.com / worker123</div>
-            </div>
+            <h3 className="text-sm font-medium text-blue-800 mb-2 flex items-center gap-2"><Shield className="h-4 w-4"/> Secure Login</h3>
+            <div className="text-xs text-blue-700">Select your role and enter your personal PIN.</div>
           </div>
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="input pl-10"
-                  placeholder="Enter your email"
-                />
-              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value as any)}
+                className="input"
+              >
+                <option value="worker">Worker</option>
+                <option value="admin">Admin</option>
+                <option value="owner">Owner</option>
+              </select>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
+              <label htmlFor="pin" className="block text-sm font-medium text-gray-700 mb-2">
+                Personal PIN
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  id="pin"
+                  name="pin"
+                  type="password"
                   required
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="input pl-10 pr-10"
-                  placeholder="Enter your password"
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value)}
+                  className="input pl-10"
+                  placeholder="Enter your PIN"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
               </div>
             </div>
 
             <motion.button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || pinDisabled}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="w-full flex items-center justify-center gap-2 btn-primary py-3 disabled:opacity-50 disabled:cursor-not-allowed"

@@ -2,62 +2,19 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { StaffUser } from '../types';
+import { supabase } from '../lib/supabase'
 
 interface AuthContextType {
   user: StaffUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (role: 'worker' | 'admin' | 'owner', pin: string) => Promise<boolean>;
   logout: () => void;
   checkPermission: (permission: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// Mock authentication for now - replace with real Supabase auth
-const MOCK_USERS: (StaffUser & { password: string })[] = [
-  {
-    id: '1',
-    email: 'owner@portsanantonio.com',
-    username: 'owner',
-    password: 'owner123',
-    firstName: 'John',
-    lastName: 'Owner',
-    role: 'owner',
-    department: 'Management',
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    createdBy: 'system',
-  },
-  {
-    id: '2',
-    email: 'admin@portsanantonio.com',
-    username: 'admin',
-    password: 'admin123',
-    firstName: 'Sarah',
-    lastName: 'Manager',
-    role: 'admin',
-    department: 'Front Office',
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    createdBy: '1',
-  },
-  {
-    id: '3',
-    email: 'worker@portsanantonio.com',
-    username: 'worker',
-    password: 'worker123',
-    firstName: 'Mike',
-    lastName: 'Server',
-    role: 'worker',
-    department: 'Service',
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    createdBy: '2',
-  },
-];
+// Replace mock users with Supabase-backed PIN login
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<StaffUser | null>(null);
@@ -76,17 +33,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    const mockUser = MOCK_USERS.find(u => u.email === email && u.password === password);
-    
-    if (mockUser) {
-      const { password: _, ...userWithoutPassword } = mockUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('staff_user', JSON.stringify(userWithoutPassword));
-      return true;
+  const login = async (role: 'worker' | 'admin' | 'owner', pin: string): Promise<boolean> => {
+    try {
+      if (!supabase) return false
+      const { data, error } = await supabase
+        .from('staff_users')
+        .select('*')
+        .eq('role', role)
+        .eq('pin', pin)
+        .eq('is_active', true)
+        .limit(1)
+      if (error) return false
+      const match = data?.[0]
+      if (!match) return false
+      const normalized: StaffUser = {
+        id: match.id,
+        email: match.email,
+        username: match.username,
+        firstName: match.first_name,
+        lastName: match.last_name,
+        role: match.role,
+        department: match.department || undefined,
+        phone: match.phone || undefined,
+        isActive: match.is_active,
+        createdAt: match.created_at,
+        updatedAt: match.updated_at,
+        createdBy: match.created_by || 'system',
+        lastLogin: match.last_login || undefined,
+      }
+      setUser(normalized)
+      localStorage.setItem('staff_user', JSON.stringify(normalized))
+      return true
+    } catch {
+      return false
     }
-    
-    return false;
   };
 
   const logout = () => {

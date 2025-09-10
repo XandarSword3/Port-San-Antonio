@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS staff_users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     created_by UUID REFERENCES staff_users(id),
-    last_login TIMESTAMP WITH TIME ZONE
+    last_login TIMESTAMP WITH TIME ZONE,
+    pin VARCHAR(12) -- numeric or short alphanumeric PIN for quick login
 );
 
 -- Create reservations table
@@ -91,6 +92,48 @@ CREATE TABLE IF NOT EXISTS menu_items (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Footer settings (single row expected)
+CREATE TABLE IF NOT EXISTS footer_settings (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    address TEXT NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    dining_hours VARCHAR(255) NOT NULL,
+    dining_location VARCHAR(255) NOT NULL,
+    social_links JSONB NOT NULL DEFAULT '{}'::jsonb,
+    updated_by UUID REFERENCES staff_users(id),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Legal pages (privacy, terms, accessibility)
+CREATE TABLE IF NOT EXISTS legal_pages (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    type VARCHAR(32) UNIQUE NOT NULL CHECK (type IN ('privacy','terms','accessibility')),
+    title VARCHAR(255) NOT NULL,
+    sections JSONB NOT NULL DEFAULT '[]'::jsonb,
+    updated_by UUID REFERENCES staff_users(id),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Careers / Jobs
+CREATE TABLE IF NOT EXISTS jobs (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    type VARCHAR(32) NOT NULL CHECK (type IN ('full-time','part-time','contract','internship')),
+    location VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    requirements TEXT[] NOT NULL DEFAULT '{}',
+    benefits TEXT[] NOT NULL DEFAULT '{}',
+    salary VARCHAR(100),
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_by UUID REFERENCES staff_users(id)
+);
+
 -- Create kitchen_tickets table
 CREATE TABLE IF NOT EXISTS kitchen_tickets (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -156,6 +199,9 @@ CREATE TRIGGER update_reservations_updated_at BEFORE UPDATE ON reservations FOR 
 CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 CREATE TRIGGER update_menu_items_updated_at BEFORE UPDATE ON menu_items FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 CREATE TRIGGER update_kitchen_tickets_updated_at BEFORE UPDATE ON kitchen_tickets FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+CREATE TRIGGER update_footer_settings_updated_at BEFORE UPDATE ON footer_settings FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+CREATE TRIGGER update_legal_pages_updated_at BEFORE UPDATE ON legal_pages FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+CREATE TRIGGER update_jobs_updated_at BEFORE UPDATE ON jobs FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
 -- Row Level Security Policies
 
@@ -259,3 +305,18 @@ CREATE POLICY "All staff can view menu items" ON menu_items
 
 CREATE POLICY "Admins can modify menu items" ON menu_items
     FOR ALL USING (auth.jwt() ->> 'role' IN ('admin', 'owner'));
+
+-- Footer settings: readable by all, modifiable by admins/owners
+ALTER TABLE footer_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read footer" ON footer_settings FOR SELECT USING (true);
+CREATE POLICY "Modify footer (admins)" ON footer_settings FOR ALL USING (auth.jwt() ->> 'role' IN ('admin','owner'));
+
+-- Legal pages: readable by all, modifiable by admins/owners
+ALTER TABLE legal_pages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read legal" ON legal_pages FOR SELECT USING (true);
+CREATE POLICY "Modify legal (admins)" ON legal_pages FOR ALL USING (auth.jwt() ->> 'role' IN ('admin','owner'));
+
+-- Jobs: readable by all, modifiable by admins/owners
+ALTER TABLE jobs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read jobs" ON jobs FOR SELECT USING (true);
+CREATE POLICY "Modify jobs (admins)" ON jobs FOR ALL USING (auth.jwt() ->> 'role' IN ('admin','owner'));
