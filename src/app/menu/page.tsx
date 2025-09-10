@@ -77,22 +77,9 @@ export default function MenuPage() {
     }
   }, [])
 
-  // Load ads from static file (dishes and categories come from MenuContext)
+  // No ads - database only system
   useEffect(() => {
-    const loadAds = async () => {
-      try {
-        const response = await fetch('/menu-data.json')
-        if (response.ok) {
-          const data = await response.json()
-          setAds(data.ads || [])
-        }
-      } catch (error) {
-        console.error('Error loading ads:', error)
-        setAds([])
-      }
-    }
-    
-    loadAds()
+    setAds([])
   }, [])
 
   // Update loading state based on MenuContext

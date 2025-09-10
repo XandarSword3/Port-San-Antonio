@@ -1,30 +1,32 @@
 import { NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
-
-export const dynamic = 'force-static'
+import { supabase } from '@/lib/supabase'
 
 export async function GET() {
   try {
-    const dataPath = path.join(process.cwd(), 'data', 'dishes.json')
-    
-    if (!fs.existsSync(dataPath)) {
-      return NextResponse.json({
-        ok: false,
-        error: 'Data file not found',
-        path: dataPath
-      }, { status: 404 })
-    }
+    // Get data from database instead of file
+    const { data: dishes, error: dishesError } = await supabase
+      .from('dishes')
+      .select('*')
+      .order('name')
 
-    const rawData = fs.readFileSync(dataPath, 'utf8')
-    const data = JSON.parse(rawData)
+    const { data: categories, error: categoriesError } = await supabase
+      .from('categories')
+      .select('*')
+      .order('name')
+
+    if (dishesError || categoriesError) {
+      throw new Error(`Database error: ${dishesError?.message || categoriesError?.message}`)
+    }
     
     return NextResponse.json({
       ok: true,
-      data,
-      fileSize: rawData.length,
-      dishCount: data.dishes?.length || 0,
-      categoryCount: data.categories?.length || 0
+      data: {
+        dishes: dishes || [],
+        categories: categories || []
+      },
+      dishCount: dishes?.length || 0,
+      categoryCount: categories?.length || 0,
+      source: 'database'
     })
   } catch (error) {
     return NextResponse.json({

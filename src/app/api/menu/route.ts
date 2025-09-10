@@ -1,19 +1,21 @@
 import { NextResponse } from 'next/server'
-import { readFileSync } from 'fs'
-import { join } from 'path'
-
-export const dynamic = 'force-static'
+import { supabase } from '@/lib/supabase'
 
 export async function GET() {
   try {
-    // Read the dishes.json file
-    const dataPath = join(process.cwd(), 'data', 'dishes.json')
-    const fileContent = readFileSync(dataPath, 'utf-8')
-    const data = JSON.parse(fileContent)
-    
-    return NextResponse.json(data)
+    // Get menu data from database
+    const { data: dishes, error } = await supabase
+      .from('dishes')
+      .select('*')
+      .order('name')
+
+    if (error) {
+      throw error
+    }
+
+    return NextResponse.json({ dishes: dishes || [] })
   } catch (error) {
-    console.error('Error reading menu data:', error)
+    console.error('Error loading menu data from database:', error)
     return NextResponse.json(
       { error: 'Failed to load menu data' },
       { status: 500 }

@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
 
 export const dynamic = 'force-static'
 
@@ -11,10 +9,21 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Read the dishes data file
-    const dataPath = path.join(process.cwd(), 'data', 'dishes.json')
-    const rawData = fs.readFileSync(dataPath, 'utf8')
-    const menuData = JSON.parse(rawData)
+    // Get data from database instead of file
+    const { supabase } = await import('@/lib/supabase')
+    const { data: dishes, error: dishesError } = await supabase
+      .from('dishes')
+      .select('*')
+      .order('name')
+
+    const { data: categories, error: categoriesError } = await supabase
+      .from('categories')  
+      .select('*')
+      .order('name')
+
+    if (dishesError || categoriesError) {
+      throw new Error(`Database error: ${dishesError?.message || categoriesError?.message}`)
+    }
 
     return NextResponse.json({
       ok: true,
@@ -23,7 +32,11 @@ export async function GET(request: NextRequest) {
         NODE_ENV: process.env.NODE_ENV,
         PORT: process.env.PORT || '3000'
       },
-      data: menuData
+      data: {
+        dishes: dishes || [],
+        categories: categories || []
+      },
+      source: 'database'
     })
   } catch (error) {
     return NextResponse.json({

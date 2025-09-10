@@ -28,15 +28,7 @@ export function useMenu() {
   return context
 }
 
-// Fallback data (existing JSON data as backup)
-const fallbackCategories: Category[] = [
-  { id: 'appetizers', name: 'Appetizers', order: 1 },
-  { id: 'main-courses', name: 'Main Courses', order: 2 },
-  { id: 'drinks', name: 'Drinks', order: 3 },
-  { id: 'beers', name: 'Beers', order: 4 },
-  { id: 'arak', name: 'Arak', order: 5 },
-  { id: 'desserts', name: 'Desserts', order: 6 }
-]
+// No fallback categories - database only
 
 export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [categories, setCategories] = useState<Category[]>([])
@@ -82,7 +74,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
 
       if (categoriesError) {
         console.error('❌ Error loading categories:', categoriesError)
-        setCategories(fallbackCategories)
+        setCategories([])
       } else {
         console.log('✅ Categories loaded:', categoriesData?.length)
         const transformedCategories = categoriesData?.map(cat => ({
@@ -90,7 +82,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
           name: cat.name,
           order: cat.order_index,
           description: cat.description
-        })) || fallbackCategories
+        })) || []
         setCategories(transformedCategories)
       }
 
@@ -113,18 +105,9 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
 
     } catch (err) {
       console.error('💥 Failed to load menu data:', err)
-      setError('Failed to load menu. Please refresh the page.')
-      // Load fallback data
-      try {
-        const dishesResponse = await fetch('/data/dishes.json')
-        if (dishesResponse.ok) {
-          const fallbackData = await dishesResponse.json()
-          setDishes(fallbackData.dishes || [])
-          console.log('📦 Loaded fallback menu data')
-        }
-      } catch (fallbackError) {
-        console.error('❌ Failed to load fallback data:', fallbackError)
-      }
+      setError('Failed to load menu. Database connection required.')
+      setDishes([])
+      setCategories([])
     } finally {
       setLoading(false)
     }
