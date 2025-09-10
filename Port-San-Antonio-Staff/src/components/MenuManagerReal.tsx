@@ -5,6 +5,22 @@ import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Save, X, Upload, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
+async function apiFetch(input: RequestInfo | URL, init?: RequestInit) {
+  const res = await fetch(input, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(init?.headers || {}),
+    },
+    cache: 'no-store',
+  })
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(text || `Request failed: ${res.status}`)
+  }
+  return res.json()
+}
+
 interface Dish {
   id: string;
   name: string;
@@ -44,25 +60,23 @@ export default function MenuManager({ dishes: initialDishes, categories, onUpdat
 
   const loadDishes = async () => {
     try {
-      if (!supabase) {
-        console.log('Supabase not configured, using mock data');
-        setLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('dishes')
-        .select('*')
-        .order('name');
-
-      if (error) {
-        console.error('Error loading dishes:', error);
-        setLoading(false);
-        return;
+      // Prefer server API route (service role). Falls back to client if needed.
+      let data: any[] | null = null
+      try {
+        const res = await apiFetch('/api/dishes')
+        data = res.dishes ?? []
+      } catch (e) {
+        if (supabase) {
+          const { data: clientData } = await supabase
+            .from('dishes')
+            .select('*')
+            .order('name')
+          data = clientData ?? []
+        }
       }
 
       console.log('✅ Loaded dishes from database:', data?.length);
-      const transformedDishes = data?.map(dish => ({
+      const transformedDishes = data?.map((dish: any) => ({
         id: dish.id,
         name: dish.name,
         short_desc: dish.short_desc || '',
@@ -122,32 +136,14 @@ export default function MenuManager({ dishes: initialDishes, categories, onUpdat
         available: formData.available !== false
       };
 
-      let error;
       if (isAddingNew) {
-        // Insert new dish
-        if (supabase) {
-          const { error: insertError } = await supabase
-            .from('dishes')
-            .insert([dishData]);
-          error = insertError;
-        }
+        await apiFetch('/api/dishes', { method: 'POST', body: JSON.stringify(dishData) })
       } else {
-        // Update existing dish
-        if (supabase) {
-          const { error: updateError } = await supabase
-            .from('dishes')
-            .update(dishData)
-            .eq('id', dishData.id);
-          error = updateError;
-        }
+        await apiFetch(`/api/dishes/${dishData.id}`, { method: 'PUT', body: JSON.stringify(dishData) })
       }
 
-      if (error) {
-        console.error('Error saving dish:', error);
-      } else {
-        console.log('✅ Dish saved successfully');
-        await loadDishes(); // Reload from database
-      }
+      console.log('✅ Dish saved successfully');
+      await loadDishes();
 
       setEditingDish(null);
       setIsAddingNew(false);
@@ -163,19 +159,9 @@ export default function MenuManager({ dishes: initialDishes, categories, onUpdat
     if (!confirm('Are you sure you want to delete this dish?')) return;
 
     try {
-      if (supabase) {
-        const { error } = await supabase
-          .from('dishes')
-          .delete()
-          .eq('id', dishId);
-
-        if (error) {
-          console.error('Error deleting dish:', error);
-        } else {
-          console.log('✅ Dish deleted successfully');
-          await loadDishes(); // Reload from database
-        }
-      }
+      await apiFetch(`/api/dishes/${dishId}`, { method: 'DELETE' })
+      console.log('✅ Dish deleted successfully');
+      await loadDishes();
     } catch (error) {
       console.error('Error in handleDelete:', error);
     }

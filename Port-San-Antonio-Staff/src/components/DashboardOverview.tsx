@@ -35,15 +35,32 @@ export default function DashboardOverview() {
   });
 
   useEffect(() => {
-    // Mock data - replace with real API calls
-    setStats({
-      todayReservations: 24,
-      pendingOrders: 8,
-      totalRevenue: 2450.75,
-      activeStaff: 12,
-      completedOrders: 45,
-      avgOrderTime: 18,
-    });
+    const loadMetrics = async () => {
+      try {
+        const res = await fetch('/api/metrics', { cache: 'no-store' })
+        if (!res.ok) throw new Error(await res.text())
+        const json = await res.json()
+        setStats({
+          todayReservations: json.todayReservations || 0,
+          pendingOrders: json.pendingOrders || 0,
+          totalRevenue: json.totalRevenue || 0,
+          activeStaff: json.activeStaff || 0,
+          completedOrders: json.completedOrders || 0,
+          avgOrderTime: json.avgOrderTime || 0,
+        })
+      } catch (e) {
+        // Keep zeros on failure
+        setStats({
+          todayReservations: 0,
+          pendingOrders: 0,
+          totalRevenue: 0,
+          activeStaff: 0,
+          completedOrders: 0,
+          avgOrderTime: 0,
+        })
+      }
+    }
+    loadMetrics()
   }, []);
 
   const statCards = [
@@ -81,13 +98,7 @@ export default function DashboardOverview() {
     },
   ];
 
-  const recentActivity = [
-    { time: '2 min ago', action: 'New reservation for Table 5', type: 'reservation' },
-    { time: '5 min ago', action: 'Order #1247 completed', type: 'order' },
-    { time: '8 min ago', action: 'Staff member Sarah logged in', type: 'staff' },
-    { time: '12 min ago', action: 'Table 3 order ready for service', type: 'kitchen' },
-    { time: '15 min ago', action: 'Payment processed: $89.50', type: 'payment' },
-  ];
+  const recentActivity: { time: string; action: string; type: 'reservation' | 'order' | 'staff' | 'kitchen' | 'payment' }[] = [];
 
   return (
     <div className="p-6 space-y-6">

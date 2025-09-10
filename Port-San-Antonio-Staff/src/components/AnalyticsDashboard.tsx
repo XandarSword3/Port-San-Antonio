@@ -29,47 +29,26 @@ interface AnalyticsData {
   }>
 }
 
-const mockAnalyticsData: AnalyticsData = {
-  totalViews: 1234,
-  totalOrders: 89,
-  totalRevenue: 2456.78,
-  averageOrderValue: 27.60,
-  topDishes: [
-    { name: "Grilled Salmon", orders: 23, revenue: 459.00 },
-    { name: "Ribeye Steak", orders: 18, revenue: 540.00 },
-    { name: "Chicken Alfredo", orders: 21, revenue: 336.00 },
-    { name: "Caesar Salad", orders: 15, revenue: 180.00 },
-    { name: "Margherita Pizza", orders: 12, revenue: 168.00 }
-  ],
-  peakHours: [
-    { hour: "11:00", orders: 12 },
-    { hour: "12:00", orders: 24 },
-    { hour: "13:00", orders: 28 },
-    { hour: "18:00", orders: 31 },
-    { hour: "19:00", orders: 35 },
-    { hour: "20:00", orders: 22 }
-  ],
-  recentActivity: [
-    { type: "order", description: "New order #1234 - $45.60", timestamp: new Date(Date.now() - 5 * 60 * 1000) },
-    { type: "view", description: "Menu viewed by 23 customers", timestamp: new Date(Date.now() - 15 * 60 * 1000) },
-    { type: "order", description: "New order #1233 - $67.20", timestamp: new Date(Date.now() - 23 * 60 * 1000) },
-    { type: "order", description: "New order #1232 - $34.50", timestamp: new Date(Date.now() - 35 * 60 * 1000) },
-    { type: "view", description: "Peak hour reached - 35 concurrent users", timestamp: new Date(Date.now() - 45 * 60 * 1000) }
-  ]
+const emptyAnalyticsData: AnalyticsData = {
+  totalViews: 0,
+  totalOrders: 0,
+  totalRevenue: 0,
+  averageOrderValue: 0,
+  topDishes: [],
+  peakHours: [],
+  recentActivity: []
 }
 
 export default function AnalyticsDashboard({ className = '' }: AnalyticsDashboardProps) {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>(mockAnalyticsData)
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>(emptyAnalyticsData)
   const [selectedTimeframe, setSelectedTimeframe] = useState<'today' | 'week' | 'month'>('today')
   const [loading, setLoading] = useState(false)
 
   const refreshData = () => {
     setLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setAnalyticsData(mockAnalyticsData)
-      setLoading(false)
-    }, 1000)
+    // TODO: Replace with real analytics source once available
+    setAnalyticsData(emptyAnalyticsData)
+    setLoading(false)
   }
 
   const formatCurrency = (amount: number) => {

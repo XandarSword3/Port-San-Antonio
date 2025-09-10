@@ -25,7 +25,7 @@ import OrderManager from './OrderManager';
 import StaffManager from './StaffManager';
 import KitchenDisplay from './KitchenDisplay';
 import AnalyticsView from './AnalyticsView';
-import MenuManager from './MenuManager';
+import MenuManagerReal from './MenuManagerReal';
 import CategoryManager from './CategoryManager';
 import EventManager from './EventManager';
 import AnalyticsDashboard from './AnalyticsDashboard';
@@ -81,76 +81,70 @@ export default function Dashboard() {
   // Menu Manager Wrapper with real database data
   const MenuManagerWrapper = () => {
     const [dishes, setDishes] = useState<Dish[]>([]);
+    const [categories, setCategories] = useState<{ id: string; name: string; order: number }[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      loadDishesFromDB();
+      Promise.all([loadDishes(), loadCategories()]).finally(() => setLoading(false));
     }, []);
 
-    const loadDishesFromDB = async () => {
+    async function loadDishes() {
       try {
-        if (!supabase) {
-          setLoading(false);
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from('dishes')
-          .select('*')
-          .order('name');
-
-        if (!error && data) {
-          const transformedDishes = data.map(dish => ({
-            id: dish.id,
-            name: dish.name,
-            shortDesc: dish.short_desc || '',
-            fullDesc: dish.full_desc || '',
-            price: dish.price || 0,
-            categoryId: dish.category_id || 'appetizers',
-            available: dish.available !== false,
-            image: dish.image_url || '/images/placeholder.jpg',
-            dietTags: [],
-            allergens: [],
-            currency: dish.currency || 'USD',
-            imageVariants: { src: dish.image_url || '/images/placeholder.jpg' },
-            rating: 4.5,
-            reviewCount: 0,
-            ingredients: [],
-            sponsored: false
-          }));
-          setDishes(transformedDishes);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading dishes:', error);
-        setLoading(false);
+        const res = await fetch('/api/dishes', { cache: 'no-store' });
+        const json = await res.json();
+        const data = (json.dishes || []).map((dish: any) => ({
+          id: dish.id,
+          name: dish.name,
+          shortDesc: dish.short_desc || '',
+          fullDesc: dish.full_desc || '',
+          price: dish.price || 0,
+          categoryId: dish.category_id,
+          available: dish.available !== false,
+          image: dish.image_url || '/images/placeholder.jpg',
+          dietTags: [],
+          allergens: [],
+          ingredients: [],
+          currency: dish.currency || 'USD',
+          imageVariants: { src: dish.image_url || '/images/placeholder.jpg' },
+          rating: 0,
+          reviewCount: 0,
+          sponsored: false
+        }));
+        setDishes(data);
+      } catch (e) {
+        console.error('Failed to load dishes via API:', e);
       }
+    }
+
+    async function loadCategories() {
+      try {
+        const res = await fetch('/api/categories', { cache: 'no-store' });
+        const json = await res.json();
+        const data = (json.categories || []).map((c: any) => ({ id: c.id, name: c.name, order: c.order_index }));
+        setCategories(data);
+      } catch (e) {
+        console.error('Failed to load categories via API:', e);
+      }
+    }
+
+    const handleDishUpdate = (updatedDishes: Dish[]) => {
+      setDishes(updatedDishes);
     };
 
     if (loading) {
       return (
         <div className="p-6 flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-staff-600"></div>
-          <span className="ml-3 text-gray-600">Loading real menu data...</span>
+          <span className="ml-3 text-gray-600">Loading menu data...</span>
         </div>
       );
     }
 
-    const categories = [
-      { id: 'appetizers', name: 'Appetizers', order: 1 },
-      { id: 'main', name: 'Main Courses', order: 2 },
-      { id: 'desserts', name: 'Desserts', order: 3 }
-    ];
-
-    const handleDishUpdate = (updatedDishes: Dish[]) => {
-      setDishes(updatedDishes);
-    };
-
     return (
       <div className="p-6">
-        <MenuManager 
-          dishes={dishes} 
-          categories={categories} 
+        <MenuManagerReal 
+          dishes={dishes as any} 
+          categories={categories as any} 
           onUpdate={handleDishUpdate} 
         />
       </div>
