@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Populate Legal Content</title>
+</head>
+<body>
+    <h1>Populate Legal Content</h1>
+    <button id="populateBtn">Populate Database</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('populateBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Populating database...';
+            
+            try {
+                const response = await fetch('/api/populate-legal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
