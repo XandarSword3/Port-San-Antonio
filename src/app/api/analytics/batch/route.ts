@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-// Use server-side Supabase client with service role key
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+// Helper function to create Supabase client
+function createSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing Supabase configuration for analytics API:', {
-    hasUrl: !!supabaseUrl,
-    hasServiceKey: !!supabaseServiceKey
-  })
+  if (!supabaseUrl || !supabaseServiceKey) {
+    console.error('Missing Supabase configuration for analytics API:', {
+      hasUrl: !!supabaseUrl,
+      hasServiceKey: !!supabaseServiceKey
+    })
+    return null
+  }
+
+  return createClient(supabaseUrl, supabaseServiceKey)
 }
-
-const supabase = supabaseUrl && supabaseServiceKey 
-  ? createClient(supabaseUrl, supabaseServiceKey)
-  : null
 
 // Types for analytics events
 interface AnalyticsEvent {
@@ -112,9 +113,12 @@ function sanitizeEvent(event: AnalyticsEvent): AnalyticsEvent {
 
 export async function POST(request: NextRequest) {
   try {
+    // Create Supabase client
+    const supabase = createSupabaseClient()
+    
     // Check if Supabase is configured
     if (!supabase) {
-      console.error('Supabase client is null. Env check:', {
+      console.error('Supabase client creation failed. Env check:', {
         hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
         hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
         urlValue: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...',
