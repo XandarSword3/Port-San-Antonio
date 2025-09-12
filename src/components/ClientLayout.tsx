@@ -20,7 +20,7 @@ import SandParticles from '@/components/SandParticles'
 import SubtlePageTransition from '@/components/SubtlePageTransition'
 import WaveLoader from '@/components/WaveLoader'
 import OfflineNotification from '@/components/OfflineNotification'
-import CookieConsentBanner from '@/components/CookieConsentBanner'
+import CookieConsent from '@/components/CookieConsent'
 import { useAnalyticsInit } from '@/hooks/useAnalytics'
 
 const ClientLayoutContent = ({
@@ -63,7 +63,7 @@ const ClientLayoutContent = ({
         </main>
       </SubtlePageTransition>
       <Footer />
-      <CookieConsentBanner />
+      <CookieConsent />
       {clickFeedback && (
         <ClickFeedback
           x={clickFeedback.x}

@@ -10,6 +10,7 @@ import CategoryStrip from '@/components/CategoryStrip'
 import CategoryAccordion from '@/components/CategoryAccordion'
 import FilterChips from '@/components/FilterChips'
 import FilterModal from '@/components/FilterModal'
+import MenuStructuredData from '@/components/MenuStructuredData'
 
 import SideRail from '@/components/SideRail'
 import MobileBanner from '@/components/MobileBanner'
@@ -237,6 +238,7 @@ export default function MenuPage() {
 
   return (
     <PageTransition type="menu">
+      <MenuStructuredData dishes={dishes} categories={categories} />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile Banner */}
       <MobileBanner ads={ads} />

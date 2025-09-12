@@ -1,5 +1,6 @@
 import './globals.css'
 import { Metadata } from 'next'
+import TrackerProvider from '@/components/TrackerProvider'
 
 export const metadata: Metadata = {
   title: 'Port San Antonio Resort - Menu',
@@ -31,9 +32,11 @@ export default function RootLayout({
   return (
     <html className="h-full">
       <body className="h-full overflow-x-hidden font-sans">
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <TrackerProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </TrackerProvider>
       </body>
     </html>
   )
