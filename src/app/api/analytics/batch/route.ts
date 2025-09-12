@@ -6,7 +6,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing Supabase configuration for analytics API')
+  console.error('Missing Supabase configuration for analytics API:', {
+    hasUrl: !!supabaseUrl,
+    hasServiceKey: !!supabaseServiceKey
+  })
 }
 
 const supabase = supabaseUrl && supabaseServiceKey 
@@ -111,6 +114,12 @@ export async function POST(request: NextRequest) {
   try {
     // Check if Supabase is configured
     if (!supabase) {
+      console.error('Supabase client is null. Env check:', {
+        hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+        urlValue: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...',
+        serviceKeyValue: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 20) + '...'
+      })
       return NextResponse.json(
         { error: 'Analytics service not configured' },
         { status: 503 }
