@@ -3,7 +3,7 @@
   "short_name": "PSA Resort",
   "description": "Luxury beachfront resort with world-class dining in Lebanon",
   "start_url": "/",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#1f2937",
   "theme_color": "#0ea5e9",
   "orientation": "portrait-primary",

@@ -22,6 +22,8 @@ import WaveLoader from '@/components/WaveLoader'
 import OfflineNotification from '@/components/OfflineNotification'
 import CookieConsent from '@/components/CookieConsent'
 import { useAnalyticsInit } from '@/hooks/useAnalytics'
+import { initializePWAHandler } from '@/lib/pwa-handler'
+import { useEffect } from 'react'
 
 const ClientLayoutContent = ({
   children,
@@ -33,6 +35,11 @@ const ClientLayoutContent = ({
   
   // Initialize analytics system
   useAnalyticsInit()
+
+  // Initialize PWA handler to prevent intrusive install prompts
+  useEffect(() => {
+    initializePWAHandler()
+  }, [])
 
   const handleClick = (event: React.MouseEvent) => {
     addClickFeedback(event)

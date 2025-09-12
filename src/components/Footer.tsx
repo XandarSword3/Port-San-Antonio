@@ -6,6 +6,7 @@ import { MapPin, Phone, Mail, Clock, Globe } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTheme } from '@/contexts/ThemeContext'
 import { FooterSettings } from '@/types'
+import InstallPWAButton from '@/components/InstallPWAButton'
 
 export default function Footer() {
   const { t, language } = useLanguage()
@@ -160,6 +161,13 @@ export default function Footer() {
                 <a href="/careers" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
                   {t('careers')}
                 </a>
+              </li>
+              <li className="mt-4">
+                <InstallPWAButton 
+                  className={`${isDark ? 'bg-blue-600 hover:bg-blue-700' : 'bg-sky-500 hover:bg-sky-600'} text-white px-3 py-1 rounded text-sm transition-colors`}
+                >
+                  📱 Install App
+                </InstallPWAButton>
               </li>
             </ul>
           </div>
