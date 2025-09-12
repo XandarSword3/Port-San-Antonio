@@ -213,17 +213,22 @@ export async function POST(request: NextRequest) {
 
     // Update visitors table with last_seen
     const visitorIds = Array.from(new Set(validEvents.map(e => e.visitorId)))
-    for (const visitorId of visitorIds) {
-      await supabase
-        .from('visitors')
-        .upsert({
-          visitor_id: visitorId,
-          last_seen: new Date(),
-          first_seen: new Date() // Will be ignored if visitor already exists
-        }, {
-          onConflict: 'visitor_id',
-          ignoreDuplicates: false
-        })
+    // Best-effort: upsert visitors, ignore errors per row to avoid failing entire request
+    try {
+      for (const visitorId of visitorIds) {
+        await supabase
+          .from('visitors')
+          .upsert({
+            visitor_id: visitorId,
+            last_seen: new Date(),
+            first_seen: new Date() // Will be ignored if visitor already exists
+          }, {
+            onConflict: 'visitor_id',
+            ignoreDuplicates: false
+          })
+      }
+    } catch (e) {
+      console.warn('Visitor upsert warning:', e)
     }
 
     return NextResponse.json({

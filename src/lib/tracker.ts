@@ -43,8 +43,22 @@ class VisitorTracker {
   private checkConsent(): void {
     if (typeof window === 'undefined') return
 
-    const consent = localStorage.getItem(this.CONSENT_KEY) || this.getCookie('ps_consent')
-    this.isConsentGiven = consent === 'accept'
+    // Support both granular consent (cookie_consent) and legacy ps_consent flag
+    let consentGiven = false
+    try {
+      const granular = localStorage.getItem('cookie_consent')
+      if (granular) {
+        const parsed = JSON.parse(granular)
+        consentGiven = !!parsed.analytics
+      }
+    } catch {}
+
+    if (!consentGiven) {
+      const legacy = localStorage.getItem(this.CONSENT_KEY) || this.getCookie('ps_consent')
+      consentGiven = legacy === 'accept'
+    }
+
+    this.isConsentGiven = consentGiven
   }
 
   /**
@@ -156,6 +170,15 @@ class VisitorTracker {
       secure: typeof window !== 'undefined' && window.location.protocol === 'https:',
       path: '/'
     })
+
+    // Also update the granular consent store for consistency
+    try {
+      const existing = localStorage.getItem('cookie_consent')
+      const base = existing ? JSON.parse(existing) : { necessary: true, analytics: false, marketing: false, preferences: false }
+      base.analytics = consent
+      base.timestamp = Date.now()
+      localStorage.setItem('cookie_consent', JSON.stringify(base))
+    } catch {}
 
     if (consent && !this.visitorId) {
       this.initVisitorId()

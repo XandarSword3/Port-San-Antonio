@@ -63,7 +63,18 @@ export class AnalyticsManager {
 
   // Check if user has consented to analytics
   static hasAnalyticsConsent(): boolean {
-    return CookieManager.hasConsent('analytics')
+    // Primary: new granular consent system
+    if (CookieManager.hasConsent('analytics')) return true
+
+    // Back-compat: legacy simple consent flag used by tracker and banner
+    try {
+      if (typeof window !== 'undefined') {
+        const legacy = localStorage.getItem('ps_consent') || CookieManager.getCookie('ps_consent')
+        if (legacy === 'accept') return true
+      }
+    } catch {}
+
+    return false
   }
 
   // Initialize or resume user session
