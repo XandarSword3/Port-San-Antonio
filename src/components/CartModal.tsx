@@ -38,13 +38,13 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-hidden flex flex-col"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600 flex-shrink-0">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="h-6 w-6 text-yellow-600" />
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -62,8 +62,8 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
               </button>
             </div>
 
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6">
+            {/* Cart Items - Scrollable Area */}
+            <div className="flex-1 overflow-y-auto min-h-0 p-6 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
               {items.length === 0 ? (
                 <div className="text-center py-12">
                   <ShoppingBag className="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
@@ -75,7 +75,13 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <>
+                  {items.length > 4 && (
+                    <div className="text-center text-xs text-gray-500 dark:text-gray-400 mb-4 animate-pulse">
+                      ↓ Scroll to see all items ↓
+                    </div>
+                  )}
+                  <div className="space-y-4">
                   {items.map((item, index) => (
                     <motion.div
                       key={`${item.dish.id}-${JSON.stringify(item.selectedVariant)}`}
@@ -84,9 +90,9 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-start gap-4">
                         {/* Dish Image */}
-                        <div className="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-lg overflow-hidden flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-16 sm:h-16 bg-gray-200 dark:bg-gray-600 rounded-lg overflow-hidden flex-shrink-0">
                           {item.dish.image ? (
                             <img
                               src={item.dish.image}
@@ -152,13 +158,14 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                       </div>
                     </motion.div>
                   ))}
-                </div>
+                  </div>
+                </>
               )}
             </div>
 
-            {/* Footer */}
+            {/* Footer - Always Visible */}
             {items.length > 0 && (
-              <div className="border-t border-gray-200 dark:border-gray-600 p-6">
+              <div className="border-t border-gray-200 dark:border-gray-600 p-6 flex-shrink-0 bg-white dark:bg-gray-800">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-lg font-semibold text-gray-900 dark:text-white">
                     {t('total')}:
@@ -168,10 +175,10 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                   </span>
                 </div>
                 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={clearCart}
-                    className="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    className="w-full sm:flex-1 px-4 py-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors font-medium"
                   >
                     {t('clearAll')}
                   </button>
@@ -180,7 +187,7 @@ export default function CartModal({ isOpen, onClose, onOpenFullCart }: CartModal
                       onClose();
                       onOpenFullCart?.();
                     }}
-                    className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors font-medium"
+                    className="w-full sm:flex-1 px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors font-medium"
                   >
                     {t('viewFullCart')}
                   </button>
