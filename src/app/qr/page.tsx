@@ -38,7 +38,7 @@ const QRPageContent: React.FC<QRPageContentProps> = () => {
 
   const qrTexts = {
     en: {
-      welcome: 'Welcome to Port San Antonio Resort',
+      welcome: 'Welcome to Port Antonio Resort',
       tableScanned: 'Table #{table} Successfully Scanned',
       description: 'You have successfully scanned the QR code for your table. Explore our authentic Lebanese Mediterranean menu and place your order directly from your device.',
       features: [
@@ -88,7 +88,7 @@ const QRPageContent: React.FC<QRPageContentProps> = () => {
       }
     },
     fr: {
-      welcome: 'Bienvenue au Resort Port San Antonio',
+      welcome: 'Bienvenue au Resort Port Antonio',
       tableScanned: 'Table #{table} Scannée avec Succès',
       description: 'Vous avez scanné avec succès le code QR de votre table. Explorez notre menu méditerranéen libanais authentique et passez commande directement depuis votre appareil.',
       features: [

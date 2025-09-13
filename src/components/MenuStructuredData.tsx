@@ -14,8 +14,8 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
     const restaurantSchema = {
       '@context': 'https://schema.org',
       '@type': 'Restaurant',
-      name: 'Port San Antonio Resort Restaurant',
-      description: 'Authentic Lebanese Mediterranean cuisine with ocean views at Port San Antonio Resort. Fresh ingredients, traditional recipes, and modern presentation.',
+      name: 'Port Antonio Resort Restaurant',
+      description: 'Authentic Lebanese Mediterranean cuisine with ocean views at Port Antonio Resort. Fresh ingredients, traditional recipes, and modern presentation.',
       image: [
         '/images/logo.svg',
         '/images/restaurant-exterior.jpg',
@@ -23,9 +23,9 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
       ],
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'San Antonio',
+        addressLocality: 'Mastita',
         addressCountry: 'Lebanon',
-        streetAddress: 'Port San Antonio Resort'
+        streetAddress: 'Port Antonio Resort'
       },
       telephone: '+961-XX-XXXXXX',
       url: typeof window !== 'undefined' ? window.location.origin : 'https://port-san-antonio.vercel.app',
@@ -35,7 +35,7 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
       acceptsReservations: true,
       hasMenu: dishes.length > 0 ? {
         '@type': 'Menu',
-        name: 'Port San Antonio Resort Menu',
+        name: 'Port Antonio Resort Menu',
         description: 'Our complete Lebanese Mediterranean menu featuring fresh seafood, traditional mezze, and authentic dishes.',
         hasMenuSection: categories.map(category => ({
           '@type': 'MenuSection',
@@ -102,7 +102,7 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
     const websiteSchema = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'Port San Antonio Resort',
+      name: 'Port Antonio Resort',
       url: typeof window !== 'undefined' ? window.location.origin : 'https://port-san-antonio.vercel.app',
       potentialAction: {
         '@type': 'SearchAction',
@@ -154,7 +154,7 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
     }
 
     // Update Open Graph and Twitter Card meta tags
-    const ogTitle = 'Menu - Port San Antonio Resort | Authentic Lebanese Mediterranean Cuisine'
+    const ogTitle = 'Menu - Port Antonio Resort | Authentic Lebanese Mediterranean Cuisine'
     const ogDescription = `Discover our exquisite Lebanese Mediterranean menu featuring ${dishes.length} authentic dishes across ${categories.length} categories. Fresh ingredients, traditional recipes, modern presentation.`
     const ogImage = '/images/menu-hero.jpg'
     const ogUrl = typeof window !== 'undefined' ? window.location.href : 'https://port-san-antonio.vercel.app/menu'
@@ -164,7 +164,7 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
     updateMetaTag('og:image', ogImage)
     updateMetaTag('og:url', ogUrl)
     updateMetaTag('og:type', 'restaurant.menu')
-    updateMetaTag('og:site_name', 'Port San Antonio Resort')
+    updateMetaTag('og:site_name', 'Port Antonio Resort')
     updateMetaTag('og:locale', 'en_US')
 
     updateMetaTag('twitter:card', 'summary_large_image')
@@ -173,7 +173,7 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
     updateMetaTag('twitter:image', ogImage)
 
     updateMetaTag('description', ogDescription)
-    updateMetaTag('keywords', 'Lebanese restaurant, Mediterranean cuisine, Port San Antonio, menu, fresh seafood, mezze, authentic Lebanese food, resort dining')
+    updateMetaTag('keywords', 'Lebanese restaurant, Mediterranean cuisine, Port Antonio, Lebanon, menu, fresh seafood, mezze, authentic Lebanese food, resort dining')
 
     // Cleanup function
     return () => {

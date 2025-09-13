@@ -29,7 +29,7 @@ export default function ReservationModal({ isOpen, onClose, dishName }: Reservat
     
     // Create email body
     const emailBody = `
-Reservation Request from Port San Antonio Resort Website
+Reservation Request from Port Antonio Resort Website
 
 Guest Details:
 - Name: ${formData.name}

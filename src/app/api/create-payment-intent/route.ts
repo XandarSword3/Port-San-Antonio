@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       currency,
       metadata: {
         integration_check: 'accept_a_payment',
-        restaurant: 'Port San Antonio',
+        restaurant: 'Port Antonio',
       },
     });
 

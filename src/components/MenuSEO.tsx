@@ -13,8 +13,8 @@ const MenuSEO: React.FC<MenuSEOProps> = ({ dishes, categories, currentUrl }) => 
   const restaurantSchema = {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
-    name: 'Port San Antonio Resort Restaurant',
-    description: 'Authentic Lebanese Mediterranean cuisine with ocean views at Port San Antonio Resort. Fresh ingredients, traditional recipes, and modern presentation.',
+    name: 'Port Antonio Resort Restaurant',
+    description: 'Authentic Lebanese Mediterranean cuisine with ocean views at Port Antonio Resort. Fresh ingredients, traditional recipes, and modern presentation.',
     image: [
       '/images/logo.svg',
       '/images/restaurant-exterior.jpg',
@@ -22,9 +22,9 @@ const MenuSEO: React.FC<MenuSEOProps> = ({ dishes, categories, currentUrl }) => 
     ],
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'San Antonio',
+      addressLocality: 'Mastita',
       addressCountry: 'Lebanon',
-      streetAddress: 'Port San Antonio Resort'
+      streetAddress: 'Port Antonio Resort'
     },
     telephone: '+961-XX-XXXXXX',
     url: currentUrl || 'https://port-san-antonio.vercel.app',
@@ -34,7 +34,7 @@ const MenuSEO: React.FC<MenuSEOProps> = ({ dishes, categories, currentUrl }) => 
     acceptsReservations: true,
     hasMenu: {
       '@type': 'Menu',
-      name: 'Port San Antonio Resort Menu',
+      name: 'Port Antonio Resort Menu',
       description: 'Our complete Lebanese Mediterranean menu featuring fresh seafood, traditional mezze, and authentic dishes.',
       hasMenuSection: categories.map(category => ({
         '@type': 'MenuSection',
@@ -90,7 +90,7 @@ const MenuSEO: React.FC<MenuSEOProps> = ({ dishes, categories, currentUrl }) => 
   }
 
   // Generate Open Graph data
-  const ogTitle = 'Menu - Port San Antonio Resort | Authentic Lebanese Mediterranean Cuisine'
+  const ogTitle = 'Menu - Port Antonio Resort | Authentic Lebanese Mediterranean Cuisine'
   const ogDescription = `Discover our exquisite Lebanese Mediterranean menu featuring ${dishes.length} authentic dishes across ${categories.length} categories. Fresh ingredients, traditional recipes, modern presentation.`
   const ogImage = '/images/menu-hero.jpg'
   const ogUrl = currentUrl || 'https://port-san-antonio.vercel.app/menu'
@@ -122,7 +122,7 @@ const MenuSEO: React.FC<MenuSEOProps> = ({ dishes, categories, currentUrl }) => 
         <meta property="og:image" content={ogImage} />
         <meta property="og:url" content={ogUrl} />
         <meta property="og:type" content="restaurant.menu" />
-        <meta property="og:site_name" content="Port San Antonio Resort" />
+        <meta property="og:site_name" content="Port Antonio Resort" />
         <meta property="og:locale" content="en_US" />
         
         {/* Twitter Card */}
@@ -132,8 +132,8 @@ const MenuSEO: React.FC<MenuSEOProps> = ({ dishes, categories, currentUrl }) => 
         <meta name="twitter:image" content={ogImage} />
         
         {/* Additional SEO Meta Tags */}
-        <meta name="keywords" content="Lebanese restaurant, Mediterranean cuisine, Port San Antonio, menu, fresh seafood, mezze, authentic Lebanese food, resort dining" />
-        <meta name="author" content="Port San Antonio Resort" />
+        <meta name="keywords" content="Lebanese restaurant, Mediterranean cuisine, Port Antonio, Lebanon, menu, fresh seafood, mezze, authentic Lebanese food, resort dining" />
+        <meta name="author" content="Port Antonio Resort" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         
         {/* Canonical URL */}
