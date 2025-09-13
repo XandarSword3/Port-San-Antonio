@@ -9,7 +9,7 @@ const convertToArabicNumerals = (text: string): string => {
   return text.replace(/[0-9]/g, (digit) => arabicNumerals[parseInt(digit)])
 }
 
-export type Currency = 'USD' | 'LBP'
+export type Currency = 'USD' | 'LBP' | 'EUR'
 
 interface CurrencyContextType {
   currency: Currency
@@ -28,12 +28,13 @@ interface CurrencyProviderProps {
 export function CurrencyProvider({ children }: CurrencyProviderProps) {
   const [currency, setCurrencyState] = useState<Currency>('LBP')
   const [exchangeRate, setExchangeRateState] = useState<number>(90000) // USD to LBP rate
+  const [eurToUsdRate, setEurToUsdRate] = useState<number>(1.1) // EUR to USD rate
   const { language } = useLanguage()
 
   useEffect(() => {
     // Load currency preference from localStorage
     const savedCurrency = localStorage.getItem('currency') as Currency | null
-    if (savedCurrency && (savedCurrency === 'USD' || savedCurrency === 'LBP')) {
+    if (savedCurrency && (savedCurrency === 'USD' || savedCurrency === 'LBP' || savedCurrency === 'EUR')) {
       setCurrencyState(savedCurrency)
     } else {
       // Default to LBP for Lebanese resort context
@@ -66,11 +67,27 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
     if (currency === 'LBP' && originalCurrency === 'USD') {
       const lbpPrice = Math.round(price * exchangeRate)
       formattedPrice = `${lbpPrice.toLocaleString()} ل.ل.`
+    } else if (currency === 'LBP' && originalCurrency === 'EUR') {
+      const usdPrice = price * eurToUsdRate
+      const lbpPrice = Math.round(usdPrice * exchangeRate)
+      formattedPrice = `${lbpPrice.toLocaleString()} ل.ل.`
     } else if (currency === 'USD' && originalCurrency === 'LBP') {
       const usdPrice = (price / exchangeRate).toFixed(2)
       formattedPrice = `$${usdPrice}`
+    } else if (currency === 'USD' && originalCurrency === 'EUR') {
+      const usdPrice = (price * eurToUsdRate).toFixed(2)
+      formattedPrice = `$${usdPrice}`
+    } else if (currency === 'EUR' && originalCurrency === 'USD') {
+      const eurPrice = (price / eurToUsdRate).toFixed(2)
+      formattedPrice = `€${eurPrice}`
+    } else if (currency === 'EUR' && originalCurrency === 'LBP') {
+      const usdPrice = price / exchangeRate
+      const eurPrice = (usdPrice / eurToUsdRate).toFixed(2)
+      formattedPrice = `€${eurPrice}`
     } else if (currency === 'USD') {
       formattedPrice = `$${price.toFixed(2)}`
+    } else if (currency === 'EUR') {
+      formattedPrice = `€${price.toFixed(2)}`
     } else {
       formattedPrice = `${price.toLocaleString()} ${originalCurrency}`
     }

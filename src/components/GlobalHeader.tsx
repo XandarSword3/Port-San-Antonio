@@ -35,7 +35,7 @@ export default function GlobalHeader() {
   }
 
   const toggleCurrency = () => {
-    const order: ('USD'|'LBP')[] = ['USD','LBP']
+    const order: ('USD'|'LBP'|'EUR')[] = ['USD','LBP','EUR']
     const idx = order.indexOf(currency as any)
     const next = order[(idx + 1) % order.length]
     setCurrency(next as any)
@@ -59,10 +59,10 @@ export default function GlobalHeader() {
           <Link href="/" className="flex items-center gap-2 text-lg font-bold text-luxury-light-text dark:text-luxury-dark-text hover:text-luxury-light-accent dark:hover:text-luxury-dark-accent transition-colors accent-element">
             <img 
               src="/Photos/Logo.jpg" 
-              alt="Port San Antonio Resort Logo" 
+              alt="Port Antonio Resort Logo" 
               className="w-10 h-10 rounded-lg object-cover shadow-sm flex-shrink-0"
             />
-            <span className="hidden sm:block">Port San Antonio Resort</span>
+            <span className="hidden sm:block">Port Antonio Resort</span>
             <Waves className="w-5 h-5 text-blue-500 animate-pulse" />
           </Link>
         </div>
