@@ -57,7 +57,7 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className={`${isDark ? 'bg-gray-900' : 'bg-gray-100'} ${isDark ? 'text-white' : 'text-gray-900'} wave-separator transition-colors duration-300`}>
+    <footer className={`${isDark ? 'bg-luxury-dark-bg' : 'bg-luxury-light-bg'} ${isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'} wave-separator transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -68,14 +68,14 @@ export default function Footer() {
         >
           {/* Restaurant Info */}
           <div>
-            <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'} flex items-center gap-2`}>
+            <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-luxury-dark-accent' : 'text-luxury-light-accent'} flex items-center gap-2`}>
               <span>⚓</span>
               {footerSettings.companyName}
             </h3>
-            <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'} mb-4`}>
+            <p className={`${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'} mb-4`}>
               {footerSettings.description}
             </p>
-            <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <div className={`flex items-center gap-2 ${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'}`}>
               <MapPin className="w-4 h-4" />
               <span>{footerSettings.address}</span>
             </div>
@@ -88,15 +88,15 @@ export default function Footer() {
               {t('contact')}
             </h3>
             <div className="space-y-3">
-              <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <div className={`flex items-center gap-2 ${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'}`}>
                 <Phone className="w-4 h-4" />
                 <span>{footerSettings.phone}</span>
               </div>
-              <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <div className={`flex items-center gap-2 ${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'}`}>
                 <Mail className="w-4 h-4" />
                 <span>{footerSettings.email}</span>
               </div>
-              <div className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <div className={`flex items-center gap-2 ${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'}`}>
                 <Clock className="w-4 h-4" />
                 <span>{footerSettings.diningHours}</span>
                 {footerSettings.diningLocation && (

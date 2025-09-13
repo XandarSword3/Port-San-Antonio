@@ -130,6 +130,16 @@ module.exports = {
             text: '#F0E68C', // Soft gold for primary text
             muted: '#B8860B', // Darker gold for muted text
             border: '#FFD700' // Gold borders at 20% opacity
+          },
+          light: {
+            bg: '#F8F8F8', // Soft off-white base
+            card: '#FFFFFF', // Pure white for cards
+            accent: '#D4AF37', // Same metallic gold for consistency
+            text: '#2D2D2D', // Dark text for readability
+            muted: '#6B6B6B', // Muted gray for secondary text
+            border: '#E8B923', // Lighter gold for borders
+            warm: '#F5EFD8', // Warm beige gradient
+            cream: '#FDFCF7' // Cream background
           }
         }
       }

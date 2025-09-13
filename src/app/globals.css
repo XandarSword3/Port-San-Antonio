@@ -619,14 +619,25 @@
     }
   }
 
-  /* 2025 Luxury dark theme */
+  /* 2025 Luxury theme - Dark & Light modes */
   :root {
+    /* Dark mode colors */
     --luxury-dark-bg: #000000;
     --luxury-dark-card: #0a0a0a;
     --luxury-dark-accent: #D4AF37;
     --luxury-dark-text: #F0E68C;
     --luxury-dark-muted: 184,134,11; /* rgb values for rgba() usage - darker gold */
     --luxury-dark-border: 255,215,0; /* rgb values for rgba() usage - gold borders */
+    
+    /* Light mode colors */
+    --luxury-light-bg: #F8F8F8;
+    --luxury-light-card: #FFFFFF;
+    --luxury-light-accent: #D4AF37;
+    --luxury-light-text: #2D2D2D;
+    --luxury-light-muted: 107,107,107; /* rgb values for rgba() usage - muted gray */
+    --luxury-light-border: 232,185,35; /* rgb values for rgba() usage - lighter gold */
+    --luxury-light-warm: #F5EFD8;
+    --luxury-light-cream: #FDFCF7;
   }
 
   /* Ensure high contrast for accessibility */
@@ -656,6 +667,19 @@
   .dark .modal-content {
     background-color: var(--luxury-dark-card);
     border-color: rgba(var(--luxury-dark-border), 0.2);
+  }
+
+  /* Light mode styling */
+  body {
+    background-color: var(--luxury-light-bg);
+    color: var(--luxury-light-text);
+  }
+
+  .card,
+  .dish-card,
+  .modal-content {
+    background-color: var(--luxury-light-card);
+    border-color: rgba(var(--luxury-light-border), 0.2);
   }
 
   /* Luxury button styling */

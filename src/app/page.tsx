@@ -24,31 +24,35 @@ export default function Home() {
     navigateWithTransition('/menu', 'menu');
   };
 
-  // Enhanced feature data with thumbnail images
+  // Enhanced feature data with consistent content across modes
   const features = [
     { 
       icon: Utensils, 
-      title: isDark ? t('lebaneseCuisine') : t('gourmetCuisine'), 
-      desc: isDark ? t('authenticFlavors') : t('internationalFlavors'),
-      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      title: 'Lebanese Cuisine', 
+      desc: 'Authentic Mediterranean flavors with a Lebanese twist',
+      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      rating: '5★ Rated'
     },
     { 
       icon: MapPin, 
-      title: isDark ? t('mediterraneanViews') : t('oceanViews'), 
-      desc: isDark ? t('seafrontDining') : t('beachfrontDining'),
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      title: 'Mediterranean Views', 
+      desc: 'Stunning seafront dining with panoramic ocean views',
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      rating: '5★ Rated'
     },
     { 
       icon: Clock, 
-      title: isDark ? t('beautifulSun') : t('tropicalVibes'), 
-      desc: isDark ? t('relaxInNature') : t('islandAtmosphere'),
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      title: 'Beautiful Sunsets', 
+      desc: 'Relax in nature with breathtaking golden hour views',
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      rating: '5★ Rated'
     },
     { 
       icon: Star, 
-      title: isDark ? t('freshMediterranean') : t('freshSeafood'), 
-      desc: isDark ? t('dailyCatches') : t('dailyCatches'),
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      title: 'Fresh Mediterranean', 
+      desc: 'Daily catches and locally sourced ingredients',
+      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      rating: '5★ Rated'
     }
   ];
 
@@ -60,22 +64,43 @@ export default function Home() {
       <div className={`relative min-h-screen overflow-hidden ${
         isDark 
           ? 'bg-black' 
-          : 'bg-gradient-to-br from-blue-50 via-white to-blue-100'
+          : 'bg-gradient-to-br from-luxury-light-warm via-luxury-light-bg to-luxury-light-cream'
       }`}>
         
-        {/* Light mode decorative elements */}
+        {/* Light mode hero background and decorative elements */}
         {!isDark && (
           <div className="absolute inset-0 z-0">
-            {/* Floating geometric shapes */}
-            <div className="absolute top-20 left-10 w-20 sm:w-32 h-20 sm:h-32 bg-blue-200/30 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute top-40 right-20 w-16 sm:w-24 h-16 sm:h-24 bg-amber-200/40 rounded-full blur-2xl animate-pulse mobile-hide-decorative" style={{ animationDelay: '1s' }} />
-            <div className="absolute bottom-40 left-20 w-24 sm:w-40 h-24 sm:h-40 bg-purple-200/20 rounded-full blur-3xl animate-pulse mobile-hide-decorative" style={{ animationDelay: '2s' }} />
-            <div className="absolute bottom-20 right-40 w-18 sm:w-28 h-18 sm:h-28 bg-teal-200/30 rounded-full blur-2xl animate-pulse mobile-hide-decorative" style={{ animationDelay: '3s' }} />
+            {/* Light mode hero image background */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
+                filter: 'brightness(0.7) contrast(1.1) saturate(0.8)'
+              }}
+            />
             
-            {/* Subtle pattern overlay */}
-            <div className="absolute inset-0 opacity-5" style={{
-              backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\\"60\\" height=\\"60\\" viewBox=\\"0 0 60 60\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cg fill=\\"none\\" fill-rule=\\"evenodd\\"%3E%3Cg fill=\\"%234f46e5\\" fill-opacity=\\"0.1\\"%3E%3Cpath d=\\"m30 60 30-30-30-30L0 30z\\"%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
-            }} />
+            {/* Warm gold overlay for light mode */}
+            <div className="absolute inset-0 bg-gradient-to-br from-luxury-light-warm/60 via-transparent to-luxury-light-cream/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-luxury-light-bg/80 via-transparent to-transparent" />
+            
+            {/* Subtle gold accent overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-100/10 to-yellow-100/15" />
+            
+            {/* Floating warm particles */}
+            <div className="absolute inset-0">
+              {[...Array(20)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-1 h-1 bg-amber-300/40 rounded-full animate-pulse"
+                  style={{
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 4}s`,
+                    animationDuration: `${3 + Math.random() * 2}s`
+                  }}
+                />
+              ))}
+            </div>
           </div>
         )}
         
@@ -127,24 +152,28 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <h1 className={`mb-6 mobile-title-primary font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-wider ${
-                isDark ? 'text-luxury-dark-text' : 'text-gray-900'
-              }`} style={{ textShadow: isDark ? '0 4px 20px rgba(0,0,0,0.8)' : 'none' }}>
+                isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
+              }`} style={{ 
+                textShadow: isDark ? '0 4px 20px rgba(0,0,0,0.8)' : '0 2px 10px rgba(0,0,0,0.1)'
+              }}>
                 {t('welcomeTo')}
               </h1>
               <h2 className={`mb-8 mobile-title-secondary font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight bg-gradient-to-r ${
                 isDark 
                   ? 'from-luxury-dark-accent via-yellow-400 to-luxury-dark-accent' 
-                  : 'from-amber-600 via-amber-500 to-amber-700'
+                  : 'from-luxury-light-accent via-amber-500 to-luxury-light-accent'
               } text-transparent bg-clip-text drop-shadow-lg`} style={{ 
-                textShadow: isDark ? '0 0 30px rgba(212, 175, 55, 0.5)' : 'none',
-                filter: isDark ? 'drop-shadow(0 0 20px rgba(212, 175, 55, 0.3))' : 'none'
+                textShadow: isDark ? '0 0 30px rgba(212, 175, 55, 0.5)' : '0 0 20px rgba(212, 175, 55, 0.3)',
+                filter: isDark ? 'drop-shadow(0 0 20px rgba(212, 175, 55, 0.3))' : 'drop-shadow(0 0 15px rgba(212, 175, 55, 0.2))'
               }}>
-                {t('siteTitle')}
+                Port Antonio Resort
               </h2>
               <p className={`mobile-subtitle text-lg sm:text-xl md:text-2xl lg:text-3xl font-light leading-relaxed ${
-                isDark ? 'text-luxury-dark-text/90' : 'text-gray-700'
-              }`} style={{ textShadow: isDark ? '0 2px 10px rgba(0,0,0,0.6)' : 'none' }}>
-                {t('experienceLuxury')}
+                isDark ? 'text-luxury-dark-text/90' : 'text-luxury-light-text/80'
+              }`} style={{ 
+                textShadow: isDark ? '0 2px 10px rgba(0,0,0,0.6)' : '0 1px 5px rgba(0,0,0,0.1)'
+              }}>
+                Lebanese-Mediterranean Luxury by the Sea
               </p>
             </motion.div>
 
@@ -154,7 +183,7 @@ export default function Home() {
               className={`group relative overflow-hidden rounded-full mobile-cta-button px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-lg sm:text-xl font-semibold shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${
                 isDark 
                   ? 'bg-gradient-to-r from-luxury-dark-accent to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black' 
-                  : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white'
+                  : 'bg-gradient-to-r from-luxury-light-accent to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white'
               }`}
               aria-label={t('exploreMenu')}
               data-testid="home-cta-button"
@@ -225,17 +254,17 @@ export default function Home() {
               <div className={`p-4 rounded-2xl backdrop-blur-sm border ${
                 isDark 
                   ? 'bg-luxury-dark-card/80 border-luxury-dark-border/30' 
-                  : 'bg-white/90 border-gray-200/50'
+                  : 'bg-luxury-light-card/90 border-luxury-light-border/30'
               } shadow-xl`}>
                 <h4 className={`text-sm font-semibold mb-2 ${
-                  isDark ? 'text-luxury-dark-text' : 'text-gray-900'
+                  isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
                 }`}>Quick Reservation</h4>
                 <div className="flex gap-2">
                   <motion.button
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       isDark 
                         ? 'bg-luxury-dark-accent text-black hover:bg-yellow-600' 
-                        : 'bg-amber-500 text-white hover:bg-amber-600'
+                        : 'bg-luxury-light-accent text-white hover:bg-amber-600'
                     }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -246,7 +275,7 @@ export default function Home() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
                       isDark 
                         ? 'border-luxury-dark-border/50 text-luxury-dark-text hover:bg-luxury-dark-card' 
-                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                        : 'border-luxury-light-border/50 text-luxury-light-text hover:bg-luxury-light-warm/20'
                     }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -266,7 +295,7 @@ export default function Home() {
             >
               <motion.div
                 className={`flex flex-col items-center gap-2 ${
-                  isDark ? 'text-luxury-dark-text/70' : 'text-gray-600'
+                  isDark ? 'text-luxury-dark-text/70' : 'text-luxury-light-text/70'
                 }`}
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -274,12 +303,12 @@ export default function Home() {
                 <span className="text-sm font-light">Scroll to explore</span>
                 <motion.div
                   className={`w-6 h-10 border-2 rounded-full flex justify-center ${
-                    isDark ? 'border-luxury-dark-accent/50' : 'border-amber-500/50'
+                    isDark ? 'border-luxury-dark-accent/50' : 'border-luxury-light-accent/50'
                   }`}
                 >
                   <motion.div
                     className={`w-1 h-3 rounded-full mt-2 ${
-                      isDark ? 'bg-luxury-dark-accent' : 'bg-amber-500'
+                      isDark ? 'bg-luxury-dark-accent' : 'bg-luxury-light-accent'
                     }`}
                     animate={{ y: [0, 12, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -303,7 +332,7 @@ export default function Home() {
                   className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm mobile-feature-card transition-all duration-500 hover:scale-[1.05] border-2 ${
                     isDark 
                       ? 'bg-luxury-dark-card/80 hover:bg-luxury-dark-card border-luxury-dark-border/20 hover:border-luxury-dark-accent/40' 
-                      : 'bg-white/90 hover:bg-white border-gray-200/50 hover:border-amber-300/50 shadow-xl hover:shadow-2xl'
+                      : 'bg-luxury-light-card/90 hover:bg-luxury-light-card border-luxury-light-border/30 hover:border-luxury-light-accent/50 shadow-xl hover:shadow-2xl'
                   }`}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -331,21 +360,30 @@ export default function Home() {
                     <div className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-sm ${
                       isDark 
                         ? 'bg-luxury-dark-accent/20 border border-luxury-dark-accent/30' 
-                        : 'bg-white/80 border border-white/50'
+                        : 'bg-luxury-light-card/80 border border-luxury-light-border/50'
                     }`}>
                       <feature.icon className={`h-5 w-5 ${
-                        isDark ? 'text-luxury-dark-accent' : 'text-amber-600'
+                        isDark ? 'text-luxury-dark-accent' : 'text-luxury-light-accent'
                       }`} />
+                    </div>
+
+                    {/* Social Proof Rating */}
+                    <div className={`absolute bottom-4 left-4 px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
+                      isDark 
+                        ? 'bg-luxury-dark-accent/20 text-luxury-dark-accent border border-luxury-dark-accent/30' 
+                        : 'bg-luxury-light-accent/20 text-luxury-light-accent border border-luxury-light-accent/30'
+                    }`}>
+                      {feature.rating}
                     </div>
                   </div>
 
                   {/* Content */}
                   <div className="p-6">
                     <h3 className={`mobile-feature-title text-lg sm:text-xl font-bold mb-2 ${
-                      isDark ? 'text-luxury-dark-text' : 'text-gray-900'
+                      isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
                     }`}>{feature.title}</h3>
                     <p className={`mobile-feature-desc text-sm sm:text-base leading-relaxed ${
-                      isDark ? 'text-luxury-dark-text/80' : 'text-gray-600'
+                      isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'
                     }`}>{feature.desc}</p>
                   </div>
 
@@ -353,7 +391,7 @@ export default function Home() {
                   <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
                     isDark 
                       ? 'bg-gradient-to-br from-luxury-dark-accent/5 via-transparent to-yellow-400/5' 
-                      : 'bg-gradient-to-br from-amber-100/20 via-transparent to-yellow-100/20'
+                      : 'bg-gradient-to-br from-luxury-light-accent/10 via-transparent to-amber-100/15'
                   }`} />
                 </motion.div>
               ))}

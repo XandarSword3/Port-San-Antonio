@@ -239,7 +239,7 @@ export default function MenuPage() {
   return (
     <PageTransition type="menu">
       <MenuStructuredData dishes={dishes} categories={categories} />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-luxury-light-bg dark:bg-luxury-dark-bg">
       {/* Mobile Banner */}
       <MobileBanner ads={ads} />
 
