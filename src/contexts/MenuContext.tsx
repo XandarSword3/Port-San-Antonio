@@ -54,8 +54,8 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     allergens: [],
     ingredients: [],
     calories: null,
-    rating: 4.5,
-    reviewCount: 3,
+    rating: 0,
+    reviewCount: 0,
     reviews: [],
     imageVariants: { 
       src: dbDish.image_url || '/images/placeholder.jpg'

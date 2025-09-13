@@ -98,6 +98,19 @@ export type TranslationKeys =
   | 'save'
   | 'delete'
   | 'edit'
+  | 'rateAndReview'
+  | 'rating'
+  | 'comment'
+  | 'optional'
+  | 'shareYourExperience'
+  | 'characters'
+  | 'submitReview'
+  | 'submitting'
+  | 'poor'
+  | 'fair'
+  | 'good'
+  | 'veryGood'
+  | 'excellent'
   | 'viewMenu'
   | 'refineMenuSearch'
   | 'priceRange'
@@ -459,6 +472,21 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     save: 'Save',
     delete: 'Delete',
     edit: 'Edit',
+    
+    // Reviews
+    rateAndReview: 'Rate & Review',
+    rating: 'Rating',
+    comment: 'Comment',
+    optional: 'Optional',
+    shareYourExperience: 'Share your experience with this dish...',
+    characters: 'characters',
+    submitReview: 'Submit Review',
+    submitting: 'Submitting...',
+    poor: 'Poor',
+    fair: 'Fair',
+    good: 'Good',
+    veryGood: 'Very Good',
+    excellent: 'Excellent',
     viewMenu: 'View Menu',
     refineMenuSearch: 'Refine your menu search',
     priceRange: 'Price Range',
@@ -815,6 +843,21 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     save: 'حفظ',
     delete: 'حذف',
     edit: 'تعديل',
+    
+    // Reviews
+    rateAndReview: 'تقييم ومراجعة',
+    rating: 'التقييم',
+    comment: 'تعليق',
+    optional: 'اختياري',
+    shareYourExperience: 'شارك تجربتك مع هذا الطبق...',
+    characters: 'حرف',
+    submitReview: 'إرسال المراجعة',
+    submitting: 'جاري الإرسال...',
+    poor: 'ضعيف',
+    fair: 'مقبول',
+    good: 'جيد',
+    veryGood: 'جيد جداً',
+    excellent: 'ممتاز',
     viewMenu: 'عرض القائمة',
     refineMenuSearch: 'صقل بحث القائمة',
     priceRange: 'نطاق السعر',
@@ -1170,6 +1213,21 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     save: 'Sauvegarder',
     delete: 'Supprimer',
     edit: 'Modifier',
+    
+    // Reviews
+    rateAndReview: 'Noter et Commenter',
+    rating: 'Note',
+    comment: 'Commentaire',
+    optional: 'Optionnel',
+    shareYourExperience: 'Partagez votre expérience avec ce plat...',
+    characters: 'caractères',
+    submitReview: 'Soumettre l\'Avis',
+    submitting: 'Soumission...',
+    poor: 'Médiocre',
+    fair: 'Correct',
+    good: 'Bon',
+    veryGood: 'Très Bon',
+    excellent: 'Excellent',
     viewMenu: 'Voir le Menu',
     refineMenuSearch: 'Affinez votre recherche de menu',
     priceRange: 'Gamme de Prix',

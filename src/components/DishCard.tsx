@@ -8,6 +8,7 @@ import { formatPrice } from '@/lib/utils'
 import { getFoodImage, generateImageSrcSet, getImageDimensions } from '@/lib/imageUtils'
 import { translateDish, translateDietTag, translateAllergen } from '@/lib/dishTranslations'
 import DishModal from './DishModal'
+import ReviewModal from './ReviewModal'
 import { EASING, DURATION } from '@/lib/animation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useCurrency } from '@/contexts/CurrencyContext'
@@ -25,6 +26,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
   const { formatPrice: formatCurrencyPrice } = useCurrency()
   const { addItem } = useCart()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
   const [longPressProgress, setLongPressProgress] = useState(0)
   const [isLongPressing, setIsLongPressing] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -433,8 +435,17 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
               {translatedDish.shortDesc || t('deliciousDish')}
             </p>
             
-            {/* Rating */}
-            {renderRating()}
+            {/* Rate & Review Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsReviewModalOpen(true)
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 bg-luxury-light-accent/10 dark:bg-luxury-dark-accent/10 text-luxury-light-accent dark:text-luxury-dark-accent rounded-full text-sm font-medium hover:bg-luxury-light-accent/20 dark:hover:bg-luxury-dark-accent/20 transition-colors"
+            >
+              <Star className="w-4 h-4" />
+              {t('rateAndReview')}
+            </button>
           </div>
 
           {/* Price and Status */}
@@ -523,6 +534,17 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
         isOpen={isModalOpen}
         onClose={handleModalClose}
         id={`dish-modal-${dish.id}`}
+      />
+
+      {/* Review Modal */}
+      <ReviewModal
+        isOpen={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+        dishId={dish.id}
+        dishName={translatedDish.name}
+        onReviewSubmitted={() => {
+          // Could refresh dish data here if needed
+        }}
       />
     </>
   )
