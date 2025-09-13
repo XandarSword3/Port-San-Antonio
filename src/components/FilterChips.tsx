@@ -118,7 +118,7 @@ export default function FilterChips({
             className={cn(
               "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 hover:scale-105 cursor-pointer",
               filter.active ? 
-                (dietTagColors[filter.id] || 'bg-gray-100 text-gray-800 border-gray-200') :
+                (dietTagColors[filter.id] || 'bg-luxury-light-accent text-white border-luxury-light-accent dark:bg-luxury-dark-accent dark:text-luxury-dark-text dark:border-luxury-dark-accent shadow-md') :
                 'bg-gray-50 text-gray-500 border-gray-200 dark:bg-luxury-dark-card dark:text-luxury-dark-muted dark:border-luxury-dark-border/20'
             )}
             aria-pressed={filter.active}

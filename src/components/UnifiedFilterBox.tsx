@@ -64,7 +64,7 @@ export default function UnifiedFilterBox({
             onClick={() => onCategorySelect(null)}
             className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
               selectedCategory === null
-                ? 'bg-primary-500 text-white shadow-md'
+                ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
@@ -78,7 +78,7 @@ export default function UnifiedFilterBox({
                 onClick={() => onCategorySelect(category.id)}
                 className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedCategory === category.id
-                    ? 'bg-primary-500 text-white shadow-md'
+                    ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -100,7 +100,7 @@ export default function UnifiedFilterBox({
               {t('filters')}
             </h3>
             {totalActiveFilters > 0 && (
-              <span className="bg-primary-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+              <span className="bg-luxury-light-accent text-white text-xs px-2 py-1 rounded-full font-medium dark:bg-luxury-dark-accent dark:text-luxury-dark-text">
                 {totalActiveFilters} {t('active')}
               </span>
             )}
@@ -173,7 +173,7 @@ export default function UnifiedFilterBox({
               onClick={() => onFilterToggle(filter.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 filter.active
-                  ? 'bg-primary-500 text-white shadow-md'
+                  ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
@@ -213,7 +213,7 @@ export default function UnifiedFilterBox({
                     onClick={() => onFilterToggle(filter.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                       filter.active
-                        ? 'bg-primary-500 text-white shadow-md'
+                        ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
