@@ -14,12 +14,12 @@ export default function Footer() {
   const [footerSettings, setFooterSettings] = useState<FooterSettings>({
     id: 'default',
     companyName: 'Port Antonio Resort',
-    description: 'Luxury beachfront resort with world-class dining',
-    address: 'Port Antonio, Mastita, Lebanon',
-    phone: '+1 (876) 555-0123',
-    email: 'info@portantonio.com',
+    description: 'Lebanese luxury dining by the Mediterranean Sea',
+    address: 'Mastita, Lebanon',
+    phone: '+961 1 234 567',
+    email: 'info@portantonioresort.com',
     diningHours: 'Dining Available 24/7',
-    diningLocation: 'Main Restaurant & Beachside',
+    diningLocation: 'Mediterranean Terrace & Lebanese Garden',
     socialLinks: {},
     lastUpdated: new Date(),
     updatedBy: 'system'

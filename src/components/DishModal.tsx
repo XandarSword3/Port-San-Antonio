@@ -7,6 +7,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { formatPrice } from '@/lib/utils'
 import { translateDietTag, translateAllergen } from '@/lib/dishTranslations'
 import BackButton from './BackButton'
+import ReviewSystem from './ReviewSystem'
 import { useEffect, useRef } from 'react'
 
 interface DishModalProps {
@@ -268,6 +269,11 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                   : 'bg-red-100 text-red-800'
               }`}>
                 {dish.available ? t('available') : t('unavailable')}
+              </div>
+
+              {/* Reviews Section */}
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <ReviewSystem dish={dish} />
               </div>
             </div>
 

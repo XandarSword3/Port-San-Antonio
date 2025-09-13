@@ -173,7 +173,7 @@ export default function Home() {
               }`} style={{ 
                 textShadow: isDark ? '0 2px 10px rgba(0,0,0,0.6)' : '0 1px 5px rgba(0,0,0,0.1)'
               }}>
-                Lebanese-Mediterranean Luxury by the Sea
+                Lebanese Luxury by the Mediterranean Sea
               </p>
             </motion.div>
 

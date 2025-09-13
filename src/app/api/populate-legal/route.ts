@@ -45,7 +45,7 @@ const legalContent = {
       {
         id: 'contact',
         title: 'Contact Us',
-        content: 'If you have any questions about this Privacy Policy or how we handle your data, please contact us:\n\nEmail: privacy@portantonio.com\nPhone: +1 (876) 555-0123\nAddress: Port Antonio, Mastita, Lebanon',
+        content: 'If you have any questions about this Privacy Policy or how we handle your data, please contact us:\n\nEmail: privacy@portantonioresort.com\nPhone: +961 1 234 567\nAddress: Mastita, Lebanon',
         order: 7
       }
     ]
@@ -100,7 +100,7 @@ const legalContent = {
       {
         id: 'contact',
         title: 'Questions About These Terms',
-        content: 'If you have any questions about these Terms of Service, please contact us:\n\nEmail: legal@portantonio.com\nPhone: +1 (876) 555-0123\nAddress: Port Antonio, Mastita, Lebanon',
+        content: 'If you have any questions about these Terms of Service, please contact us:\n\nEmail: legal@portantonioresort.com\nPhone: +961 1 234 567\nAddress: Mastita, Lebanon',
         order: 8
       }
     ]
@@ -149,7 +149,7 @@ const legalContent = {
       {
         id: 'feedback',
         title: 'Your Feedback Matters',
-        content: 'We are continuously working to improve accessibility at Port Antonio Resort. If you encounter any barriers or have suggestions for improvement, please let us know.\n\nAccessibility Coordinator:\nEmail: accessibility@portantonio.com\nPhone: +1 (876) 555-0123\nAddress: Port Antonio, Mastita, Lebanon\n\nWe will respond to accessibility feedback within 48 hours and work to address any issues as quickly as possible.',
+        content: 'We are continuously working to improve accessibility at Port Antonio Resort. If you encounter any barriers or have suggestions for improvement, please let us know.\n\nAccessibility Coordinator:\nEmail: accessibility@portantonioresort.com\nPhone: +961 1 234 567\nAddress: Mastita, Lebanon\n\nWe will respond to accessibility feedback within 48 hours and work to address any issues as quickly as possible.',
         order: 7
       },
       {

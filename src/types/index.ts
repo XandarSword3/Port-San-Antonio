@@ -23,6 +23,18 @@ export interface Promotion {
   applicableDishes?: string[]
 }
 
+export interface Review {
+  id: string
+  dishId: string
+  userId: string
+  userName: string
+  rating: number
+  comment: string
+  createdAt: Date
+  helpful: number
+  verified: boolean
+}
+
 export interface Dish {
   id: string
   categoryId: string
@@ -48,6 +60,7 @@ export interface Dish {
   sponsored: boolean
   rating?: number
   reviewCount?: number
+  reviews?: Review[]
   promotions?: string[] // IDs of applicable promotions
 }
 

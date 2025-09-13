@@ -62,6 +62,7 @@ export default function MenuManager({ dishes, categories, onUpdate }: MenuManage
           imageVariants: { src: formData.image || '' },
           rating: 0,
           reviewCount: 0,
+          reviews: [],
           ingredients: [],
           sponsored: false
         }
