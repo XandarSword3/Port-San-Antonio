@@ -763,16 +763,7 @@
     color: #F0E68C; /* Soft gold text for card content */
   }
 
-  .dish-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
-    clip-path: polygon(0 0, 100% 0, 0 100%);
-  }
+  /* Removed annoying right-side gradient */
 
   .dish-card::before {
     content: '';
