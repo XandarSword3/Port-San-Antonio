@@ -195,7 +195,7 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-0 start-0 h-full w-72 bg-white dark:bg-beach-dark-bg shadow-xl z-50 overflow-y-auto"
+            className="fixed top-0 start-0 h-full w-72 bg-white dark:bg-luxury-dark-bg shadow-xl z-50 overflow-y-auto"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation sidebar"
@@ -204,10 +204,10 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
             <div className="flex flex-col h-full p-6">
               {/* Header with close button */}
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-beach-dark-text accent-element">{t('siteTitle')}</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-luxury-dark-text accent-element">{t('siteTitle')}</h2>
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted"
+                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted"
                   aria-label="Close sidebar"
                 >
                   <X className="w-5 h-5" />
@@ -218,7 +218,7 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
               <nav className="flex flex-col gap-4 mb-8">
                 <Link
                   href="/"
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted text-muted"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted text-muted"
                   onClick={onClose}
                 >
                   <Home className="w-5 h-5" />
@@ -226,7 +226,7 @@ export default function Sidebar({ isOpen, onClose, onStaffLoginClick }: SidebarP
                 </Link>
                 <Link
                   href="/menu"
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted text-muted"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted text-muted"
                   onClick={onClose}
                 >
                   <Menu className="w-5 h-5" />

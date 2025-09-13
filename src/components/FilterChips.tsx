@@ -119,14 +119,14 @@ export default function FilterChips({
               "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 hover:scale-105 cursor-pointer",
               filter.active ? 
                 (dietTagColors[filter.id] || 'bg-gray-100 text-gray-800 border-gray-200') :
-                'bg-gray-50 text-gray-500 border-gray-200 dark:bg-beach-dark-bg dark:text-beach-dark-muted dark:border-gray-600'
+                'bg-gray-50 text-gray-500 border-gray-200 dark:bg-luxury-dark-card dark:text-luxury-dark-muted dark:border-luxury-dark-border/20'
             )}
             aria-pressed={filter.active}
             data-testid="filter-chip"
             type="button"
           >
             {filter.label}
-            <span className="ml-1 inline-flex items-center justify-center h-4 min-w-[1rem] px-1 rounded bg-black/10 text-[10px] text-gray-700 dark:bg-white/10 dark:text-beach-dark-text">
+            <span className="ml-1 inline-flex items-center justify-center h-4 min-w-[1rem] px-1 rounded bg-black/10 text-[10px] text-gray-700 dark:bg-luxury-dark-accent/20 dark:text-luxury-dark-text">
               {dietCounts[filter.id] ?? 0}
             </span>
             {filter.active && <X className="h-3 w-3 ml-1" />}

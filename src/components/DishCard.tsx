@@ -457,7 +457,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
               onClick={handleQuickOrder}
               onPointerDown={(e) => e.stopPropagation()}
               onPointerUp={(e) => e.stopPropagation()}
-              className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              className="w-full px-4 py-3 bg-gradient-to-r from-luxury-dark-accent to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black rounded-xl transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-luxury-dark-accent focus:ring-offset-2"
               data-testid="quick-order-button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -470,7 +470,7 @@ export default function DishCard({ dish, onLongPress, onQuickOrder }: DishCardPr
           ) : (
             <motion.button
               disabled
-              className="w-full px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl transition-all duration-300 font-medium text-sm shadow-lg cursor-not-allowed opacity-75"
+              className="w-full px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-luxury-dark-text rounded-xl transition-all duration-300 font-medium text-sm shadow-lg cursor-not-allowed opacity-75"
               data-testid="unavailable-button"
             >
               <div className="flex items-center justify-center gap-2">

@@ -179,19 +179,15 @@
   }
 
   .dark body {
-    /* Lebanese night theme with gold and black */
+    /* 2025 Luxury: Pure black with subtle gold accents */
     background: 
-      /* Gold coastline at bottom */
-      linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 8%, #d4af37 15%, #b8860b 22%, #8b4513 28%, transparent 35%),
-      /* Cedar tree silhouettes in moonlight */
-      radial-gradient(ellipse 800px 600px at 10% 90%, rgba(34, 139, 34, 0.2) 0%, transparent 50%),
-      radial-gradient(ellipse 600px 500px at 90% 85%, rgba(34, 139, 34, 0.15) 0%, transparent 45%),
-      /* Moonlit Mediterranean waves */
-      radial-gradient(ellipse 2000px 500px at 50% 85%, rgba(0, 100, 200, 0.4) 0%, rgba(30, 144, 255, 0.25) 30%, rgba(70, 130, 180, 0.1) 60%, transparent 80%),
-      /* Night sky and Mediterranean */
-      linear-gradient(180deg, #000000 0%, #1a1a1a 35%, #2d2d2d 55%, #404040 100%);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 200% 200%, 400% 400%;
-    animation: gradientShift 15s ease infinite, waveMotion 8s ease-in-out infinite, cedarShift 20s ease-in-out infinite;
+      /* Subtle gold gradient overlay for warmth */
+      linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, rgba(184, 134, 11, 0.03) 8%, transparent 15%),
+      /* Pure black base */
+      linear-gradient(180deg, #000000 0%, #000000 100%);
+    background-size: 100% 100%, 100% 100%;
+    animation: gradientShift 15s ease infinite;
+    color: #F0E68C; /* Soft gold text */
   }
 
   /* Enhanced Animations */
@@ -623,41 +619,124 @@
     }
   }
 
-  /* Dark mode beach theme */
+  /* 2025 Luxury dark theme */
   :root {
-    --beach-dark-bg: #0f172a;
-    --beach-dark-card: #1e293b;
-    --beach-dark-accent: #60a5fa;
-    --beach-dark-text: #f8fafc;
-    --beach-dark-muted: 203,213,225; /* rgb values for rgba() usage - improved contrast */
+    --luxury-dark-bg: #000000;
+    --luxury-dark-card: #0a0a0a;
+    --luxury-dark-accent: #D4AF37;
+    --luxury-dark-text: #F0E68C;
+    --luxury-dark-muted: 184,134,11; /* rgb values for rgba() usage - darker gold */
+    --luxury-dark-border: 255,215,0; /* rgb values for rgba() usage - gold borders */
+  }
+
+  /* Ensure high contrast for accessibility */
+  .dark {
+    color-scheme: dark;
+  }
+
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: var(--luxury-dark-text);
+  }
+
+  .dark p, .dark span, .dark div {
+    color: var(--luxury-dark-text);
+  }
+
+  .dark .text-muted {
+    color: rgba(var(--luxury-dark-muted), 0.8);
   }
 
   .dark body {
-    background-color: var(--beach-dark-bg);
-    color: var(--beach-dark-text);
+    background-color: var(--luxury-dark-bg);
+    color: var(--luxury-dark-text);
   }
 
   .dark .card,
   .dark .dish-card,
   .dark .modal-content {
-    background-color: var(--beach-dark-card);
-    border-color: rgba(var(--beach-dark-muted), 0.3);
+    background-color: var(--luxury-dark-card);
+    border-color: rgba(var(--luxury-dark-border), 0.2);
   }
 
-  /* Enhanced Lebanese-themed card styling with gold accents */
+  /* Luxury button styling */
+  .dark .btn-primary {
+    background: linear-gradient(135deg, var(--luxury-dark-accent) 0%, #B8860B 100%);
+    color: #000000;
+    border: 1px solid rgba(var(--luxury-dark-border), 0.3);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  .dark .btn-primary:hover {
+    background: linear-gradient(135deg, #B8860B 0%, var(--luxury-dark-accent) 100%);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-1px);
+  }
+
+  /* Enhanced focus states for accessibility */
+  .dark *:focus {
+    outline: 2px solid var(--luxury-dark-accent);
+    outline-offset: 2px;
+  }
+
+  /* 2025 Homepage Luxury Enhancements */
+  .luxury-hero-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .luxury-text-glow {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .luxury-card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .luxury-card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Parallax scrolling effect */
+  .parallax-bg {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Enhanced scroll indicator */
+  .scroll-indicator {
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* 2025 Luxury card styling with pure black and gold accents */
   .dish-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%);
     backdrop-filter: blur(15px);
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    border: 2px solid rgba(255, 215, 0, 0.2);
     border-radius: 20px 20px 8px 8px;
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      0 0 0 1px rgba(212, 175, 55, 0.2),
-      inset 0 1px 0 rgba(255, 215, 0, 0.3);
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 215, 0, 0.1),
+      inset 0 1px 0 rgba(255, 215, 0, 0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px));
+    color: #F0E68C; /* Soft gold text for card content */
   }
 
   .dish-card::after {
@@ -689,10 +768,12 @@
   .dish-card:hover {
     transform: translateY(-5px) scale(1.02);
     box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 215, 0, 0.3),
+      inset 0 1px 0 rgba(255, 215, 0, 0.2);
     animation: floatingBeach 2s ease-in-out infinite;
+    /* Gold overlay effect on hover */
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(212, 175, 55, 0.05) 100%);
   }
 
   /* Wave ripple effect on hover */

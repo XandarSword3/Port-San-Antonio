@@ -121,14 +121,15 @@ module.exports = {
           300: '#f2d7b0',
           500: '#e6b67a'
         },
-        // Beach-themed dark mode colors
-        beach: {
+        // 2025 Trend: Pure black with gold accents
+        luxury: {
           dark: {
-            bg: '#1a2639', // Deep ocean blue
-            card: '#203354', // Midnight blue
-            accent: '#ff9e5e', // Sunset orange
-            text: '#f0f5fa', // Seafoam white
-            muted: '#8ca3c3' // Misty blue
+            bg: '#000000', // Pure black for luxury feel
+            card: '#0a0a0a', // Slightly lighter black for cards
+            accent: '#D4AF37', // Metallic gold for CTAs
+            text: '#F0E68C', // Soft gold for primary text
+            muted: '#B8860B', // Darker gold for muted text
+            border: '#FFD700' // Gold borders at 20% opacity
           }
         }
       }

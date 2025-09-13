@@ -117,7 +117,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
             {dish.variants.map((variant, index) => (
               <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
                 <span className="font-medium text-gray-700">{translateVariantLabel(variant.label)}</span>
-                <span className="text-lg font-bold text-resort-500 dark:text-beach-dark-accent accent-element">
+                <span className="text-lg font-bold text-resort-500 dark:text-luxury-dark-accent accent-element">
                   {formatPrice(variant.price, dish.currency)}
                 </span>
               </div>
@@ -127,7 +127,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
       )
     }
     return dish.price ? (
-      <div className="text-3xl font-bold text-resort-500 dark:text-beach-dark-accent accent-element" data-testid="modal-price">
+      <div className="text-3xl font-bold text-resort-500 dark:text-luxury-dark-accent accent-element" data-testid="modal-price">
         {formatPrice(dish.price, dish.currency)}
       </div>
     ) : null
@@ -162,12 +162,12 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
             data-testid="dish-modal"
           >
             {/* Header */}
-            <div className="relative p-6 border-b border-gray-200 dark:border-beach-dark-muted/20">
+            <div className="relative p-6 border-b border-gray-200 dark:border-luxury-dark-border/20">
               <div className="flex justify-between items-center mb-3">
                 <BackButton label="" className="p-1" />
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-full bg-gray-100 dark:bg-beach-dark-card text-gray-600 dark:text-beach-dark-muted hover:bg-gray-200 dark:hover:bg-beach-dark-muted/30 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-beach-dark-accent focus:ring-offset-2"
+                  className="p-2 rounded-full bg-gray-100 dark:bg-luxury-dark-card text-gray-600 dark:text-luxury-dark-muted hover:bg-gray-200 dark:hover:bg-luxury-dark-muted/30 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-luxury-dark-accent focus:ring-offset-2"
                   aria-label="Close modal"
                   data-testid="modal-close"
                 >
@@ -177,7 +177,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
               
               <h2 
                 id={`${id}-title`}
-                className="text-2xl font-bold text-gray-900 dark:text-beach-dark-text pr-12"
+                className="text-2xl font-bold text-gray-900 dark:text-luxury-dark-text pr-12"
                 data-testid="modal-name"
               >
                 {dish.name}
@@ -185,7 +185,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
               
               <p 
                 id={`${id}-description`}
-                className="text-gray-600 dark:text-beach-dark-muted mt-2 text-muted"
+                className="text-gray-600 dark:text-luxury-dark-muted mt-2 text-muted"
               >
                 {dish.shortDesc}
               </p>

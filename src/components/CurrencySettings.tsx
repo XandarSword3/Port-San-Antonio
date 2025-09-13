@@ -133,7 +133,7 @@ export default function CurrencySettings() {
             <motion.button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-luxury-dark-accent to-yellow-600 px-4 py-2 text-sm font-medium text-black transition-colors hover:from-yellow-600 hover:to-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -147,7 +147,7 @@ export default function CurrencySettings() {
 
             <motion.button
               onClick={handleReset}
-              className="flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-lg border border-luxury-dark-border/20 px-4 py-2 text-sm font-medium text-luxury-dark-text transition-colors hover:bg-luxury-dark-card"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

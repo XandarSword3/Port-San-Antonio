@@ -53,10 +53,10 @@ export default function GlobalHeader() {
 
   return (
     <>
-      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-4 py-3 bg-white/90 dark:bg-beach-dark-bg/95 backdrop-blur-md z-[110] border-b border-gray-200 dark:border-beach-dark-muted/20 shadow-lg">
+      <header data-testid="global-header" className="fixed top-0 inset-inline-0 w-full flex items-center justify-between px-4 py-3 bg-white/90 dark:bg-luxury-dark-bg/95 backdrop-blur-md z-[110] border-b border-gray-200 dark:border-luxury-dark-border/20 shadow-lg">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {/* Site Logo & Resort Name */}
-          <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-beach-dark-text hover:text-resort-500 dark:hover:text-beach-dark-accent transition-colors accent-element">
+          <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-luxury-dark-text hover:text-resort-500 dark:hover:text-luxury-dark-accent transition-colors accent-element">
             <img 
               src="/Photos/Logo.jpg" 
               alt="Port San Antonio Resort Logo" 
@@ -71,7 +71,7 @@ export default function GlobalHeader() {
           {/* Cart Indicator - Mobile Optimized */}
           <button 
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors"
+            className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted transition-colors"
             aria-label={`${t('cart')} (${getTotalItems()} ${t('items')})`}
             data-testid="cart-indicator"
           >
@@ -96,7 +96,7 @@ export default function GlobalHeader() {
           {/* Language Toggle - Mobile Optimized */}
           <button 
             onClick={toggleLanguage}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors touch-target"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted transition-colors touch-target"
             aria-label={`Switch language. Current: ${language.toUpperCase()}`}
             data-testid="language-toggle"
           >
@@ -106,7 +106,7 @@ export default function GlobalHeader() {
           {/* Theme Toggle - Mobile Optimized */}
           <button 
             onClick={toggleTheme}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors touch-target"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted transition-colors touch-target"
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             data-testid="theme-toggle"
           >
@@ -120,7 +120,7 @@ export default function GlobalHeader() {
               e.stopPropagation()
               toggleSidebar()
             }}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-beach-dark-card text-gray-700 dark:text-beach-dark-muted transition-colors touch-target"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-luxury-dark-card text-gray-700 dark:text-luxury-dark-muted transition-colors touch-target"
             aria-label="Toggle sidebar menu"
             data-testid="hamburger"
           >

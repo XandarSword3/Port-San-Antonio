@@ -23,11 +23,11 @@ const BeachButton = ({
   ...props 
 }: BeachButtonProps) => {
   const variants = {
-    primary: 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25',
-    secondary: 'bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 shadow-lg',
-    ocean: 'bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white shadow-lg hover:shadow-cyan-500/25',
-    sand: 'bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white shadow-lg hover:shadow-yellow-500/25',
-    sunset: 'bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600',
+    primary: 'bg-gradient-to-r from-luxury-dark-accent to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black shadow-lg hover:shadow-luxury-dark-accent/25 font-semibold',
+    secondary: 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-luxury-dark-text shadow-lg border border-luxury-dark-border/20',
+    ocean: 'bg-gradient-to-r from-luxury-dark-accent to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black shadow-lg hover:shadow-luxury-dark-accent/25',
+    sand: 'bg-gradient-to-r from-luxury-dark-accent to-yellow-400 hover:from-yellow-400 hover:to-yellow-500 text-black shadow-lg hover:shadow-luxury-dark-accent/25',
+    sunset: 'bg-gradient-to-r from-luxury-dark-accent to-orange-500 text-black hover:from-orange-500 hover:to-orange-600',
   }
 
   const sizes = {

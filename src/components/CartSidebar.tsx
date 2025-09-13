@@ -284,7 +284,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                         onClick={handleSubmitOrderClick}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                        className="w-full bg-gradient-to-r from-luxury-dark-accent to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
                       >
                         <Send className="w-5 h-5 mr-2" />
                         Submit Order
@@ -296,7 +296,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                           disabled={submittingOrder}
                           whileHover={{ scale: submittingOrder ? 1 : 1.02 }}
                           whileTap={{ scale: submittingOrder ? 1 : 0.98 }}
-                          className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                          className="w-full bg-gradient-to-r from-luxury-dark-accent to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 disabled:bg-gray-400 text-black font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
                         >
                           {submittingOrder ? (
                             <>Submitting...</>
@@ -309,7 +309,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                         </motion.button>
                         <button
                           onClick={() => setShowCustomerForm(false)}
-                          className="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                          className="w-full bg-gray-700 hover:bg-gray-600 text-luxury-dark-text font-medium py-2 px-4 rounded-lg transition-colors text-sm"
                         >
                           Cancel
                         </button>
