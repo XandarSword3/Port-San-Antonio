@@ -244,47 +244,7 @@ export default function Home() {
               />
             </motion.button>
 
-            {/* Quick Booking Widget */}
-            <motion.div 
-              className="absolute bottom-8 right-8 hidden lg:block"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 1.8 }}
-            >
-              <div className={`p-4 rounded-2xl backdrop-blur-sm border ${
-                isDark 
-                  ? 'bg-luxury-dark-card/80 border-luxury-dark-border/30' 
-                  : 'bg-luxury-light-card/90 border-luxury-light-border/30'
-              } shadow-xl`}>
-                <h4 className={`text-sm font-semibold mb-2 ${
-                  isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
-                }`}>Quick Reservation</h4>
-                <div className="flex gap-2">
-                  <motion.button
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      isDark 
-                        ? 'bg-luxury-dark-accent text-black hover:bg-yellow-600' 
-                        : 'bg-luxury-light-accent text-white hover:bg-amber-600'
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Book Table
-                  </motion.button>
-                  <motion.button
-                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
-                      isDark 
-                        ? 'border-luxury-dark-border/50 text-luxury-dark-text hover:bg-luxury-dark-card' 
-                        : 'border-luxury-light-border/50 text-luxury-light-text hover:bg-luxury-light-warm/20'
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Call Now
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
+            {/* Removed Quick Booking Widget */}
 
             {/* Scroll Indicator */}
             <motion.div 
