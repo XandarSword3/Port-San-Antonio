@@ -62,7 +62,7 @@ export default function UnifiedFilterBox({
         <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
           <button
             onClick={() => onCategorySelect(null)}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+            className={`flex-shrink-0 px-4 py-3 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
               selectedCategory === null
                 ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -76,7 +76,7 @@ export default function UnifiedFilterBox({
               <button
                 key={category.id}
                 onClick={() => onCategorySelect(category.id)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`flex-shrink-0 px-4 py-3 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
                   selectedCategory === category.id
                     ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -140,7 +140,7 @@ export default function UnifiedFilterBox({
           {/* Availability Filter */}
           <button
             onClick={onAvailabilityToggle}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+            className={`px-4 py-3 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
               availabilityOnly
                 ? 'bg-green-500 text-white shadow-md'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -154,7 +154,7 @@ export default function UnifiedFilterBox({
             <button
               key={bucket}
               onClick={() => onPriceBucketChange(priceBucket === bucket ? null : bucket as any)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-4 py-3 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
                 priceBucket === bucket
                   ? 'bg-blue-500 text-white shadow-md'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -171,7 +171,7 @@ export default function UnifiedFilterBox({
             <button
               key={filter.id}
               onClick={() => onFilterToggle(filter.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-1.5 px-4 py-3 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
                 filter.active
                   ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -211,7 +211,7 @@ export default function UnifiedFilterBox({
                   <button
                     key={filter.id}
                     onClick={() => onFilterToggle(filter.id)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                    className={`flex items-center gap-1.5 px-4 py-3 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] ${
                       filter.active
                         ? 'bg-luxury-light-accent text-white shadow-md dark:bg-luxury-dark-accent dark:text-luxury-dark-text'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'

@@ -3,8 +3,10 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Waves, Sun, Anchor, Ship } from 'lucide-react'
+import { useTheme } from '@/contexts/ThemeContext'
 
 const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
+  const { isDark } = useTheme()
   const [currentWave, setCurrentWave] = useState(0)
   const [showLogo, setShowLogo] = useState(false)
 
@@ -24,11 +26,16 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
     }
   }, [onComplete])
 
-  const waves = [
+  const waves = isDark ? [
     { color: '#1e3a8a', height: '25%', delay: 0 },
     { color: '#2563eb', height: '50%', delay: 0.5 },
     { color: '#3b82f6', height: '75%', delay: 1 },
     { color: '#60a5fa', height: '100%', delay: 1.5 }
+  ] : [
+    { color: '#3b82f6', height: '25%', delay: 0 },
+    { color: '#60a5fa', height: '50%', delay: 0.5 },
+    { color: '#93c5fd', height: '75%', delay: 1 },
+    { color: '#dbeafe', height: '100%', delay: 1.5 }
   ]
 
   // Predetermined cloud positions to avoid SSR hydration mismatch
@@ -54,7 +61,11 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-[9999] bg-gradient-to-b from-sky-200 via-blue-300 to-blue-800 overflow-hidden"
+      className={`fixed inset-0 z-[9999] overflow-hidden ${
+        isDark 
+          ? 'bg-gradient-to-b from-sky-900 via-blue-900 to-blue-950' 
+          : 'bg-gradient-to-b from-sky-200 via-blue-300 to-blue-800'
+      }`}
     >
       {/* Animated clouds */}
       <div className="absolute inset-0">
@@ -89,7 +100,7 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 1.2, opacity: 0, y: -50 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="text-center text-white"
+              className={`text-center ${isDark ? 'text-yellow-400' : 'text-white'}`}
             >
               {/* Logo */}
               <motion.div
@@ -116,7 +127,9 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 sm:mb-4 drop-shadow-lg"
+                className={`text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 sm:mb-4 drop-shadow-lg ${
+                  isDark ? 'text-yellow-400' : 'text-white'
+                }`}
               >
                 Port Antonio Resort
               </motion.h1>

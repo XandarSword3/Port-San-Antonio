@@ -55,7 +55,7 @@ export default function CategoryStrip({
                 key={category.id}
                 onClick={() => onCategorySelect(category.id)}
                 className={cn(
-                  "whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                  "whitespace-nowrap rounded-full px-4 py-3 text-sm font-medium transition-all duration-200 min-h-[44px]",
                   selectedCategory === category.id
                     ? "bg-resort-500 text-white shadow-md"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"

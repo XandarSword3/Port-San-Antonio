@@ -30,29 +30,25 @@ export default function Home() {
       icon: Utensils, 
       title: 'Lebanese Cuisine', 
       desc: 'Authentic Mediterranean flavors with a Lebanese twist',
-      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      rating: '5★ Rated'
+      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     },
     { 
       icon: MapPin, 
       title: 'Mediterranean Views', 
       desc: 'Stunning seafront dining with panoramic ocean views',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      rating: '5★ Rated'
+      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     },
     { 
       icon: Clock, 
       title: 'Beautiful Sunsets', 
       desc: 'Relax in nature with breathtaking golden hour views',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      rating: '5★ Rated'
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     },
     { 
       icon: Star, 
       title: 'Fresh Mediterranean', 
       desc: 'Daily catches and locally sourced ingredients',
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      rating: '5★ Rated'
+      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
     }
   ];
 
@@ -327,14 +323,6 @@ export default function Home() {
                       }`} />
                     </div>
 
-                    {/* Social Proof Rating */}
-                    <div className={`absolute bottom-4 left-4 px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
-                      isDark 
-                        ? 'bg-luxury-dark-accent/20 text-luxury-dark-accent border border-luxury-dark-accent/30' 
-                        : 'bg-luxury-light-accent/20 text-luxury-light-accent border border-luxury-light-accent/30'
-                    }`}>
-                      {feature.rating}
-                    </div>
                   </div>
 
                   {/* Content */}
