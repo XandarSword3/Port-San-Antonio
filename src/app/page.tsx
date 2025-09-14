@@ -30,25 +30,25 @@ export default function Home() {
       icon: Utensils, 
       title: 'Lebanese Cuisine', 
       desc: 'Authentic Mediterranean flavors with a Lebanese twist',
-      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      image: null // Will be replaced with your images
     },
     { 
       icon: MapPin, 
       title: 'Mediterranean Views', 
       desc: 'Stunning seafront dining with panoramic ocean views',
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      image: null // Will be replaced with your images
     },
     { 
       icon: Clock, 
       title: 'Beautiful Sunsets', 
       desc: 'Relax in nature with breathtaking golden hour views',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      image: null // Will be replaced with your images
     },
     { 
       icon: Star, 
       title: 'Fresh Mediterranean', 
       desc: 'Daily catches and locally sourced ingredients',
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+      image: null // Will be replaced with your images
     }
   ];
 
@@ -63,77 +63,25 @@ export default function Home() {
           : 'bg-gradient-to-br from-luxury-light-warm via-luxury-light-bg to-luxury-light-cream'
       }`}>
         
-        {/* Light mode hero background and decorative elements */}
+        {/* Light mode background - no images */}
         {!isDark && (
           <div className="absolute inset-0 z-0">
-            {/* Light mode hero image background */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
-                filter: 'brightness(0.7) contrast(1.1) saturate(0.8)'
-              }}
-            />
-            
-            {/* Warm gold overlay for light mode */}
-            <div className="absolute inset-0 bg-gradient-to-br from-luxury-light-warm/60 via-transparent to-luxury-light-cream/40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-luxury-light-bg/80 via-transparent to-transparent" />
+            {/* Clean gradient background for light mode */}
+            <div className="absolute inset-0 bg-gradient-to-br from-luxury-light-warm via-luxury-light-bg to-luxury-light-cream" />
             
             {/* Subtle gold accent overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-100/10 to-yellow-100/15" />
-            
-            {/* Floating warm particles */}
-            <div className="absolute inset-0">
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-1 h-1 bg-amber-300/40 rounded-full animate-pulse"
-                  style={{
-                    top: `${Math.random() * 100}%`,
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 4}s`,
-                    animationDuration: `${3 + Math.random() * 2}s`
-                  }}
-                />
-              ))}
-            </div>
           </div>
         )}
         
-        {/* Hero Background Image - 2025 Luxury Style */}
+        {/* Dark mode background - no images */}
         {isDark && (
           <div className="absolute inset-0 z-0">
-            {/* Hero Image Background */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: 'url("https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
-                filter: 'brightness(0.3) contrast(1.2)'
-              }}
-            />
-            
-            {/* Luxury Gold Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/80" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            {/* Clean dark gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
             
             {/* Subtle Gold Accent Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-900/5 to-amber-800/10" />
-            
-            {/* Floating Gold Particles */}
-            <div className="absolute inset-0">
-              {[...Array(30)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-1 h-1 bg-amber-400/60 rounded-full animate-pulse"
-                  style={{
-                    top: `${Math.random() * 100}%`,
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 4}s`,
-                    animationDuration: `${3 + Math.random() * 2}s`
-                  }}
-                />
-              ))}
-            </div>
           </div>
         )}
 
@@ -301,11 +249,23 @@ export default function Home() {
                 >
                   {/* Thumbnail Image */}
                   <div className="relative h-32 sm:h-40 overflow-hidden">
-                    <img 
-                      src={feature.image} 
-                      alt={feature.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                    {feature.image ? (
+                      <img 
+                        src={feature.image} 
+                        alt={feature.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center ${
+                        isDark 
+                          ? 'bg-luxury-dark-card/50' 
+                          : 'bg-luxury-light-card/50'
+                      }`}>
+                        <feature.icon className={`h-12 w-12 ${
+                          isDark ? 'text-luxury-dark-accent/50' : 'text-luxury-light-accent/50'
+                        }`} />
+                      </div>
+                    )}
                     <div className={`absolute inset-0 bg-gradient-to-t ${
                       isDark 
                         ? 'from-black/60 via-transparent to-transparent' 

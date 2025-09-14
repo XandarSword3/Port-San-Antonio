@@ -68,7 +68,7 @@ export default function Footer() {
         >
           {/* Restaurant Info */}
           <div>
-            <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-luxury-dark-accent' : 'text-luxury-light-accent'} flex items-center gap-2`}>
+            <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'} flex items-center gap-2`}>
               <span>⚓</span>
               {footerSettings.companyName}
             </h3>
@@ -83,7 +83,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'} flex items-center gap-2`}>
+            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'} flex items-center gap-2`}>
               🐚
               {t('contact')}
             </h3>
@@ -111,24 +111,24 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'} flex items-center gap-2`}>
+            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'} flex items-center gap-2`}>
               🏖️
               {t('quickLinks')}
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="/menu" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
+                <a href="/menu" className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors`}>
                   {t('menu')}
                 </a>
               </li>
               <li>
-                <a href={`tel:${footerSettings.phone.replace(/\s+/g, '')}`} className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors flex items-center gap-2`}>
+                <a href={`tel:${footerSettings.phone.replace(/\s+/g, '')}`} className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors flex items-center gap-2`}>
                   <Phone className="w-4 h-4" />
                   {t('callUs')} - {t('reservations')}
                 </a>
               </li>
               <li>
-                <a href="/events" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
+                <a href="/events" className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors`}>
                   {t('events')}
                 </a>
               </li>
@@ -137,28 +137,28 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'} flex items-center gap-2`}>
+            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'} flex items-center gap-2`}>
               ⚓
               {t('legal')}
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="/privacy" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
+                <a href="/privacy" className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors`}>
                   {t('privacy')}
                 </a>
               </li>
               <li>
-                <a href="/terms" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
+                <a href="/terms" className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors`}>
                   {t('terms')}
                 </a>
               </li>
               <li>
-                <a href="/accessibility" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
+                <a href="/accessibility" className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors`}>
                   {t('accessibility')}
                 </a>
               </li>
               <li>
-                <a href="/careers" className={`${isDark ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'} transition-colors`}>
+                <a href="/careers" className={`${isDark ? 'text-luxury-dark-text/80 hover:text-luxury-dark-accent' : 'text-luxury-light-text/70 hover:text-luxury-light-accent'} transition-colors`}>
                   {t('careers')}
                 </a>
               </li>
