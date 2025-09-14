@@ -129,14 +129,34 @@ export function applyCategoryTranslations(category: Category, language: Language
 }
 
 // Legacy function names for backward compatibility
-export function translateCategory(categoryOrId: string | Category, language: Language): string {
-  const categoryId = typeof categoryOrId === 'string' ? categoryOrId : categoryOrId.id
-  const translations = getTranslatedCategory(categoryId, language)
-  return translations.name || (typeof categoryOrId === 'string' ? categoryId : categoryOrId.name)
+export function translateCategory(categoryOrId: string | Category, language: Language): Category {
+  if (typeof categoryOrId === 'string') {
+    // If it's just a string ID, return a minimal category object
+    return {
+      id: categoryOrId,
+      name: categoryOrId,
+      description: '',
+      order: 0
+    }
+  }
+  
+  // If it's a full category object, apply translations
+  return applyCategoryTranslations(categoryOrId, language)
 }
 
-export function translateDish(dishOrId: string | Dish, language: Language): string {
-  const dishId = typeof dishOrId === 'string' ? dishOrId : dishOrId.id
-  const translations = getTranslatedDish(dishId, language)
-  return translations.name || (typeof dishOrId === 'string' ? dishId : dishOrId.name)
+export function translateDish(dishOrId: string | Dish, language: Language): Dish {
+  if (typeof dishOrId === 'string') {
+    // If it's just a string ID, return a minimal dish object
+    return {
+      id: dishOrId,
+      name: dishOrId,
+      categoryId: '',
+      currency: 'USD',
+      available: true,
+      image: ''
+    } as Dish
+  }
+  
+  // If it's a full dish object, apply translations
+  return applyDishTranslations(dishOrId, language)
 }
