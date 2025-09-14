@@ -77,11 +77,11 @@ export default function Home() {
         {/* Dark mode background - no images */}
         {isDark && (
           <div className="absolute inset-0 z-0">
-            {/* Clean dark gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+            {/* Deep charcoal with navy gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-luxury-dark-secondary via-luxury-dark-bg to-black" />
             
             {/* Subtle Gold Accent Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-900/5 to-amber-800/10" />
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-luxury-dark-accent/5 to-luxury-dark-accent/10" />
           </div>
         )}
 
@@ -126,7 +126,7 @@ export default function Home() {
               onClick={handleCTAClick}
               className={`group relative overflow-hidden rounded-full mobile-cta-button px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-lg sm:text-xl font-semibold shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${
                 isDark 
-                  ? 'bg-gradient-to-r from-luxury-dark-accent to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black' 
+                  ? 'bg-luxury-dark-buttonPrimary hover:bg-luxury-dark-buttonHover text-black' 
                   : 'bg-gradient-to-r from-luxury-light-accent to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white'
               }`}
               aria-label={t('exploreMenu')}
@@ -233,9 +233,9 @@ export default function Home() {
               {features.map((feature, i) => (
                 <motion.div
                   key={feature.title}
-                  className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm mobile-feature-card transition-all duration-500 hover:scale-[1.05] border-2 ${
+                  className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm mobile-feature-card transition-all duration-500 hover:scale-[1.05] border ${
                     isDark 
-                      ? 'bg-luxury-dark-card/80 hover:bg-luxury-dark-card border-luxury-dark-border/20 hover:border-luxury-dark-accent/40' 
+                      ? 'bg-luxury-dark-card hover:bg-luxury-dark-card/95 border-luxury-dark-border hover:border-luxury-dark-accent' 
                       : 'bg-luxury-light-card/90 hover:bg-luxury-light-card border-luxury-light-border/30 hover:border-luxury-light-accent/50 shadow-xl hover:shadow-2xl'
                   }`}
                   initial={{ opacity: 0, y: 30 }}
@@ -291,7 +291,7 @@ export default function Home() {
                       isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
                     }`}>{feature.title}</h3>
                     <p className={`mobile-feature-desc text-sm sm:text-base leading-relaxed ${
-                      isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'
+                      isDark ? 'text-luxury-dark-muted' : 'text-luxury-light-text/70'
                     }`}>{feature.desc}</p>
                   </div>
 

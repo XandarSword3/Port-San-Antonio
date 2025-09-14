@@ -188,8 +188,8 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
 
           {/* Modal Content */}
           <motion.div
-            className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl modal-content ${
-              isDark ? 'bg-luxury-dark-card' : 'bg-luxury-light-card'
+            className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl modal-content border ${
+              isDark ? 'bg-luxury-dark-card border-luxury-dark-border' : 'bg-luxury-light-card border-luxury-light-border/20'
             }`}
             ref={dialogRef}
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -350,7 +350,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                 onClick={handleShare}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                   isDark
-                    ? 'bg-luxury-dark-accent text-luxury-dark-text hover:bg-luxury-dark-accent/90 focus:ring-luxury-dark-accent'
+                    ? 'bg-luxury-dark-buttonPrimary text-black hover:bg-luxury-dark-buttonHover focus:ring-luxury-dark-accent'
                     : 'bg-luxury-light-accent text-white hover:bg-luxury-light-accent/90 focus:ring-luxury-light-accent'
                 }`}
               >
@@ -362,7 +362,7 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                 onClick={onClose}
                 className={`px-6 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                   isDark
-                    ? 'bg-luxury-dark-card text-luxury-dark-text hover:bg-luxury-dark-card/80 focus:ring-luxury-dark-accent border border-luxury-dark-border/20'
+                    ? 'bg-luxury-dark-buttonSecondary text-luxury-dark-text hover:bg-luxury-dark-buttonHover focus:ring-luxury-dark-accent border border-luxury-dark-border'
                     : 'bg-luxury-light-card text-luxury-light-text hover:bg-luxury-light-card/80 focus:ring-luxury-light-accent border border-luxury-light-border/20'
                 }`}
               >

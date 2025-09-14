@@ -169,9 +169,9 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
       {/* Leave Review Button */}
       <button
         onClick={() => setShowForm(!showForm)}
-        className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+        className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 border ${
           isDark
-            ? 'bg-luxury-dark-accent/20 text-luxury-dark-accent border border-luxury-dark-accent/30 hover:bg-luxury-dark-accent/30'
+            ? 'bg-luxury-dark-buttonSecondary text-luxury-dark-text border-luxury-dark-border hover:bg-luxury-dark-buttonPrimary hover:text-black'
             : 'bg-luxury-light-accent/20 text-luxury-light-accent border border-luxury-light-accent/30 hover:bg-luxury-light-accent/30'
         }`}
       >
@@ -187,10 +187,14 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded-lg bg-gray-50 dark:bg-luxury-dark-card/50">
+            <form onSubmit={handleSubmit} className={`space-y-4 p-4 border rounded-lg ${
+              isDark ? 'bg-luxury-dark-card/50 border-luxury-dark-border' : 'bg-gray-50 border-gray-200'
+            }`}>
               {/* Star Rating */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${
+                  isDark ? 'text-luxury-dark-text' : 'text-gray-700'
+                }`}>
                   {t('rating') || 'Rating'} *
                 </label>
                 <div className="flex items-center gap-1">
@@ -225,7 +229,11 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-luxury-light-accent dark:focus:ring-luxury-dark-accent focus:border-transparent bg-white dark:bg-luxury-dark-card text-gray-900 dark:text-luxury-dark-text"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:border-transparent ${
+                    isDark 
+                      ? 'border-luxury-dark-border focus:ring-luxury-dark-accent bg-luxury-dark-card text-luxury-dark-text' 
+                      : 'border-gray-300 focus:ring-luxury-light-accent bg-white text-gray-900'
+                  }`}
                   placeholder={t('enterName') || 'Enter your name'}
                 />
               </div>
@@ -240,7 +248,11 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-luxury-light-accent dark:focus:ring-luxury-dark-accent focus:border-transparent bg-white dark:bg-luxury-dark-card text-gray-900 dark:text-luxury-dark-text"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:border-transparent ${
+                    isDark 
+                      ? 'border-luxury-dark-border focus:ring-luxury-dark-accent bg-luxury-dark-card text-luxury-dark-text' 
+                      : 'border-gray-300 focus:ring-luxury-light-accent bg-white text-gray-900'
+                  }`}
                   placeholder={t('enterEmail') || 'Enter your email'}
                 />
               </div>
@@ -267,7 +279,7 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
                   formData.rating === 0 || submitting
                     ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                     : isDark
-                    ? 'bg-luxury-dark-accent text-luxury-dark-text hover:bg-luxury-dark-accent/90'
+                    ? 'bg-luxury-dark-buttonPrimary text-black hover:bg-luxury-dark-buttonHover'
                     : 'bg-luxury-light-accent text-white hover:bg-luxury-light-accent/90'
                 }`}
               >
@@ -301,12 +313,16 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-luxury-dark-card/50"
+              className={`p-4 border rounded-lg ${
+                isDark ? 'border-luxury-dark-border bg-luxury-dark-card/50' : 'border-gray-200 bg-white'
+              }`}
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="font-medium text-gray-900 dark:text-luxury-dark-text">
+                  <span className={`font-medium ${
+                    isDark ? 'text-luxury-dark-text' : 'text-gray-900'
+                  }`}>
                     {review.customer_name}
                   </span>
                 </div>
@@ -325,12 +341,16 @@ export default function ReviewSystem({ dish }: ReviewSystemProps) {
               </div>
               
               {review.comment && (
-                <p className="text-gray-700 dark:text-luxury-dark-text/80 mb-2">
+                <p className={`mb-2 ${
+                  isDark ? 'text-luxury-dark-muted' : 'text-gray-700'
+                }`}>
                   {review.comment}
                 </p>
               )}
               
-              <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+              <div className={`flex items-center gap-1 text-sm ${
+                isDark ? 'text-luxury-dark-muted' : 'text-gray-500'
+              }`}>
                 <Calendar className="w-3 h-3" />
                 {formatDate(review.created_at)}
               </div>

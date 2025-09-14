@@ -124,14 +124,18 @@ module.exports = {
         // Lebanese-inspired luxury theme with proper contrast
         luxury: {
           dark: {
-            bg: '#2C3E50', // Deep indigo primary
-            card: '#34495E', // Slightly lighter indigo for cards
-            accent: '#D4AF37', // Muted gold for elegance
-            text: '#E0E0E0', // Light text for readability
-            muted: '#B0BEC5', // Muted light gray
-            border: '#40E0D0', // Turquoise for Mediterranean sea vibes
-            secondary: '#40E0D0', // Turquoise accent
-            tertiary: '#556B2F' // Olive green for Lebanese cedar vibes
+            bg: '#121212', // Deep charcoal black - softer on eyes
+            bgGradient: 'linear-gradient(135deg, #001122 0%, #000000 100%)', // Navy gradient for depth
+            card: 'rgba(12, 29, 64, 0.9)', // Semi-transparent navy cards
+            accent: '#B8860B', // Muted gold for elegance
+            text: '#FFFFFF', // Crisp white for 21:1 contrast
+            muted: '#A9A9A9', // Soft gray for descriptions
+            border: '#B8860B', // Gold borders for luxury feel
+            secondary: '#001122', // Navy for secondary elements
+            tertiary: '#556B2F', // Olive green for Lebanese cedar vibes
+            buttonPrimary: '#B8860B', // Gold primary buttons
+            buttonSecondary: '#001122', // Navy secondary buttons
+            buttonHover: '#000000' // Black hover state
           },
           light: {
             bg: '#EDE0D4', // Soft sand primary
