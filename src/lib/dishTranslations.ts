@@ -129,12 +129,14 @@ export function applyCategoryTranslations(category: Category, language: Language
 }
 
 // Legacy function names for backward compatibility
-export function translateCategory(categoryId: string, language: Language): string {
+export function translateCategory(categoryOrId: string | Category, language: Language): string {
+  const categoryId = typeof categoryOrId === 'string' ? categoryOrId : categoryOrId.id
   const translations = getTranslatedCategory(categoryId, language)
-  return translations.name || categoryId
+  return translations.name || (typeof categoryOrId === 'string' ? categoryId : categoryOrId.name)
 }
 
-export function translateDish(dishId: string, language: Language): string {
+export function translateDish(dishOrId: string | Dish, language: Language): string {
+  const dishId = typeof dishOrId === 'string' ? dishOrId : dishOrId.id
   const translations = getTranslatedDish(dishId, language)
-  return translations.name || dishId
+  return translations.name || (typeof dishOrId === 'string' ? dishId : dishOrId.name)
 }
