@@ -1,14 +1,16 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Share2, Clock, AlertTriangle } from 'lucide-react'
+import { X, Share2, Clock, AlertTriangle, Star } from 'lucide-react'
 import { Dish } from '@/types'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { formatPrice } from '@/lib/utils'
 import { translateDietTag, translateAllergen } from '@/lib/dishTranslations'
 import BackButton from './BackButton'
-// import ReviewSystem from './ReviewSystem' // Component removed - no sample data
-import { useEffect, useRef } from 'react'
+import ReviewSystem from './ReviewSystem'
+import { useEffect, useRef, useState } from 'react'
+import { useTheme } from '@/contexts/ThemeContext'
+import { supabase, isSupabaseAvailable } from '@/lib/supabase'
 
 interface DishModalProps {
   dish: Dish
@@ -19,6 +21,9 @@ interface DishModalProps {
 
 export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps) {
   const { t, language } = useLanguage()
+  const { isDark } = useTheme()
+  const [averageRating, setAverageRating] = useState(0)
+  const [reviewCount, setReviewCount] = useState(0)
   const dialogRef = useRef<HTMLDivElement | null>(null)
   const previouslyFocused = useRef<HTMLElement | null>(null)
 
@@ -30,6 +35,35 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
       default: return label
     }
   }
+
+  // Load average rating for this dish
+  useEffect(() => {
+    const loadRating = async () => {
+      if (!isSupabaseAvailable() || !supabase) return
+      
+      try {
+        const { data, error } = await supabase
+          .from('reviews')
+          .select('rating')
+          .eq('dish_id', dish.id)
+          .eq('status', 'approved')
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          const avgRating = data.reduce((sum, review) => sum + review.rating, 0) / data.length
+          setAverageRating(avgRating)
+          setReviewCount(data.length)
+        }
+      } catch (error) {
+        console.error('Error loading rating:', error)
+      }
+    }
+
+    if (isOpen) {
+      loadRating()
+    }
+  }, [dish.id, isOpen])
 
   useEffect(() => {
     if (isOpen) {
@@ -154,7 +188,9 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
 
           {/* Modal Content */}
           <motion.div
-            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl modal-content"
+            className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl modal-content ${
+              isDark ? 'bg-luxury-dark-card' : 'bg-luxury-light-card'
+            }`}
             ref={dialogRef}
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -163,7 +199,9 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
             data-testid="dish-modal"
           >
             {/* Header */}
-            <div className="relative p-6 border-b border-gray-200 dark:border-luxury-dark-border/20">
+            <div className={`relative p-6 border-b ${
+              isDark ? 'border-luxury-dark-border/20' : 'border-luxury-light-border/20'
+            }`}>
               <div className="flex justify-between items-center mb-3">
                 <BackButton label="" className="p-1" />
                 <button
@@ -178,7 +216,9 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
               
               <h2 
                 id={`${id}-title`}
-                className="text-2xl font-bold text-gray-900 dark:text-luxury-dark-text pr-12"
+                className={`text-2xl font-bold pr-12 ${
+                  isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
+                }`}
                 data-testid="modal-name"
               >
                 {dish.name}
@@ -186,10 +226,33 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
               
               <p 
                 id={`${id}-description`}
-                className="text-gray-600 dark:text-luxury-dark-muted mt-2 text-muted"
+                className={`mt-2 text-muted ${
+                  isDark ? 'text-luxury-dark-muted' : 'text-luxury-light-muted'
+                }`}
               >
                 {dish.shortDesc}
               </p>
+
+              {/* Star Rating Display */}
+              <div className="flex items-center gap-2 mt-3">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-4 h-4 ${
+                        star <= averageRating
+                          ? 'text-yellow-400 fill-yellow-400'
+                          : 'text-gray-300 dark:text-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className={`text-sm ${
+                  isDark ? 'text-luxury-dark-muted' : 'text-luxury-light-muted'
+                }`}>
+                  {averageRating > 0 ? averageRating.toFixed(1) : '0.0'} ({reviewCount} {t('reviews') || 'reviews'})
+                </span>
+              </div>
             </div>
 
             {/* Image */}
@@ -271,17 +334,25 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                 {dish.available ? t('available') : t('unavailable')}
               </div>
 
-              {/* Reviews Section - Removed sample data */}
-              {/* <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              {/* Reviews Section */}
+              <div className={`border-t pt-6 ${
+                isDark ? 'border-luxury-dark-border/20' : 'border-luxury-light-border/20'
+              }`}>
                 <ReviewSystem dish={dish} />
-              </div> */}
+              </div>
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between p-6 border-t border-gray-200">
+            <div className={`flex items-center justify-between p-6 border-t ${
+              isDark ? 'border-luxury-dark-border/20' : 'border-luxury-light-border/20'
+            }`}>
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isDark
+                    ? 'bg-luxury-dark-accent text-luxury-dark-text hover:bg-luxury-dark-accent/90 focus:ring-luxury-dark-accent'
+                    : 'bg-luxury-light-accent text-white hover:bg-luxury-light-accent/90 focus:ring-luxury-light-accent'
+                }`}
               >
                 <Share2 className="w-4 h-4" />
                 {t('share') ?? 'Share'}
@@ -289,7 +360,11 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
               
               <button
                 onClick={onClose}
-                className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className={`px-6 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isDark
+                    ? 'bg-luxury-dark-card text-luxury-dark-text hover:bg-luxury-dark-card/80 focus:ring-luxury-dark-accent border border-luxury-dark-border/20'
+                    : 'bg-luxury-light-card text-luxury-light-text hover:bg-luxury-light-card/80 focus:ring-luxury-light-accent border border-luxury-light-border/20'
+                }`}
               >
                 {t('close') ?? 'Close'}
               </button>

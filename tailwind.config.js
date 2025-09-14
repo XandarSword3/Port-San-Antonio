@@ -121,25 +121,29 @@ module.exports = {
           300: '#f2d7b0',
           500: '#e6b67a'
         },
-        // 2025 Trend: Pure black with gold accents
+        // Lebanese-inspired luxury theme with proper contrast
         luxury: {
           dark: {
-            bg: '#000000', // Pure black for luxury feel
-            card: '#0a0a0a', // Slightly lighter black for cards
-            accent: '#D4AF37', // Metallic gold for CTAs
-            text: '#F0E68C', // Soft gold for primary text
-            muted: '#B8860B', // Darker gold for muted text
-            border: '#FFD700' // Gold borders at 20% opacity
+            bg: '#2C3E50', // Deep indigo primary
+            card: '#34495E', // Slightly lighter indigo for cards
+            accent: '#D4AF37', // Muted gold for elegance
+            text: '#E0E0E0', // Light text for readability
+            muted: '#B0BEC5', // Muted light gray
+            border: '#40E0D0', // Turquoise for Mediterranean sea vibes
+            secondary: '#40E0D0', // Turquoise accent
+            tertiary: '#556B2F' // Olive green for Lebanese cedar vibes
           },
           light: {
-            bg: '#F8F8F8', // Soft off-white base
-            card: '#FFFFFF', // Pure white for cards
-            accent: '#D4AF37', // Same metallic gold for consistency
-            text: '#2D2D2D', // Dark text for readability
-            muted: '#6B6B6B', // Muted gray for secondary text
-            border: '#E8B923', // Lighter gold for borders
-            warm: '#F5EFD8', // Warm beige gradient
-            cream: '#FDFCF7' // Cream background
+            bg: '#EDE0D4', // Soft sand primary
+            card: '#F5F5DC', // Beige for cards
+            accent: '#C9A66B', // Muted gold for elegance
+            text: '#333333', // Dark text for readability
+            muted: '#6B6B6B', // Muted gray
+            border: '#556B2F', // Olive green for Lebanese cedar vibes
+            warm: '#F5F5DC', // Beige warm tone
+            cream: '#FFF8DC', // Cream background
+            secondary: '#556B2F', // Olive green accent
+            tertiary: '#40E0D0' // Turquoise for Mediterranean sea
           }
         }
       }
