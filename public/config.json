@@ -1,13 +1,13 @@
 {
   "contactInfo": {
-    "phone": "+1 (555) 123-4567",
-    "email": "info@portsanantonio.com",
-    "address": "123 Mediterranean Street, Beirut, Lebanon",
-    "website": "https://www.portsanantonio.com",
+    "phone": "",
+    "email": "",
+    "address": "",
+    "website": "",
     "socialMedia": {
-      "facebook": "https://facebook.com/portsanantonio",
-      "instagram": "https://instagram.com/portsanantonio",
-      "twitter": "https://twitter.com/portsanantonio"
+      "facebook": "",
+      "instagram": "",
+      "twitter": ""
     }
   }
 }

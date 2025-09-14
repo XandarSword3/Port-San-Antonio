@@ -14,32 +14,7 @@ const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin'
 const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || '$2b$12$VAcSIB2OY1Ii8obqODSGK.rQP/MiKQfTcTGQa4vkNhEWcZmTc7rVm'
 
 // In-memory user store (in production, this would be a database)
-const USERS: User[] = [
-  {
-    id: '1',
-    username: 'admin',
-    email: 'admin@portsanantonio.com',
-    role: 'admin',
-    createdAt: new Date(),
-    active: true
-  },
-  {
-    id: '2', 
-    username: 'worker',
-    email: 'worker@portsanantonio.com',
-    role: 'worker',
-    createdAt: new Date(),
-    active: true
-  },
-  {
-    id: '3',
-    username: 'owner',
-    email: 'owner@portsanantonio.com',
-    role: 'owner',
-    createdAt: new Date(),
-    active: true
-  }
-]
+const USERS: User[] = []
 
 export class AuthService {
   // Hash a password

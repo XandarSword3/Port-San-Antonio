@@ -43,81 +43,8 @@ export default function CareersPage() {
         console.log('No admin job data found, using default positions')
       }
 
-      // Final fallback to default positions
-      const defaultPositions: JobPosition[] = [
-    {
-      id: "1",
-      title: "Head Chef",
-      department: "Kitchen",
-      type: "full-time",
-      location: "Port Antonio, Lebanon",
-      description: "Lead our culinary team in creating exceptional Mediterranean and international cuisine. Oversee kitchen operations, menu development, and staff management.",
-      requirements: [
-        "5+ years of experience as a head chef or sous chef",
-        "Culinary degree or equivalent experience", 
-        "Experience with Mediterranean cuisine",
-        "Strong leadership and communication skills",
-        "Food safety certification"
-      ],
-      benefits: [
-        "Competitive salary package",
-        "Health and dental insurance",
-        "Staff meals and accommodation",
-        "Professional development opportunities",
-        "Performance bonuses"
-      ],
-      active: true,
-      createdAt: new Date()
-    },
-    {
-      id: "2", 
-      title: "Server",
-      department: "Front of House",
-      type: "full-time",
-      location: "Port Antonio, Lebanon",
-      description: "Provide exceptional dining service to our guests. Take orders, serve food and beverages, and ensure customer satisfaction in our beautiful beachfront setting.",
-      requirements: [
-        "Previous serving experience preferred",
-        "Excellent communication skills",
-        "Ability to work in a fast-paced environment",
-        "Knowledge of food and wine pairings",
-        "Multilingual skills (Arabic, French, English) preferred"
-      ],
-      benefits: [
-        "Hourly wages plus tips",
-        "Flexible scheduling",
-        "Staff meal benefits",
-        "Training and development",
-        "Friendly work environment"
-      ],
-      active: true,
-      createdAt: new Date()
-    },
-    {
-      id: "3",
-      title: "Sous Chef",
-      department: "Kitchen", 
-      type: "full-time",
-      location: "Port Antonio, Lebanon",
-      description: "Support the head chef in daily kitchen operations, food preparation, and staff supervision. Help maintain our high culinary standards.",
-      requirements: [
-        "3+ years of professional kitchen experience",
-        "Culinary training or apprenticeship",
-        "Knowledge of food safety standards",
-        "Ability to work under pressure",
-        "Team player with leadership potential"
-      ],
-      benefits: [
-        "Competitive salary",
-        "Career advancement opportunities",
-        "Health benefits",
-        "Staff accommodation available",
-        "Continuing education support"
-      ],
-      active: true,
-      createdAt: new Date()
-    }
-  ]
+      // No fallback data - empty array
+      const defaultPositions: JobPosition[] = []
       setJobPositions(defaultPositions)
     }
     

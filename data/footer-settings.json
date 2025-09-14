@@ -1,13 +1,13 @@
 {
   "id": "default",
-  "companyName": "Port Antonio Resort",
-  "description": "Luxury beachfront resort with world-class dining",
-  "address": "Port Antonio, Mastita, Lebanon",
-  "phone": "+1 (876) 555-0123",
-  "email": "info@portantonio.com",
-  "diningHours": "Dining Available",
-  "diningLocation": "Main Restaurant & Beachside",
+  "companyName": "",
+  "description": "",
+  "address": "",
+  "phone": "",
+  "email": "",
+  "diningHours": "",
+  "diningLocation": "",
   "socialLinks": {},
-  "lastUpdated": "2025-09-09T17:54:35.411Z",
-  "updatedBy": "admin"
+  "lastUpdated": "",
+  "updatedBy": ""
 }

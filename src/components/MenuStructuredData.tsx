@@ -31,8 +31,8 @@ const MenuStructuredData: React.FC<MenuStructuredDataProps> = ({ dishes, categor
       url: typeof window !== 'undefined' ? window.location.origin : 'https://port-san-antonio.vercel.app',
       menuUrl: typeof window !== 'undefined' ? window.location.href : 'https://port-san-antonio.vercel.app/menu',
       servesCuisine: ['Lebanese', 'Mediterranean', 'Middle Eastern'],
-      priceRange: '$$',
-      acceptsReservations: true,
+      priceRange: '',
+      acceptsReservations: false,
       hasMenu: dishes.length > 0 ? {
         '@type': 'Menu',
         name: 'Port Antonio Resort Menu',

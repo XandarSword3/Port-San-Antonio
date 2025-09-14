@@ -7,7 +7,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { formatPrice } from '@/lib/utils'
 import { translateDietTag, translateAllergen } from '@/lib/dishTranslations'
 import BackButton from './BackButton'
-import ReviewSystem from './ReviewSystem'
+// import ReviewSystem from './ReviewSystem' // Component removed - no sample data
 import { useEffect, useRef } from 'react'
 
 interface DishModalProps {
@@ -271,10 +271,10 @@ export default function DishModal({ dish, isOpen, onClose, id }: DishModalProps)
                 {dish.available ? t('available') : t('unavailable')}
               </div>
 
-              {/* Reviews Section */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              {/* Reviews Section - Removed sample data */}
+              {/* <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
                 <ReviewSystem dish={dish} />
-              </div>
+              </div> */}
             </div>
 
             {/* Footer */}

@@ -39,12 +39,12 @@ export default function CurrencySettings() {
   }
 
   const handleReset = () => {
-    setLocalRate('90000')
-    setExchangeRate(90000)
+    setLocalRate('1')
+    setExchangeRate(1)
   }
 
-  const samplePrice = 15.99
-  const sampleLBPPrice = Math.round(samplePrice * exchangeRate)
+  const samplePrice = 0
+  const sampleLBPPrice = 0
 
   return (
     <div className="space-y-6">
