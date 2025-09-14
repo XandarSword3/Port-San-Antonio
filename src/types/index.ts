@@ -25,14 +25,14 @@ export interface Promotion {
 
 export interface Review {
   id: string
-  dishId: string
-  userId: string
-  userName: string
+  dish_id: string
   rating: number
   comment: string
-  createdAt: Date
-  helpful: number
-  verified: boolean
+  customer_name: string
+  customer_email: string
+  status: 'pending' | 'approved' | 'rejected'
+  created_at: string
+  updated_at: string
 }
 
 export interface Dish {
