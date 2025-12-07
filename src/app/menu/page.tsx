@@ -273,15 +273,6 @@ export default function MenuPage() {
       <MenuStructuredData dishes={dishes} categories={categories} />
       <div className="relative min-h-screen bg-luxury-light-bg dark:bg-luxury-dark-bg">
       
-      {/* Hardware-Adaptive Particle Background */}
-      {mounted && (
-        <ParticleBackground 
-          colorScheme="blue" 
-          enableInteraction={deviceTier !== 'low'}
-          className="opacity-20"
-        />
-      )}
-      
       {/* Mobile Banner */}
       <MobileBanner ads={ads} />
 
@@ -312,26 +303,6 @@ export default function MenuPage() {
           window.location.reload()
         }}
       />
-
-      {/* Unified Filter Box */}
-      <div className="px-3 sm:px-4 mt-4">
-        <UnifiedFilterBox
-          categories={availableCategories}
-          selectedCategory={filters.selectedCategory}
-          onCategorySelect={(categoryId) => 
-            setFilters(prev => ({ ...prev, selectedCategory: categoryId }))
-          }
-          filters={dietFilterOptions}
-          onFilterToggle={toggleDietFilter}
-          onClearAll={clearAllFilters}
-          hasActiveFilters={hasActiveFilters}
-          availabilityOnly={!!filters.availabilityOnly}
-          onAvailabilityToggle={() => setFilters(prev => ({ ...prev, availabilityOnly: !prev.availabilityOnly }))}
-          priceBucket={filters.priceBucket || null}
-          onPriceBucketChange={(bucket) => setFilters(prev => ({ ...prev, priceBucket: bucket }))}
-          dietCounts={dietCounts}
-        />
-      </div>
 
       {/* Main Content */}
       <div className="px-3 sm:px-4 py-4 sm:py-6">

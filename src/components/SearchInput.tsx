@@ -71,7 +71,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(({ value = ''
         }}
         placeholder={placeholder || t('searchPlaceholder') || "Search menu items, ingredients..."}
         aria-label="Search dishes"
-        className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-resort-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm hover:shadow-md transition-all duration-200"
+        className="w-full pl-10 pr-10 py-3 border-2 border-blue-400 dark:border-blue-500 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-600 dark:placeholder-gray-400 shadow-md hover:shadow-lg transition-all duration-200 font-medium"
       />
       {value && (
         <button

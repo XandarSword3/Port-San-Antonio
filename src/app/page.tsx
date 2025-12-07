@@ -95,15 +95,6 @@ export default function Home() {
           : 'bg-gradient-to-br from-luxury-light-warm via-luxury-light-bg to-luxury-light-cream'
       }`}>
         
-        {/* Hardware-Adaptive Particle Background */}
-        {mounted && (
-          <ParticleBackground 
-            colorScheme="gold" 
-            enableInteraction={deviceTier !== 'low'}
-            className="opacity-40"
-          />
-        )}
-        
         {/* Light mode background with advanced gradients */}
         {!isDark && (
           <div className="absolute inset-0 z-0">
