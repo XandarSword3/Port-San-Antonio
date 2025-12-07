@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 import { verifyWebhookSignature, handleWebhookEvent } from '@/lib/stripe/subscriptions';
 import type Stripe from 'stripe';
 
@@ -33,7 +33,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Database unavailable' },
+        { status: 503 }
+      );
+    }
 
     // Handle different event types
     await handleWebhookEvent(event, async (type, data) => {
@@ -44,8 +49,9 @@ export async function POST(request: NextRequest) {
           const userId = subscription.metadata.userId;
           const tier = subscription.metadata.tier;
 
-          await supabase
-            .from('subscriptions')
+          if (supabase) {
+            await supabase
+              .from('subscriptions')
             .upsert({
               user_id: userId,
               tier,
@@ -54,27 +60,30 @@ export async function POST(request: NextRequest) {
               stripe_subscription_id: subscription.id,
               stripe_customer_id: subscription.customer as string,
               start_date: new Date(subscription.start_date * 1000).toISOString(),
-              renew_date: subscription.current_period_end
-                ? new Date(subscription.current_period_end * 1000).toISOString()
+              renew_date: (subscription as any).current_period_end
+                ? new Date((subscription as any).current_period_end * 1000).toISOString()
                 : null,
               end_date: subscription.canceled_at
                 ? new Date(subscription.canceled_at * 1000).toISOString()
                 : null,
               updated_at: new Date().toISOString(),
             });
+          }
           break;
         }
 
         case 'subscription_deleted': {
           const subscription = data as Stripe.Subscription;
-          await supabase
-            .from('subscriptions')
-            .update({
-              status: 'cancelled',
-              end_date: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('stripe_subscription_id', subscription.id);
+          if (supabase) {
+            await supabase
+              .from('subscriptions')
+              .update({
+                status: 'cancelled',
+                end_date: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              })
+              .eq('stripe_subscription_id', subscription.id);
+          }
           break;
         }
 

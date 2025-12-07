@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 import {
   createSubscription,
   updateSubscription,
@@ -32,8 +32,14 @@ export async function POST(request: NextRequest) {
       paymentMethodId,
     });
 
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Database unavailable' },
+        { status: 503 }
+      );
+    }
+
     // Save to database
-    const supabase = createClient();
     const plan = require('@/lib/membershipConfig').MEMBERSHIP_PLANS[tier];
     
     const { error } = await supabase.from('subscriptions').insert({
@@ -88,7 +94,13 @@ export async function PATCH(request: NextRequest) {
     });
 
     // Update database
-    const supabase = createClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Database unavailable' },
+        { status: 503 }
+      );
+    }
+    
     await supabase
       .from('subscriptions')
       .update({
@@ -130,7 +142,13 @@ export async function DELETE(request: NextRequest) {
     const cancelled = await cancelSubscription(subscriptionId, cancelImmediately);
 
     // Update database
-    const supabase = createClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Database unavailable' },
+        { status: 503 }
+      );
+    }
+    
     await supabase
       .from('subscriptions')
       .update({
@@ -172,7 +190,13 @@ export async function PUT(request: NextRequest) {
     const resumed = await resumeSubscription(subscriptionId);
 
     // Update database
-    const supabase = createClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Database unavailable' },
+        { status: 503 }
+      );
+    }
+    
     await supabase
       .from('subscriptions')
       .update({

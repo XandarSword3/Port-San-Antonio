@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 /**
  * GET /api/analytics/revenue
@@ -29,7 +29,12 @@ export async function GET(request: NextRequest) {
         break;
     }
 
-    const supabase = createClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Database unavailable' },
+        { status: 503 }
+      );
+    }
 
     // Get order metrics
     const { data: orders } = await supabase

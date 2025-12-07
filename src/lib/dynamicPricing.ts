@@ -9,7 +9,7 @@
  * - Day of week
  */
 
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 export interface PricingRule {
   id: string;
@@ -134,7 +134,8 @@ export function calculateDayMultiplier(): { multiplier: number; reason: string }
  * Calculate demand-based multiplier from recent orders
  */
 export async function calculateDemandMultiplier(dishId: string): Promise<{ multiplier: number; reason: string }> {
-  const supabase = createClient();
+  if (!supabase) return { multiplier: 1.0, reason: 'Supabase unavailable' };
+  
   const currentDate = new Date().toISOString().split('T')[0];
   const currentHour = getCurrentHour();
 
@@ -170,7 +171,8 @@ export async function calculateDemandMultiplier(dishId: string): Promise<{ multi
  * Track dish views for demand metrics
  */
 export async function trackDishView(dishId: string): Promise<void> {
-  const supabase = createClient();
+  if (!supabase) return;
+  
   const currentDate = new Date().toISOString().split('T')[0];
   const currentHour = getCurrentHour();
 
@@ -191,7 +193,8 @@ export async function trackDishView(dishId: string): Promise<void> {
  * Track add to cart events
  */
 export async function trackAddToCart(dishId: string): Promise<void> {
-  const supabase = createClient();
+  if (!supabase) return;
+  
   const currentDate = new Date().toISOString().split('T')[0];
   const currentHour = getCurrentHour();
 
@@ -211,7 +214,8 @@ export async function trackAddToCart(dishId: string): Promise<void> {
  * Track completed order
  */
 export async function trackOrder(dishId: string, amount: number): Promise<void> {
-  const supabase = createClient();
+  if (!supabase) return;
+  
   const currentDate = new Date().toISOString().split('T')[0];
   const currentHour = getCurrentHour();
 
@@ -314,7 +318,7 @@ export async function calculateDynamicPrice(
  * Get active pricing rules from database
  */
 export async function getActivePricingRules(): Promise<PricingRule[]> {
-  const supabase = createClient();
+  if (!supabase) return [];
 
   try {
     const { data, error } = await supabase
@@ -398,7 +402,7 @@ export async function updateDynamicPricing(
   reason: string,
   multiplier: number
 ): Promise<void> {
-  const supabase = createClient();
+  if (!supabase) return;
 
   try {
     // Check if pricing record exists
@@ -449,7 +453,7 @@ export async function updateDynamicPricing(
  * Get dynamic price for a dish from database
  */
 export async function getDynamicPrice(dishId: string): Promise<DynamicPrice | null> {
-  const supabase = createClient();
+  if (!supabase) return null;
 
   try {
     const { data, error } = await supabase
@@ -472,7 +476,10 @@ export async function getDynamicPrice(dishId: string): Promise<DynamicPrice | nu
  * Run this periodically (e.g., every 15 minutes)
  */
 export async function batchUpdatePrices(): Promise<void> {
-  const supabase = createClient();
+  if (!supabase) {
+    console.warn('Supabase unavailable, skipping price update');
+    return;
+  }
 
   try {
     // Get all dishes
@@ -516,7 +523,15 @@ export async function getPricingAnalytics(days: number = 7): Promise<{
   priceChanges: number;
   topPerformingDishes: Array<{ dish_id: string; revenue: number; orders: number }>;
 }> {
-  const supabase = createClient();
+  if (!supabase) {
+    return {
+      totalRevenue: 0,
+      averageMultiplier: 1.0,
+      priceChanges: 0,
+      topPerformingDishes: [],
+    };
+  }
+  
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
