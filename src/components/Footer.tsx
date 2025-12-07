@@ -70,10 +70,10 @@ export default function Footer() {
           <div>
             <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'} flex items-center gap-2`}>
               <span>⚓</span>
-              {footerSettings.companyName}
+              {t('companyName')}
             </h3>
             <p className={`${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'} mb-4`}>
-              {footerSettings.description}
+              {t('footerDescription')}
             </p>
             <div className={`flex items-center gap-2 ${isDark ? 'text-luxury-dark-text/80' : 'text-luxury-light-text/70'}`}>
               <MapPin className="w-4 h-4" />

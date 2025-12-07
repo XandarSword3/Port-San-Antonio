@@ -4,8 +4,10 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Home, ArrowLeft, MapPin } from 'lucide-react'
 import Link from 'next/link'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function NotFound() {
+  const { t } = useLanguage()
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
       <motion.div
@@ -83,8 +85,8 @@ export default function NotFound() {
           transition={{ duration: 0.5, delay: 0.7 }}
           className="mt-12 text-sm text-gray-500 dark:text-gray-400"
         >
-          <p>Port Antonio Resort</p>
-          <p>Experience luxury dining and hospitality</p>
+          <p>{t('companyName')}</p>
+          <p>{t('companyDescription')}</p>
         </motion.div>
       </motion.div>
     </div>

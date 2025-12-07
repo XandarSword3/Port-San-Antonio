@@ -178,6 +178,9 @@ export type TranslationKeys =
   // Additional UI Elements
   | 'searchMenu'
   | 'quickLinks'
+  | 'companyName'
+  | 'companyDescription'
+  | 'footerDescription'
   | 'accessibility'
   | 'careers'
   | 'reservations'
@@ -552,6 +555,9 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     // Additional UI Elements
     searchMenu: 'Search menu...',
     quickLinks: 'Quick Links',
+    companyName: 'Port San Antonio Resort & Restaurant',
+    companyDescription: 'Experience luxury dining and hospitality at our premier resort destination.',
+    footerDescription: 'Lebanese luxury dining by the Mediterranean Sea',
     accessibility: 'Accessibility',
     careers: 'Careers',
     reservations: 'Reservations',
@@ -922,6 +928,9 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     // Additional UI Elements
     searchMenu: 'البحث في القائمة...',
     quickLinks: 'روابط سريعة',
+    companyName: 'منتجع ومطعم بورت سان أنطونيو',
+    companyDescription: 'استمتع بتجربة فاخرة من الطعام والضيافة في وجهتنا السياحية المميزة.',
+    footerDescription: 'تناول طعام لبناني فاخر على البحر الأبيض المتوسط',
     accessibility: 'إمكانية الوصول',
     careers: 'الوظائف',
     reservations: 'الحجوزات',
@@ -1292,6 +1301,9 @@ export const translations: Record<Language, Record<TranslationKeys, string>> = {
     // Additional UI Elements
     searchMenu: 'Rechercher dans le menu...',
     quickLinks: 'Liens Rapides',
+    companyName: 'Resort & Restaurant Port San Antonio',
+    companyDescription: 'Découvrez une cuisine et une hospitalité de luxe dans notre destination de premier choix.',
+    footerDescription: 'Cuisine libanaise de luxe au bord de la Méditerranée',
     accessibility: 'Accessibilité',
     careers: 'Carrières',
     reservations: 'Réservations',
