@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ACHIEVEMENTS } from '@/lib/membershipConfig';
-import { Achievement } from '@/types/membership';
+import { Achievement, EnhancedAchievement } from '@/types/membership';
 import {
   ShoppingBag,
   Heart,
@@ -95,7 +95,7 @@ export default function AchievementBadges({
     return userAchievements.some((ua) => ua.id === achievement.id && ua.unlockedAt);
   };
 
-  const enhancedAchievements = ACHIEVEMENTS.map((achievement) => ({
+  const enhancedAchievements: EnhancedAchievement[] = ACHIEVEMENTS.map((achievement) => ({
     ...achievement,
     progress: calculateProgress(achievement),
     unlocked: isUnlocked(achievement),

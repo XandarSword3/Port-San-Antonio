@@ -89,7 +89,12 @@ export interface Achievement {
     category?: string;
   };
   unlockedAt?: Date;
+  progress?: number;
+}
+
+export interface EnhancedAchievement extends Achievement {
   progress: number;
+  unlocked: boolean;
 }
 
 export interface SpinWheelPrize {
