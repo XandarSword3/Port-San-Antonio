@@ -11,6 +11,7 @@ import CategoryAccordion from '@/components/CategoryAccordion'
 import FilterChips from '@/components/FilterChips'
 import FilterModal from '@/components/FilterModal'
 import MenuStructuredData from '@/components/MenuStructuredData'
+import ParticleBackground from '@/components/ParticleBackground'
 
 import SideRail from '@/components/SideRail'
 import MobileBanner from '@/components/MobileBanner'
@@ -27,6 +28,12 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { OfflineStorage } from '@/lib/offlineStorage'
 import { translateCategory } from '@/lib/dishTranslations'
 import { usePageView, useSearchTracking } from '@/hooks/useAnalytics'
+import { 
+  getPerformanceManager, 
+  getAdaptiveDuration, 
+  getAdaptiveStagger,
+  type DeviceTier 
+} from '@/lib/hardwareDetection'
 
 export default function MenuPage() {
   const { t, language } = useLanguage()
@@ -35,6 +42,10 @@ export default function MenuPage() {
   // Analytics tracking
   usePageView('/menu')
   const trackSearch = useSearchTracking()
+  
+  // Hardware detection for adaptive animations
+  const [deviceTier, setDeviceTier] = useState<DeviceTier>('medium')
+  const [mounted, setMounted] = useState(false)
   
   // Get menu data from context (database or fallback)
   const { dishes, categories, loading: menuLoading, error: menuError, refreshMenu } = useMenu()
@@ -55,6 +66,27 @@ export default function MenuPage() {
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  // Initialize hardware detection
+  useEffect(() => {
+    setMounted(true)
+    const perfManager = getPerformanceManager()
+    const capabilities = perfManager.getCapabilities()
+    setDeviceTier(capabilities.tier)
+    
+    perfManager.start()
+
+    const handleTierChange = (e: CustomEvent) => {
+      setDeviceTier(e.detail.tier)
+    }
+
+    window.addEventListener('performance-tier-changed', handleTierChange as EventListener)
+
+    return () => {
+      perfManager.stop()
+      window.removeEventListener('performance-tier-changed', handleTierChange as EventListener)
+    }
   }, [])
 
   // Check admin status
@@ -239,7 +271,17 @@ export default function MenuPage() {
   return (
     <PageTransition type="menu">
       <MenuStructuredData dishes={dishes} categories={categories} />
-      <div className="min-h-screen bg-luxury-light-bg dark:bg-luxury-dark-bg">
+      <div className="relative min-h-screen bg-luxury-light-bg dark:bg-luxury-dark-bg">
+      
+      {/* Hardware-Adaptive Particle Background */}
+      {mounted && (
+        <ParticleBackground 
+          colorScheme="blue" 
+          enableInteraction={deviceTier !== 'low'}
+          className="opacity-20"
+        />
+      )}
+      
       {/* Mobile Banner */}
       <MobileBanner ads={ads} />
 

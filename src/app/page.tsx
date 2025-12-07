@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Utensils, Star, Clock, MapPin } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -10,15 +10,47 @@ import Sidebar from '@/components/Sidebar';
 import { useTransitionRouter } from '@/hooks/useTransitionRouter';
 import { TransitionOverlay } from '@/components/PageTransition';
 import { usePageView } from '@/hooks/useAnalytics';
+import ParticleBackground from '@/components/ParticleBackground';
+import { 
+  getPerformanceManager, 
+  getAdaptiveDuration, 
+  getAdaptiveStagger, 
+  isFeatureEnabled,
+  type DeviceTier 
+} from '@/lib/hardwareDetection';
 
 export default function Home() {
   const { isDark } = useTheme();
   const { t } = useLanguage();
   const { isTransitioning, transitionType, navigateWithTransition } = useTransitionRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [deviceTier, setDeviceTier] = useState<DeviceTier>('medium');
+  const [mounted, setMounted] = useState(false);
   
   // Analytics tracking
   usePageView('/');
+
+  // Initialize performance manager and detect hardware
+  useEffect(() => {
+    setMounted(true);
+    const perfManager = getPerformanceManager();
+    const capabilities = perfManager.getCapabilities();
+    setDeviceTier(capabilities.tier);
+    
+    perfManager.start();
+
+    // Listen for dynamic tier changes
+    const handleTierChange = (e: CustomEvent) => {
+      setDeviceTier(e.detail.tier);
+    };
+
+    window.addEventListener('performance-tier-changed', handleTierChange as EventListener);
+
+    return () => {
+      perfManager.stop();
+      window.removeEventListener('performance-tier-changed', handleTierChange as EventListener);
+    };
+  }, []);
 
   const handleCTAClick = () => {
     navigateWithTransition('/menu', 'menu');
@@ -63,25 +95,76 @@ export default function Home() {
           : 'bg-gradient-to-br from-luxury-light-warm via-luxury-light-bg to-luxury-light-cream'
       }`}>
         
-        {/* Light mode background - no images */}
+        {/* Hardware-Adaptive Particle Background */}
+        {mounted && (
+          <ParticleBackground 
+            colorScheme="gold" 
+            enableInteraction={deviceTier !== 'low'}
+            className="opacity-40"
+          />
+        )}
+        
+        {/* Light mode background with advanced gradients */}
         {!isDark && (
           <div className="absolute inset-0 z-0">
             {/* Clean gradient background for light mode */}
             <div className="absolute inset-0 bg-gradient-to-br from-luxury-light-warm via-luxury-light-bg to-luxury-light-cream" />
             
-            {/* Subtle gold accent overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-100/10 to-yellow-100/15" />
+            {/* Animated gradient overlay (high-tier only) */}
+            {isFeatureEnabled('enableGradients', deviceTier) && (
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-100/10 to-yellow-100/15"
+                animate={{
+                  background: [
+                    'linear-gradient(135deg, transparent, rgba(251, 191, 36, 0.1), rgba(254, 240, 138, 0.15))',
+                    'linear-gradient(225deg, transparent, rgba(245, 158, 11, 0.1), rgba(252, 211, 77, 0.15))',
+                    'linear-gradient(315deg, transparent, rgba(251, 191, 36, 0.1), rgba(254, 240, 138, 0.15))',
+                  ]
+                }}
+                transition={{ 
+                  duration: getAdaptiveDuration(10, deviceTier), 
+                  repeat: Infinity, 
+                  ease: 'linear' 
+                }}
+              />
+            )}
+            
+            {/* Static fallback for low-tier */}
+            {!isFeatureEnabled('enableGradients', deviceTier) && (
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-100/10 to-yellow-100/15" />
+            )}
           </div>
         )}
         
-        {/* Dark mode background - no images */}
+        {/* Dark mode background with advanced gradients */}
         {isDark && (
           <div className="absolute inset-0 z-0">
             {/* Deep charcoal with navy gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-luxury-dark-secondary via-luxury-dark-bg to-black" />
             
-            {/* Subtle Gold Accent Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-luxury-dark-accent/5 to-luxury-dark-accent/10" />
+            {/* Animated gradient overlay (high-tier only) */}
+            {isFeatureEnabled('enableGradients', deviceTier) && (
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-br from-transparent via-luxury-dark-accent/5 to-luxury-dark-accent/10"
+                animate={{
+                  background: [
+                    'linear-gradient(135deg, transparent, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.1))',
+                    'linear-gradient(225deg, transparent, rgba(184, 134, 11, 0.05), rgba(212, 175, 55, 0.1))',
+                    'linear-gradient(315deg, transparent, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.1))',
+                  ]
+                }}
+                transition={{ 
+                  duration: getAdaptiveDuration(10, deviceTier), 
+                  repeat: Infinity, 
+                  ease: 'linear' 
+                }}
+              />
+            )}
+            
+            {/* Static fallback for low-tier */}
+            {!isFeatureEnabled('enableGradients', deviceTier) && (
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-luxury-dark-accent/5 to-luxury-dark-accent/10" />
+            )}
           </div>
         )}
 
@@ -93,7 +176,10 @@ export default function Home() {
               className="mb-12 max-w-4xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ 
+                duration: getAdaptiveDuration(0.8, deviceTier), 
+                delay: getAdaptiveStagger(0.2, deviceTier) 
+              }}
             >
               <h1 className={`mb-6 mobile-title-primary font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-wider ${
                 isDark ? 'text-luxury-dark-text' : 'text-luxury-light-text'
@@ -121,7 +207,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            {/* Enhanced CTA Button with cool animations */}
+            {/* Enhanced CTA Button with hardware-adaptive animations */}
             <motion.button
               onClick={handleCTAClick}
               className={`group relative overflow-hidden rounded-full mobile-cta-button px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-lg sm:text-xl font-semibold shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${
@@ -133,13 +219,20 @@ export default function Home() {
               data-testid="home-cta-button"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              whileHover={{ 
-                scale: 1.1,
+              transition={{ 
+                duration: getAdaptiveDuration(0.6, deviceTier), 
+                delay: getAdaptiveStagger(0.8, deviceTier) 
               }}
+              whileHover={isFeatureEnabled('enableTransforms3D', deviceTier) ? { 
+                scale: 1.1,
+                rotateZ: [0, -2, 2, 0],
+                transition: { duration: 0.3 }
+              } : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
-                filter: isDark ? 'drop-shadow(0 10px 25px rgba(212, 175, 55, 0.4))' : 'drop-shadow(0 10px 25px rgba(245, 158, 11, 0.3))',
+                filter: isFeatureEnabled('enableShadows', deviceTier) 
+                  ? (isDark ? 'drop-shadow(0 10px 25px rgba(212, 175, 55, 0.4))' : 'drop-shadow(0 10px 25px rgba(245, 158, 11, 0.3))')
+                  : 'none',
                 textShadow: isDark ? '0 2px 4px rgba(0, 0, 0, 0.5)' : '0 2px 4px rgba(0, 0, 0, 0.3)'
               }}
             >
@@ -166,43 +259,64 @@ export default function Home() {
               </span>
               
               {/* Enhanced Glow effect - only on hover */}
-              <motion.div 
-                className={`absolute inset-0 rounded-full blur-xl opacity-0 ${
-                  isDark 
-                    ? 'bg-gradient-to-r from-luxury-dark-accent/50 to-yellow-400/50' 
-                    : 'bg-gradient-to-r from-amber-400/40 to-yellow-400/40'
-                }`}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
+              {/* Enhanced Glow effect - adaptive blur */}
+              {isFeatureEnabled('enableBlur', deviceTier) && (
+                <motion.div 
+                  className={`absolute inset-0 rounded-full blur-xl opacity-0 ${
+                    isDark 
+                      ? 'bg-gradient-to-r from-luxury-dark-accent/50 to-yellow-400/50' 
+                      : 'bg-gradient-to-r from-amber-400/40 to-yellow-400/40'
+                  }`}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
               
-              {/* Ripple effect on click */}
-              <motion.div
-                className="absolute inset-0 rounded-full bg-white/20"
-                initial={{ scale: 0, opacity: 1 }}
-                whileTap={{ 
-                  scale: 1.5, 
-                  opacity: 0,
-                  transition: { duration: 0.4 }
-                }}
-              />
+              {/* Ripple effect on click - adaptive complexity */}
+              {isFeatureEnabled('enableTransforms3D', deviceTier) ? (
+                <motion.div
+                  className="absolute inset-0 rounded-full bg-white/20"
+                  initial={{ scale: 0, opacity: 1 }}
+                  whileTap={{ 
+                    scale: 1.5, 
+                    opacity: 0,
+                    transition: { duration: 0.4 }
+                  }}
+                />
+              ) : (
+                <motion.div
+                  className="absolute inset-0 rounded-full bg-white/10"
+                  initial={{ opacity: 0 }}
+                  whileTap={{ 
+                    opacity: [0, 0.5, 0],
+                    transition: { duration: 0.2 }
+                  }}
+                />
+              )}
             </motion.button>
 
             {/* Removed Quick Booking Widget */}
 
-            {/* Scroll Indicator */}
+            {/* Scroll Indicator - hardware adaptive */}
             <motion.div 
               className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.5 }}
+              transition={{ 
+                duration: getAdaptiveDuration(0.8, deviceTier), 
+                delay: getAdaptiveStagger(1.5, deviceTier) 
+              }}
             >
               <motion.div
                 className={`flex flex-col items-center gap-2 ${
                   isDark ? 'text-luxury-dark-text/70' : 'text-luxury-light-text/70'
                 }`}
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                animate={deviceTier !== 'low' ? { y: [0, 8, 0] } : {}}
+                transition={{ 
+                  duration: getAdaptiveDuration(2, deviceTier), 
+                  repeat: deviceTier !== 'low' ? Infinity : 0, 
+                  ease: "easeInOut" 
+                }}
               >
                 <span className="text-sm font-light">Scroll to explore</span>
                 <motion.div
@@ -214,37 +328,56 @@ export default function Home() {
                     className={`w-1 h-3 rounded-full mt-2 ${
                       isDark ? 'bg-luxury-dark-accent' : 'bg-luxury-light-accent'
                     }`}
-                    animate={{ y: [0, 12, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    animate={deviceTier !== 'low' ? { y: [0, 12, 0] } : {}}
+                    transition={{ 
+                      duration: getAdaptiveDuration(2, deviceTier), 
+                      repeat: deviceTier !== 'low' ? Infinity : 0, 
+                      ease: "easeInOut" 
+                    }}
                   />
                 </motion.div>
               </motion.div>
             </motion.div>
           </div>
 
-          {/* Enhanced Feature Grid */}
+          {/* Enhanced Feature Grid - Hardware Adaptive */}
           <motion.div 
             className="relative z-20 mx-auto w-full max-w-7xl mobile-container mobile-feature-grid px-6 sm:px-8 pb-16 sm:pb-24"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
+            transition={{ 
+              duration: getAdaptiveDuration(0.8, deviceTier), 
+              delay: getAdaptiveStagger(1.2, deviceTier) 
+            }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {features.map((feature, i) => (
                 <motion.div
                   key={feature.title}
-                  className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm mobile-feature-card transition-all duration-500 hover:scale-[1.05] border ${
+                  className={`group relative overflow-hidden rounded-3xl mobile-feature-card transition-all duration-500 hover:scale-[1.05] border ${
+                    isFeatureEnabled('enableBackdropFilter', deviceTier) ? 'backdrop-blur-sm' : ''
+                  } ${
                     isDark 
                       ? 'bg-luxury-dark-card hover:bg-luxury-dark-card/95 border-luxury-dark-border hover:border-luxury-dark-accent' 
                       : 'bg-luxury-light-card/90 hover:bg-luxury-light-card border-luxury-light-border/30 hover:border-luxury-light-accent/50 shadow-xl hover:shadow-2xl'
                   }`}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 1.4 + i * 0.1 }}
-                  whileHover={{ 
+                  transition={{ 
+                    duration: getAdaptiveDuration(0.6, deviceTier), 
+                    delay: getAdaptiveStagger(1.4 + i * 0.1, deviceTier) 
+                  }}
+                  whileHover={isFeatureEnabled('enableTransforms3D', deviceTier) ? { 
                     scale: 1.05,
                     y: -8,
+                    rotateY: 5,
                     transition: { duration: 0.3 }
+                  } : {
+                    scale: 1.03,
+                    transition: { duration: 0.2 }
+                  }}
+                  style={{
+                    perspective: isFeatureEnabled('enableTransforms3D', deviceTier) ? '1000px' : 'none'
                   }}
                 >
                   {/* Thumbnail Image */}
@@ -295,12 +428,14 @@ export default function Home() {
                     }`}>{feature.desc}</p>
                   </div>
 
-                  {/* Hover Glow Effect */}
-                  <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                    isDark 
-                      ? 'bg-gradient-to-br from-luxury-dark-accent/5 via-transparent to-yellow-400/5' 
-                      : 'bg-gradient-to-br from-luxury-light-accent/10 via-transparent to-amber-100/15'
-                  }`} />
+                  {/* Hover Glow Effect - Adaptive */}
+                  {isFeatureEnabled('enableGradients', deviceTier) && (
+                    <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                      isDark 
+                        ? 'bg-gradient-to-br from-luxury-dark-accent/5 via-transparent to-yellow-400/5' 
+                        : 'bg-gradient-to-br from-luxury-light-accent/10 via-transparent to-amber-100/15'
+                    }`} />
+                  )}
                 </motion.div>
               ))}
             </div>

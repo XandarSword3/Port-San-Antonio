@@ -90,22 +90,60 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
         setCategories(transformedCategories)
       }
 
-      // Load dishes
-      const { data: dishesData, error: dishesError } = await supabase!
+      // Load dishes - First try with available filter
+      let dishesData: any[] | null = null;
+      let dishesError: any = null;
+
+      console.log('📋 Loading dishes with available=true filter...')
+      const availableResult = await supabase!
         .from('dishes')
         .select('*')
         .eq('available', true)
         .order('category_id')
+
+      dishesData = availableResult.data
+      dishesError = availableResult.error
+
+      // If no dishes found with available=true, try loading ALL dishes
+      if (!dishesError && (!dishesData || dishesData.length === 0)) {
+        console.warn('⚠️ No dishes found with available=true, loading ALL dishes as fallback...')
+        const allDishesResult = await supabase!
+          .from('dishes')
+          .select('*')
+          .order('category_id')
+        
+        dishesData = allDishesResult.data
+        dishesError = allDishesResult.error
+        
+        if (dishesData && dishesData.length > 0) {
+          console.log('✅ Loaded ALL dishes (including unavailable):', dishesData.length)
+          console.log('💡 TIP: Set available=true on dishes in database to filter them')
+        }
+      } else if (!dishesError && dishesData) {
+        console.log('✅ Dishes loaded (available only):', dishesData.length)
+      }
 
       if (dishesError) {
         console.error('❌ Error loading dishes:', dishesError)
         throw dishesError
       }
 
-      console.log('✅ Dishes loaded:', dishesData?.length)
+      if (!dishesData || dishesData.length === 0) {
+        console.error('❌ No dishes found in database!')
+        console.log('💡 Please check:')
+        console.log('   1. Dishes table exists in Supabase')
+        console.log('   2. Dishes have data')
+        console.log('   3. Row Level Security (RLS) policies allow read access')
+        setError('No dishes found in database')
+      }
+
       const transformedDishes = dishesData?.map(transformDish) || []
       setDishes(transformedDishes)
-      setError(null)
+      
+      // Only clear error if we have dishes
+      if (transformedDishes.length > 0) {
+        setError(null)
+      }
 
     } catch (err) {
       console.error('💥 Failed to load menu data:', err)

@@ -4,18 +4,33 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Waves, Sun, Anchor, Ship } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
+import { 
+  getPerformanceManager, 
+  getAdaptiveDuration, 
+  getAdaptiveStagger,
+  type DeviceTier 
+} from '@/lib/hardwareDetection'
 
 const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
   const { isDark } = useTheme()
   const [currentWave, setCurrentWave] = useState(0)
   const [showLogo, setShowLogo] = useState(false)
+  const [deviceTier, setDeviceTier] = useState<DeviceTier>('medium')
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setShowLogo(true), 500)
-    const timer2 = setTimeout(() => setCurrentWave(1), 1500)
-    const timer3 = setTimeout(() => setCurrentWave(2), 2500)
-    const timer4 = setTimeout(() => setCurrentWave(3), 3500)
-    const timer5 = setTimeout(() => onComplete(), 4500)
+    const perfManager = getPerformanceManager()
+    setDeviceTier(perfManager.getCurrentTier())
+  }, [])
+
+  useEffect(() => {
+    // Adaptive timing based on device tier
+    const baseDelay = deviceTier === 'low' ? 0.7 : deviceTier === 'medium' ? 0.85 : 1.0;
+    
+    const timer1 = setTimeout(() => setShowLogo(true), 500 * baseDelay)
+    const timer2 = setTimeout(() => setCurrentWave(1), 1500 * baseDelay)
+    const timer3 = setTimeout(() => setCurrentWave(2), 2500 * baseDelay)
+    const timer4 = setTimeout(() => setCurrentWave(3), 3500 * baseDelay)
+    const timer5 = setTimeout(() => onComplete(), 4500 * baseDelay)
 
     return () => {
       clearTimeout(timer1)
@@ -24,7 +39,7 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
       clearTimeout(timer4)
       clearTimeout(timer5)
     }
-  }, [onComplete])
+  }, [onComplete, deviceTier])
 
   const waves = isDark ? [
     { color: '#1e3a8a', height: '25%', delay: 0 },
@@ -67,25 +82,25 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
           : 'bg-gradient-to-b from-sky-200 via-blue-300 to-blue-800'
       }`}
     >
-      {/* Animated clouds */}
+      {/* Animated clouds - adaptive count based on device tier */}
       <div className="absolute inset-0">
-        {cloudPositions.map((cloud, i) => (
+        {cloudPositions.slice(0, deviceTier === 'low' ? 3 : deviceTier === 'medium' ? 4 : 6).map((cloud, i) => (
           <motion.div
             key={i}
             initial={{ x: -200, opacity: 0 }}
             animate={{ 
-              x: '120vw', // Responsive width using viewport units
+              x: '120vw',
               opacity: [0, 1, 1, 0]
             }}
             transition={{
-              duration: 8,
-              delay: cloud.delay,
+              duration: getAdaptiveDuration(8, deviceTier),
+              delay: getAdaptiveStagger(cloud.delay, deviceTier),
               ease: 'linear'
             }}
             className="absolute w-20 h-10 bg-white/30 rounded-full"
             style={{
               top: cloud.top,
-              filter: 'blur(1px)'
+              filter: deviceTier !== 'low' ? 'blur(1px)' : 'none'
             }}
           />
         ))}
@@ -144,17 +159,17 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
                 Welcome to Mediterranean Paradise
               </motion.p>
 
-              {/* Floating icons */}
+              {/* Floating icons - adaptive animation */}
               <div className="mt-6 sm:mt-8 flex justify-center gap-4 sm:gap-6">
                 {[Sun, Waves, Anchor, Ship].map((Icon, i) => (
                   <motion.div
                     key={i}
                     initial={{ y: 0 }}
-                    animate={{ y: [-10, 10, -10] }}
+                    animate={deviceTier !== 'low' ? { y: [-10, 10, -10] } : {}}
                     transition={{
-                      duration: 2,
-                      delay: i * 0.2,
-                      repeat: Infinity,
+                      duration: getAdaptiveDuration(2, deviceTier),
+                      delay: getAdaptiveStagger(i * 0.2, deviceTier),
+                      repeat: deviceTier !== 'low' ? Infinity : 0,
                       ease: 'easeInOut'
                     }}
                   >
@@ -201,8 +216,8 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
               />
             </svg>
 
-            {/* Wave particles */}
-            {particlePositions[index]?.map((leftPos, i) => (
+            {/* Wave particles - adaptive count and animation */}
+            {deviceTier !== 'low' && particlePositions[index]?.slice(0, deviceTier === 'medium' ? 4 : 8).map((leftPos, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0, y: 0 }}
@@ -212,8 +227,8 @@ const WaveLoader = ({ onComplete }: { onComplete: () => void }) => {
                   y: [-50, -100, -150]
                 }}
                 transition={{
-                  duration: 3,
-                  delay: i * 0.3, // Fixed delay instead of Math.random()
+                  duration: getAdaptiveDuration(3, deviceTier),
+                  delay: getAdaptiveStagger(i * 0.3, deviceTier),
                   repeat: Infinity,
                   ease: 'easeOut'
                 }}
