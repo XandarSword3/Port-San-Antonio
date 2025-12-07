@@ -7,9 +7,21 @@ import Stripe from 'stripe';
 import { MEMBERSHIP_PLANS } from '../membershipConfig';
 import type { MembershipTier } from '@/types/membership';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-08-27.basil',
-});
+// Lazy initialization to prevent build-time errors when env vars are missing
+let stripe: Stripe | null = null;
+
+function getStripe(): Stripe {
+  if (!stripe) {
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) {
+      throw new Error('STRIPE_SECRET_KEY environment variable is not set');
+    }
+    stripe = new Stripe(stripeKey, {
+      apiVersion: '2025-08-27.basil',
+    });
+  }
+  return stripe;
+}
 
 export interface CreateSubscriptionParams {
   userId: string;
@@ -61,7 +73,7 @@ const STRIPE_PRICE_IDS: Record<MembershipTier, { monthly: string; annual: string
  */
 async function getOrCreateCustomer(userId: string, email: string): Promise<string> {
   // Check if customer already exists
-  const customers = await stripe.customers.list({
+  const customers = await getStripe().customers.list({
     email,
     limit: 1,
   });
@@ -71,7 +83,7 @@ async function getOrCreateCustomer(userId: string, email: string): Promise<strin
   }
 
   // Create new customer
-  const customer = await stripe.customers.create({
+  const customer = await getStripe().customers.create({
     email,
     metadata: {
       userId,
@@ -98,12 +110,12 @@ export async function createSubscription(
     const customerId = await getOrCreateCustomer(userId, email);
 
     // Attach payment method to customer
-    await stripe.paymentMethods.attach(paymentMethodId, {
+    await getStripe().paymentMethods.attach(paymentMethodId, {
       customer: customerId,
     });
 
     // Set as default payment method
-    await stripe.customers.update(customerId, {
+    await getStripe().customers.update(customerId, {
       invoice_settings: {
         default_payment_method: paymentMethodId,
       },
@@ -113,7 +125,7 @@ export async function createSubscription(
     const priceId = STRIPE_PRICE_IDS[tier][billingPeriod];
 
     // Create subscription
-    const subscription = await stripe.subscriptions.create({
+    const subscription = await getStripe().subscriptions.create({
       customer: customerId,
       items: [{ price: priceId }],
       payment_behavior: 'default_incomplete',
@@ -153,7 +165,7 @@ export async function updateSubscription(
     const { subscriptionId, newTier, newBillingPeriod } = params;
 
     // Get current subscription
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const subscription = await getStripe().subscriptions.retrieve(subscriptionId);
 
     if (!newTier && !newBillingPeriod) {
       throw new Error('Must specify newTier or newBillingPeriod');
@@ -165,7 +177,7 @@ export async function updateSubscription(
     const newPriceId = STRIPE_PRICE_IDS[tier][billingPeriod as 'monthly' | 'annual'];
 
     // Update subscription
-    const updated = await stripe.subscriptions.update(subscriptionId, {
+    const updated = await getStripe().subscriptions.update(subscriptionId, {
       items: [
         {
           id: subscription.items.data[0].id,
@@ -197,10 +209,10 @@ export async function cancelSubscription(
   try {
     if (cancelImmediately) {
       // Cancel immediately
-      return await stripe.subscriptions.cancel(subscriptionId);
+      return await getStripe().subscriptions.cancel(subscriptionId);
     } else {
       // Cancel at period end
-      return await stripe.subscriptions.update(subscriptionId, {
+      return await getStripe().subscriptions.update(subscriptionId, {
         cancel_at_period_end: true,
       });
     }
@@ -215,7 +227,7 @@ export async function cancelSubscription(
  */
 export async function resumeSubscription(subscriptionId: string): Promise<Stripe.Subscription> {
   try {
-    return await stripe.subscriptions.update(subscriptionId, {
+    return await getStripe().subscriptions.update(subscriptionId, {
       cancel_at_period_end: false,
     });
   } catch (error) {
@@ -229,7 +241,7 @@ export async function resumeSubscription(subscriptionId: string): Promise<Stripe
  */
 export async function getSubscription(subscriptionId: string): Promise<Stripe.Subscription> {
   try {
-    return await stripe.subscriptions.retrieve(subscriptionId, {
+    return await getStripe().subscriptions.retrieve(subscriptionId, {
       expand: ['latest_invoice', 'customer'],
     });
   } catch (error) {
@@ -243,7 +255,7 @@ export async function getSubscription(subscriptionId: string): Promise<Stripe.Su
  */
 export async function getCustomerSubscriptions(customerId: string): Promise<Stripe.Subscription[]> {
   try {
-    const subscriptions = await stripe.subscriptions.list({
+    const subscriptions = await getStripe().subscriptions.list({
       customer: customerId,
       status: 'all',
       expand: ['data.latest_invoice'],
@@ -261,7 +273,7 @@ export async function getCustomerSubscriptions(customerId: string): Promise<Stri
  */
 export async function getUpcomingInvoice(customerId: string): Promise<Stripe.Invoice | null> {
   try {
-    const upcomingLines = await stripe.invoices.list({
+    const upcomingLines = await getStripe().invoices.list({
       customer: customerId,
       limit: 1,
       status: 'draft',
@@ -278,7 +290,7 @@ export async function getUpcomingInvoice(customerId: string): Promise<Stripe.Inv
  */
 export async function getPaymentMethods(customerId: string): Promise<Stripe.PaymentMethod[]> {
   try {
-    const paymentMethods = await stripe.paymentMethods.list({
+    const paymentMethods = await getStripe().paymentMethods.list({
       customer: customerId,
       type: 'card',
     });
@@ -298,7 +310,7 @@ export async function updateDefaultPaymentMethod(
   paymentMethodId: string
 ): Promise<void> {
   try {
-    await stripe.customers.update(customerId, {
+    await getStripe().customers.update(customerId, {
       invoice_settings: {
         default_payment_method: paymentMethodId,
       },
@@ -314,7 +326,7 @@ export async function updateDefaultPaymentMethod(
  */
 export async function createSetupIntent(customerId: string): Promise<string> {
   try {
-    const setupIntent = await stripe.setupIntents.create({
+    const setupIntent = await getStripe().setupIntents.create({
       customer: customerId,
       payment_method_types: ['card'],
     });
@@ -385,7 +397,7 @@ export function verifyWebhookSignature(
   secret: string
 ): Stripe.Event {
   try {
-    return stripe.webhooks.constructEvent(payload, signature, secret);
+    return getStripe().webhooks.constructEvent(payload, signature, secret);
   } catch (error) {
     console.error('Error verifying webhook signature:', error);
     throw error;
@@ -400,7 +412,7 @@ export async function createPortalSession(
   returnUrl: string
 ): Promise<string> {
   try {
-    const session = await stripe.billingPortal.sessions.create({
+    const session = await getStripe().billingPortal.sessions.create({
       customer: customerId,
       return_url: returnUrl,
     });
@@ -420,7 +432,7 @@ export async function calculateProration(
   newPriceId: string
 ): Promise<number> {
   try {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
+    const subscription = await getStripe().subscriptions.retrieve(subscriptionId) as any;
 
     // Calculate proration manually based on current period
     const currentPeriodEnd = subscription.current_period_end;
@@ -449,7 +461,7 @@ export async function applyCoupon(
   couponId: string
 ): Promise<Stripe.Subscription> {
   try {
-    return await stripe.subscriptions.update(subscriptionId, {
+    return await getStripe().subscriptions.update(subscriptionId, {
       discounts: [{ coupon: couponId }],
     });
   } catch (error) {
@@ -472,9 +484,10 @@ export async function createCoupon(
   }
 ): Promise<Stripe.Coupon> {
   try {
-    return await stripe.coupons.create(params);
+    return await getStripe().coupons.create(params);
   } catch (error) {
     console.error('Error creating coupon:', error);
     throw error;
   }
 }
+
