@@ -5,7 +5,8 @@ import { useTheme } from '@/contexts/ThemeContext'
 import { ReactNode, useEffect, useState } from 'react'
 import { 
   getPerformanceManager, 
-  getAdaptiveDuration, 
+  getAdaptiveDuration,
+  getAdaptiveStagger,
   isFeatureEnabled,
   type DeviceTier 
 } from '@/lib/hardwareDetection'
