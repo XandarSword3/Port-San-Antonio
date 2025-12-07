@@ -93,7 +93,7 @@ export async function subscribeToPush(userId?: string): Promise<PushSubscription
       // Create new subscription
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as BufferSource,
       });
     }
 
@@ -254,17 +254,21 @@ export async function showLocalNotification(payload: NotificationPayload): Promi
   try {
     const registration = await navigator.serviceWorker.ready;
     
-    await registration.showNotification(payload.title, {
+    const notificationOptions: NotificationOptions & { actions?: any } = {
       body: payload.body,
       icon: payload.icon || '/images/icon-192x192.png',
       badge: payload.badge || '/images/badge-72x72.png',
-      image: payload.image,
       tag: payload.tag,
       data: payload.data,
-      actions: payload.actions,
       requireInteraction: false,
       silent: false,
-    });
+    };
+    
+    if (payload.actions) {
+      notificationOptions.actions = payload.actions;
+    }
+    
+    await registration.showNotification(payload.title, notificationOptions);
   } catch (error) {
     console.error('Error showing notification:', error);
   }
@@ -300,7 +304,6 @@ export const NOTIFICATION_TEMPLATES = {
     icon: '/images/icon-192x192.png',
     tag: `order-${orderNumber}`,
     data: { type: 'order_ready', orderNumber },
-    requireInteraction: true,
   }),
 
   orderDelivered: (orderNumber: string): NotificationPayload => ({

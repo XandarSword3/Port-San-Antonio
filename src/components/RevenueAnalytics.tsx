@@ -22,7 +22,7 @@ import {
   PieChart,
   Activity
 } from 'lucide-react';
-import { getHardwareDetection, getAdaptiveDuration, getAdaptiveStagger } from '@/lib/hardwareDetection';
+import { detectHardware, getAdaptiveDuration, getAdaptiveStagger } from '@/lib/hardwareDetection';
 import { DeviceTier } from '@/lib/hardwareDetection';
 
 interface RevenueMetrics {
@@ -60,7 +60,7 @@ interface TimeSeriesData {
 
 export default function RevenueAnalytics() {
   const { isDark } = useTheme();
-  const [deviceTier, setDeviceTier] = useState<DeviceTier>('HIGH');
+  const [deviceTier, setDeviceTier] = useState<DeviceTier>('high');
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
   const [loading, setLoading] = useState(true);
 
@@ -83,7 +83,7 @@ export default function RevenueAnalytics() {
 
   // Hardware detection
   useEffect(() => {
-    const hardware = getHardwareDetection();
+    const hardware = detectHardware();
     setDeviceTier(hardware.tier);
   }, []);
 
@@ -110,9 +110,9 @@ export default function RevenueAnalytics() {
     fetchAnalytics();
   }, [timeRange]);
 
-  const duration = getAdaptiveDuration(deviceTier, 0.5);
-  const stagger = getAdaptiveStagger(deviceTier, 0.05);
-  const enableHover = deviceTier !== 'LOW';
+  const duration = getAdaptiveDuration(0.5, deviceTier);
+  const stagger = getAdaptiveStagger(0.05, deviceTier);
+  const enableHover = deviceTier !== 'low';
 
   const MetricCard = ({ 
     title, 

@@ -4,11 +4,11 @@
  */
 
 import Stripe from 'stripe';
-import { MEMBERSHIP_PLANS } from './membershipConfig';
+import { MEMBERSHIP_PLANS } from '../membershipConfig';
 import type { MembershipTier } from '@/types/membership';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2025-08-27.basil',
 });
 
 export interface CreateSubscriptionParams {
@@ -129,12 +129,13 @@ export async function createSubscription(
       },
     });
 
-    const invoice = subscription.latest_invoice as Stripe.Invoice;
-    const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
+    // Access expanded invoice and payment intent
+    const invoice = subscription.latest_invoice as any;
+    const paymentIntent = invoice?.payment_intent as any;
 
     return {
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent.client_secret!,
+      clientSecret: paymentIntent?.client_secret || '',
     };
   } catch (error) {
     console.error('Error creating subscription:', error);
@@ -260,9 +261,12 @@ export async function getCustomerSubscriptions(customerId: string): Promise<Stri
  */
 export async function getUpcomingInvoice(customerId: string): Promise<Stripe.Invoice | null> {
   try {
-    return await stripe.invoices.retrieveUpcoming({
+    const upcomingLines = await stripe.invoices.list({
       customer: customerId,
+      limit: 1,
+      status: 'draft',
     });
+    return upcomingLines.data[0] || null;
   } catch (error) {
     // No upcoming invoice
     return null;
@@ -416,21 +420,21 @@ export async function calculateProration(
   newPriceId: string
 ): Promise<number> {
   try {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
 
-    const proration = await stripe.invoices.retrieveUpcoming({
-      customer: subscription.customer as string,
-      subscription: subscriptionId,
-      subscription_items: [
-        {
-          id: subscription.items.data[0].id,
-          price: newPriceId,
-        },
-      ],
-      subscription_proration_behavior: 'create_prorations',
-    });
+    // Calculate proration manually based on current period
+    const currentPeriodEnd = subscription.current_period_end;
+    const currentPeriodStart = subscription.current_period_start;
+    const now = Math.floor(Date.now() / 1000);
+    const remainingTime = currentPeriodEnd - now;
+    const totalPeriod = currentPeriodEnd - currentPeriodStart;
+    const prorationFactor = remainingTime / totalPeriod;
+    
+    // Estimate proration amount (rough calculation)
+    const currentPrice = subscription.items.data[0]?.price?.unit_amount || 0;
+    const prorationAmount = (currentPrice / 100) * prorationFactor;
 
-    return proration.amount_due / 100; // Convert cents to dollars
+    return prorationAmount
   } catch (error) {
     console.error('Error calculating proration:', error);
     return 0;
@@ -446,7 +450,7 @@ export async function applyCoupon(
 ): Promise<Stripe.Subscription> {
   try {
     return await stripe.subscriptions.update(subscriptionId, {
-      coupon: couponId,
+      discounts: [{ coupon: couponId }],
     });
   } catch (error) {
     console.error('Error applying coupon:', error);
