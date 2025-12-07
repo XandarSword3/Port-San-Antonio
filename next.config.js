@@ -58,12 +58,23 @@ const withPWA = require('next-pwa')({
 const nextConfig = {
   // Removed output: 'export' to enable API routes for Vercel deployment
   images: {
-    domains: ['localhost', 'port-san-antonio.vercel.app'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'port-san-antonio.vercel.app',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
     formats: ['image/webp', 'image/avif'],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; img-src 'self' data: https:; sandbox;",
     unoptimized: true
   },
+  // Empty turbopack config to silence the error - PWA still uses webpack
+  turbopack: {},
 }
 
 module.exports = withPWA(nextConfig)
